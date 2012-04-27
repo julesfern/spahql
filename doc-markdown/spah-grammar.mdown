@@ -1,0 +1,146 @@
+Appendix: SpahQL Grammar and execution spec
+===========================================
+
+EBNF Grammar
+============
+
+    PathDelimiter ::= "/";
+    PathWildcard ::= "*";
+    ArrayDelimiter ::= ",";
+    RangeDelimiter ::= "..";
+    SingleQuote ::= "'";
+    DoubleQuote ::= "\"";
+    Negative ::= "-";
+    DecimalPoint ::= ".";
+    PropertyIdentifier ::= ".";
+    RootScopeFlag ::= "$";
+    SetStart ::= "{";
+    SetEnd ::= "}";
+    FilterStart ::= "[";
+    FilterEnd ::= "]";
+    BooleanTrue ::= "true";
+    BooleanFalse ::= "false";
+    StrictEquality ::= "==";
+    RoughEquality ::= "=~";
+    Inequality ::= "!=";
+    GT ::= ">";
+    LT ::= "<";
+    LTE ::= LT, "=";
+    GTE ::= GT, "=";
+    SetEquality ::= "}={";
+    DisjointSet ::= "}!{";
+    JointSet ::= "}~{";
+    Superset ::= "}>{";
+    Subset ::= "}<{";
+
+    (* Tokens *)
+
+    ComparisonOperator ::= StrictEquality | RoughEquality
+    						| Inequality | GT | LT | GTE | LTE
+    						| SetEquality | DisjointSet
+    						| JointSet | Superset | Subset;
+
+    Digit ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+    AlphaChar ::= "A" | "B" | "C" | "D" | "E" | "F" | "G"
+                         | "H" | "I" | "J" | "K" | "L" | "M" | "N"
+                         | "O" | "P" | "Q" | "R" | "S" | "T" | "U"
+                         | "V" | "W" | "X" | "Y" | "Z" | "a" | "b"
+    							| "c" | "d" | "e" | "f" | "g" | "h" | "i"
+    							| "j" | "k" | "l" | "m" | "n" | "o" | "p"
+    							| "q" | "r" | "s" | "t" | "u" | "v" | "w"
+    							| "x" | "y" | "z";
+    AlphaNumChar ::= AlphaChar | Digit;
+
+    NumericLiteral ::= [Negative], Digit, {Digit}, [DecimalPoint, Digit, {Digit}];
+
+    SingleQuoteString ::= SingleQuote, {all characters - SingleQuote}, SingleQuote;
+    DoubleQuoteString ::= DoubleQuote, {all characters - DoubleQuote}, DoubleQuote;
+    StringLiteral ::= SingleQuoteString | DoubleQuoteString;
+    BooleanLiteral ::= BooleanTrue | BooleanFalse;
+
+    PrimitiveLiteral ::= NumericLiteral | StringLiteral | BooleanLiteral;
+
+    SetMember ::= PrimitiveLiteral | SelectionQuery;
+
+    SetArrayLiteral ::= SetStart, ( SetEnd |  {SetMember, ArrayDelimiter}, SetMember, SetEnd );
+    SetRangeLiteral ::= SetStart, SetMember, RangeDelimiter, SetMember, SetEnd;
+
+    SetLiteral ::= SetArrayLiteral | SetRangeLiteral;
+
+    SelectionQuery ::= [RootScopeFlag], PathComponent, {PathComponent};
+    PathComponent ::= PathDelimiter, [PathWildcard | (PropertyIdentifier, KeyName) | KeyName], {FilterQuery};
+
+    KeyName ::= AlphaNumChar, {AlphaNumChar};
+
+    FilterQuery ::= FilterStart, RunnableAssertion, FilterEnd;
+
+    RunnableSelection ::= SetLiteral | SelectionQuery;
+    RunnableAssertion ::= RunnableSelection, [ComparisonOperator, RunnableSelection];
+
+    SpahQL ::= RunnableAssertion;
+
+SpahQL query execution spec
+===========================
+
+SpahQL selection queries are, fundamentally, reductive. At the start of execution, a selection query is given the root data context against which it will run. As the execution moves between the path segments, the data is reduced (and possibly forked) before being passed to the next path segment:
+
+    data = {foo: {bar: {baz: "str"}}}
+    query = "/foo/bar/baz"
+
+At each point in the above query:
+
+1. The root <code>data</code> object is handed to the first path component, which selects the key <code>foo</code>.
+2. The resulting data <code>{bar: {baz: "str"}}</code> is handed to the next path component which selects the key <code>bar</code>
+3. The resulting data <code>{baz: "str"}</code> is handed to the final path segment, which selects the key <code>baz</code>
+4. The key "baz" is a string with value "str". This is returned as a result set with one item.
+
+If at any point a query runs out of data, the execution is aborted and an empty result set is returned:
+
+    data = {foo: {bar: {baz: "str"}}}
+    query = "/foo/NOTBAR/baz"
+
+In this case, the query exits and returns <code>[]</code> when it is unable to find any matching data for the <code>NOTBAR</code> portion of the query.
+
+Recursive paths force the query runner to fork the execution:
+
+    data = {foo: {bar: {baz: "str", bar: "inner-bar"}}}
+    query = "/foo//bar/baz"
+
+In this instance:
+
+1. The root <code>data</code> object is handed to the first path component, which selects the key <code>foo</code>.
+2. The remaining data <code>{bar: {baz: "str", bar: "inner-bar"}}</code> is handed to the next path query, which **recursively** searches for the key <code>bar</code>.
+3. The recursive search returns results from two paths: <code>/foo/bar</code>, which contains a hash, and <code>/foo/bar/bar</code> which is a value within a sub-hash.
+4. The two result sets are handed down to the <code>baz</code> portion of the query.
+5. The <code>baz</code> key appears in only one of the previous data constructs, and this result is added to the final result set.
+
+And so we can see that the overall progression is:
+
+    data -> reduce -> array of result sets -> reduce -> array of result sets -> reduce -> finalise
+
+The finalisation step flattens the returned resultsets as a set of <code>QueryResult</code> objects. The final result set is a union of each of the final result sets made unique by result path.
+
+In the case of **filters**, an additional reduce step is introduced into the path segment specifying the filter:
+
+    data = {foo: {bar: {baz: "str", bar: "inner-bar"}}}
+    query = "/foo/[//baz == 'str']"
+
+In this case:
+
+1. The root <code>data</code> object is handed to the first path segment, which retrieves the key <code>foo</code>.
+2. The resulting data is handed to the next path segment, which specifies no key - therefore all keys are acceptable.
+3. All keys in the resulting data have the filter query <code>//baz =='str'</code> run against their values. Those keys for which the filter query returns <code>true</code> are added to the result set for this path segment.
+4. The query ends - the results (all values defined directly on <code>/foo</code> that may be recursed to find a key <code>baz</code> with value <code>str</code>) are flattened and returned as the query result.
+
+Example execution flow:
+
+<img src="https://img.skitch.com/20110511-f6t1iwt3jq4gxyd2hnk7fyfjdd.jpg" />
+
+**Properties** act like special keys on paths:
+
+    data = {foo: {bar: {baz: "str", bar: "inner-bar"}}}
+    query = "/.size" // returns the number of keys on the root object
+    query = "//baz/.size" // returns the sizes of all keys named "baz"
+
+There is no other special behaviour for properties - they simply act like key names.

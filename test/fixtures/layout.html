@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spah test layout</title>
+  </head>
+  <body>
+
+    <!--
+    =========== SIMPLE TESTS =============
+                                       -->
+
+    <!-- Show/hide test -->
+    <div id="show-if" data-show-if="/show-if">Show if test</div>
+    <div id="show-unless" data-show-unless="/show-if">Show unless test</div>
+    
+    <!-- Classname test -->
+    <div id="class-if" data-class-foo-bar-if="/class-if"></div>
+    <div id="class-unless" data-class-baz-unless="/class-if"></div>
+    
+    <!-- ID test -->
+    <div id="test-id" class="id-initial">Initial ID holder</div>
+    <div id="id-if" data-id-test-id-if="/id-if" class="id-if">ID if test</div>
+    <div id="id-unless" data-id-test-id-2-unless="/id-if" class="id-unless">ID unless test</div>
+    
+    <!-- Stash test -->
+    <div id="stash-if" data-stash-if="/stash-if">Stash me!</div>
+    <div id="stash-unless" data-stash-unless="/stash-if">Unstash me!</div>
+
+    <!-- Populate test -->
+
+
+    <!--
+    =========== COMPOUND TESTS ===========
+                                       -->
+
+    <!-- Combination stash/paginate (a.k.a. "Blank slate") test -->
+
+  </body>
+</html>

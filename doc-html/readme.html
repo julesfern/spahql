@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spah - Readme</title>
+    
+    <link rel="stylesheet" href="css/normalize.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/master.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    
+     <nav>
+      <ul><li>Readme</li><li><a href="spah-grammar.html">Spah-grammar</a></li><li><a href="src/index.html">API</a></li></ul>
+     </nav>
+     
+     <article>
+      <img src='https://img.skitch.com/20110504-c79qr916mcwtnq4m63uqc3dibq.jpg' />
+<h1 id='spah_stateful_pages_not_single_pages'>Spah: Stateful pages, not single pages.</h1>
+
+<p>Single-page web apps are a hit - and with good reason. The promise of lush, stateful web UI that hangs off your service&#8217;s developer API is almost too good to ignore.</p>
+
+<p>But why single page? Is it really important that your app sits on a single URL in the browser? No. The important thing that single-page apps give you is <strong>state</strong>. The ability to pull data into a page without destroying the existing in-browser state - and to keep your remote app nice, clean and resource-centric in the process. Single-pagedness is just a side-effect of the way in which we&#8217;re currently achieving this.</p>
+
+<p>And in the process of putting entire applications on a single URL, we&#8217;re giving up so much. We&#8217;re making our pages unfriendly to search engines, to consumers of microdata, to open graph clients. We&#8217;re resorting to cheap tricks like hashbang URLs to simulate things that we could easily be providing through more appropriate techniques. Sure, if you&#8217;re building a mail client or a word processor then one page makes sense. But there&#8217;s a whole class of apps that are either using these single-page techniques inappropriately, or using multi-page behaviours where persistent UI state simply produces too much code overhead.</p>
+
+<p>This is why Spah exists.</p>
+
+<p>Spah takes the best from both the single- and multi-page paradigms and lets you:</p>
+
+<ul>
+<li><strong>Be a good web citizen</strong>. With Spah, every URL in your site may be curled, indexed, bookmarked and shared just like a web page should.</li>
+
+<li><strong>Progressively enhance</strong>. Once a user with a modern browser has loaded a page from your app, the single-page paradigm takes over and all new data may be loaded asynchronously, without destroying the in-browser state of your page. Users with older browsers - even those without Javascript enabled, if you&#8217;ve done it right - get to use your site synchronously.</li>
+
+<li><strong>Keep it stateful.</strong> Spah&#8217;s job is to manage the state of your UI and ensure that the markup seen in the user&#8217;s browser matches that state. The state contains everything in your UI, from lists of model objects through to user preferences and unsaved form content. You decide which bits of the state are hard-rendered as HTML and which bits are used to trigger more advanced client-side behaviours, while Spah syncs and updates the state on each call to the server.</li>
+
+<li><strong>Avoid repetition.</strong> Do all this with <em>zero</em> code duplication between client and server. Spah solves the difficult problems of shared client/server templating and state management, leaving you to work on your app.</li>
+
+<li><strong>Use other libraries.</strong> Spah doesn&#8217;t opinionate about client-side model frameworks or REST paradigms or how you authenticate with your API. Spah only cares about JSON, jQuery and having access to a Spah-compatible server. The Spah server libraries are not full-stack web frameworks, but libraries intended to be woven into your wider Node.js/Rails/Sinatra application stack. To be completely clear: Spah is code that manages the state of a UI in a complex web app, and nothing more. You bring your own app stack preferences to the table.</li>
+</ul>
+
+<p>TODO: Introduction for modules:</p>
+
+<ul>
+<li>
+<p>Overview: How it works</p>
+</li>
+
+<li>
+<p>Spah core</p>
+
+<ul>
+<li>SpahQL</li>
+
+<li>Document runner</li>
+
+<li>Template handling</li>
+</ul>
+</li>
+
+<li>
+<p>Spah client gets everything from core, plus:</p>
+
+<ul>
+<li>Link, form and navigation handling</li>
+
+<li>State reduction</li>
+
+<li>Event handlers</li>
+
+<li>History manager</li>
+</ul>
+</li>
+
+<li>
+<p>Spah server gets everything from core, plus:</p>
+
+<ul>
+<li>Default states</li>
+
+<li>Blueprint compiler</li>
+
+<li>State expansion</li>
+</ul>
+</li>
+</ul>
+
+<h1 id='contents'>Contents</h1>
+
+<ol>
+<li>
+<p><a href='#introduction'>Introduction</a></p>
+</li>
+
+<li>
+<p><a href='#the_server'>The server</a></p>
+</li>
+
+<li>
+<p><a href='#the_client'>The client</a></p>
+</li>
+
+<li>
+<p><a href='#spahql'>Querying the state with SpahQL</a></p>
+
+<ul>
+<li><a href='#spahql_core_concepts'>Core concepts</a></li>
+
+<li><a href='#selection_queries'>Selection queries</a></li>
+
+<li><a href='#assertion_queries'>Assertion queries</a></li>
+
+<li><a href='#assertion_queries_literals_and_sets'>Literals and sets</a></li>
+
+<li><a href='#comparison_operators'>Comparison operators</a></li>
+
+<li><a href='#object_equality'>Object equality</a></li>
+</ul>
+</li>
+
+<li>
+<p><a href='#document_logic'>Document logic</a></p>
+
+<ul>
+<li><a href='#hide_or_show_an_element'>Hiding and showing elements</a></li>
+
+<li><a href='#add_or_remove_element_classes'>Adding and removing element classes</a></li>
+
+<li><a href='#set_element_id'>Setting the ID of an element</a></li>
+
+<li><a href='#stash_and_unstash_element_content'>Stash and unstash element content</a></li>
+
+<li><a href='#using_multiple_operations_on_a_single_element'>Using multiple operations on a single element</a></li>
+
+<li>TODO: Applying document logic with css selectors ({&#8220;a.loadsTickets&#8221;: {&#8220;stash-if&#8221;: &#8220;query&#8221;}})</li>
+
+<li><a href='#advanced_document_logic_example'>Advanced example</a></li>
+</ul>
+</li>
+
+<li>
+<p>TODO: <a href='#templating_with_mustache'>Templating with Mustache</a> * TODO: Extending the template helpers</p>
+</li>
+
+<li>
+<p>TODO: <a href='#you_can_still_write_your_markup_with_ruby'>Building your markup with ruby</a> (erb, haml, templating, url builders)</p>
+</li>
+
+<li>
+<p>TODO: <a href='#responding_to_state_changes_with_javascript'>Reacting to state changes with Javascript</a></p>
+</li>
+
+<li>
+<p><a href='#forcing_links_and_forms_to_load_synchronously'>Forcing links and forms to load synchronously</a></p>
+</li>
+
+<li>
+<p>TODO: <a href='#default_client_behaviour'>Default client behaviours</a> (automatically update doc title from /title path, automatically add async behaviour, automatically manage history)</p>
+</li>
+
+<li>
+<p>TODO: <a href='#eager_client_state_changes'>Eager client state changes</a> (mark parts of the tree as &#8220;expected to get new data&#8221; to trigger load notifications. automatically revert to previous state on load failure and dispatch failure event)</p>
+</li>
+
+<li>
+<p>TODO: <a href='#example_node_application'>Examples: Example Node.js application</a></p>
+</li>
+
+<li>
+<p>TODO: <a href='#example_sinatra_application'>Examples: Example Sinatra application</a></p>
+</li>
+
+<li>
+<p><a href='#appendix_spahql_expression_spec'>Appendix A: SpahQL expression spec</a></p>
+</li>
+
+<li>
+<p><a href='#appendix_spahql_query_execution_spec'>Appendix B: SpahQL query execution spec</a></p>
+</li>
+</ol>
+
+<h1 id='introduction'>Introduction</h1>
+
+<p>Spah itself is a client, written in Javascript, and a server application which may currently be either Node.js or Ruby-flavoured.</p>
+
+<p>The central concept in Spah is the <strong>state</strong>. The state is essentially a JSON object describing everything about a user&#8217;s UI - everything from the models objects shown in a list to the current navigation tab selected, from the contents of a particular form to whether or not the user opened the comment box yet. The state for this page might look something like:</p>
+
+<pre><code> {
+   &quot;package&quot;: &quot;SpahQL.js&quot;, // Currently viewing the Spah class
+   &quot;file&quot;: {
+		name: &quot;readme.mdown&quot;, // Got the readme.mdown file open
+		content: &quot;Spah: Stateful pages, not single pages.\n....&quot; // Full textdump of file
+	 }
+ }</code></pre>
+
+<p>Whenever the user clicks a link, submits a form or otherwise navigates within your site, Spah intervenes and, if possible, the navigation is halted and replaced with an asynchronous request to the server. Spah attaches the state to the request, and gets back a series of modifications. The Spah client then has a number of ways in which it can react to those changes.</p>
+
+<h1 id='the_server'>The server</h1>
+
+<p>A Spah server is assumed to be a resource-centric Node.js or Sinatra application. As always, all validation and data persistence is handled on the server side by your app&#8217;s models. All routing will be in your app&#8217;s router, and all request logic in its controllers. Where a Spah app differs is in the view layer.</p>
+
+<p><em>Figure 1: A crap approach to single-page apps</em></p>
+<img src='https://img.skitch.com/20110504-73a3ftde7d731kbepxg2p7w1.jpg' />
+<p>Instead of hiding away template logic in server-side code, template logic is moved to a place where both the client AND the server have access to it - <a href='#document_logic'>the document itself</a>.</p>
+
+<p>A Spah HTML render takes the <strong>state</strong> and a <strong>prototype layout</strong> and gloms to the two together. The HTML layout contains <a href='#document_logic'>logic encoded in HTML5 data attributes</a>, and Spah will pre-process the document <strong>before sending it down the wire</strong>. This way, any view can be cold-rendered by a request to the appropriate URL, or warm-rendered by an asynchronous state update from the server. In a sense, Spah allows your server-side app to <em>behave like a browser</em> and boot your client-side application to the point of usefulness, before letting the user&#8217;s actual browser carry out the rest of the startup process.</p>
+
+<p><em>Figure 2: A better approach.</em></p>
+<img src='https://img.skitch.com/20110504-p13hfga9s4d6x7bpjwrw1gbyjj.jpg' />
+<p>For partials, Spah uses <a href='#templating_with_mustache'>Mustache templates</a>. All <code>.mustache</code> files in your server-side application are indexed by path on startup and made available to the rendering chain on both the client and server. Spah automatically injects the templates into your HTML layout using script tags:</p>
+
+<pre><code>language:html
+
+&lt;script type=&quot;text/mustache&quot; id=&quot;views/my/partial&quot;&gt;
+  {{name}}
+&lt;/script&gt;</code></pre>
+
+<p>These are semantically neutral in nature and do not alter your document&#8217;s content. Spah will also add a hidden <code>state</code> input to the end of each form in your document containing the current state, and append the state to link URLs within the current domain - this allows for graceful state handover in no-js environments.</p>
+
+<p>In environments that support JS, the state in forms and links is replaced with the current state on submission/activation.</p>
+
+<h1 id='the_client'>The client</h1>
+
+<p>The Spah client handles things at the browser end. Its primary tasks are:</p>
+
+<ol>
+<li>Ensuring that links and forms are submitted asynchronously and that they attach the state when activated (you may also <a href='#forcing_links_and_forms_to_load_synchronously'>prevent some links and forms from acting asynchronously</a>)</li>
+
+<li>Ensuring that async requests are submitted with a <code>content-accept</code> header of <code>application/state+json</code>, allowing the server-side application to determine that this is a warm request and should be responded to with an updated state</li>
+
+<li>Re-evaluating and processing any document logic whenever the state is modified</li>
+
+<li>Raising path-specific events whenever the state is modified</li>
+</ol>
+
+<p><em>Figure 3: A better approach, with added progressive enhancement</em></p>
+<img src='https://img.skitch.com/20110504-tpqb613eyy46j7f758nqr745n2.jpg' />
+<p>This is achieved by embedding template logic within the markup using HTML5 data attributes, thus making the same template logic available to both client and server. When the state is updated by a response from the server, elements with embedded display logic are re-evaluated automatically and the display updated accordingly.</p>
+
+<p>You may also bind more advanced behaviours to changes in the state using <a href='#responding_to_state_changes_with_javascript'>jQuery responders</a> and <a href='#spahql'>state queries</a></p>
+
+<p>For cleanliness, Spah keeps all of its functions, classes and behaviour within the top level <code>Spah</code> object. Initialising Spah is simple:</p>
+
+<pre><code> $(document).ready(function() { 
+     SpahQL.init(); 
+ });</code></pre>
+
+<h1 id='spahql'>SpahQL</h1>
+
+<h2 id='spahql_core_concepts'>SpahQL Core concepts</h2>
+
+<p>SpahQL is an execution-safe query language designed to let you ask complex questions of basic JSON constructs. SpahQL is designed to work against your application&#8217;s state, but it will work happily against any combination of native hashes, arrays, strings, booleans and numbers.</p>
+
+<p>SpahQL allows two kinds of query: <strong><a href='#selection_queries'>Selection queries</a></strong> are those which retrieve a set of results from your object, while <strong><a href='#assertion_queries'>Assertion queries</a></strong> are those that return a boolean result.</p>
+
+<p>SpahQL is biased towards value equality over key equality. It is assumed that the keys in your object are known, curated namespace with arbitrary values. For this reason SpahQL&#8217;s matching is designed to focus on comparing values, not keys.</p>
+
+<p>All SpahQL queries are read-only; there is no semantic for updating the state.</p>
+
+<p>Furthermore, SpahQL uses set arithmetic for comparisons. Rather than providing an imperative syntax with complex logic, SpahQL provides set operations that allow you to build the equivalent of the <code>AND</code> and <code>OR</code> operations from other query languages using a safe, declarative syntax.</p>
+
+<h2 id='selection_queries'>Selection queries</h2>
+
+<p>To select items from the state, use the basic syntax:</p>
+
+<pre><code>var results = SpahQL.state.select(myQuery);</code></pre>
+
+<p>The basic constituent of a selection query is a <em>path selector</em>. With an example object:</p>
+
+<pre><code>{
+    myHash: {foo: &quot;bar&quot;, bar: &quot;baz&quot;, mySubHash: {foo: &quot;bar&quot;, bar: &quot;I&#39;M IN A HASH&quot;}},
+    myArr: [0,1,2],
+    myPrimitives: [true, false, null, &quot;foo&quot;, 3]
+}</code></pre>
+
+<p>It&#8217;s easy to make selections based on a known path. To pull up the contents of the key &#8220;myHash&#8221; in the root, use the following syntax and remember that <strong>paths always begin with a slash</strong>.</p>
+
+<pre><code>results = SpahQL.state.select(&quot;/myHash&quot;);</code></pre>
+
+<p>Or to pull up the contents of the subhash:</p>
+
+<pre><code>results = SpahQL.state.select(&quot;/myHash/mySubHash&quot;);</code></pre>
+
+<p>Recursion is supported with a double-slash anywhere in the path:</p>
+
+<pre><code>// Find all entries with the key &quot;foo&quot;
+results = SpahQL.state.select(&quot;//foo&quot;);
+
+// Find all entries inside myHash with the key &quot;foo&quot;
+results = SpahQL.state.select(&quot;/myHash//foo&quot;);</code></pre>
+
+<p>The results are always returned as a set of <code>SpahQL.QueryResult</code> objects, which each have properties <code>path</code> and <code>value</code>:</p>
+
+<pre><code>results = SpahQL.state.select(&quot;/myHash//foo&quot;); //-&gt; [QueryResult, QueryResult]
+results[0].path //-&gt; &quot;/myHash/foo&quot;
+results[0].value //-&gt; &quot;bar&quot;
+results[1].path //-&gt; &quot;/myHash/mySubHash/foo&quot;
+results[1].value //-&gt; &quot;bar&quot;</code></pre>
+
+<p>Keys in arrays are treated just like keys in hashes:</p>
+
+<pre><code>// Grab the first item in /myArr
+results = SpahQL.state.select(&quot;/myArr/0&quot;)</code></pre>
+
+<p>You may also use <code>*</code> as a wildcard in paths:</p>
+
+<pre><code>// Grab ALL items in /myArr
+results = SpahQL.state.select(&quot;/myArr/*&quot;)
+results[0].path //-&gt; &quot;/myArr/0&quot;
+results[0].value //-&gt; 0</code></pre>
+
+<p>Path queries are <strong>reductive</strong>. When executed, the first part of the query is run against the top level of the object being queried, and the remaining results are handed to the next part of the path to be reduced further. This loop continues until we&#8217;re either out of results or out of path segments.</p>
+
+<p>Using these reductive characteristics, we can perform advanced queries with <strong>filter queries</strong>. Filter queries are contained in square brackets, and can be used to further reduce the results before the query runner moves on to the next path segment.</p>
+
+<pre><code>// Grab /myHash, but only if it contains a key &quot;foo&quot; with any 
+// non-false value:
+results = SpahQL.state.select(&quot;/myHash[/foo]&quot;)
+
+// Grab all items that contain a key &quot;foo&quot; with value &quot;bar&quot;
+// This is an identical query to &quot;//*[/foo == &#39;bar&#39;]&quot;
+results = SpahQL.state.select(&quot;//[/foo == &#39;bar&#39;]&quot;)
+
+// Grab all root-level items that have the key &quot;foo&quot; with value &quot;bar&quot;
+// either on themselves or on any of their descendants.
+// This is an identical query to &quot;/*[//foo == &#39;bar&#39;]&quot;
+results = SpahQL.state.select(&quot;/[//foo == &#39;bar&#39;]&quot;)
+
+// Grab all items anywhere that have key &quot;foo&quot; with value &quot;bar&quot;
+// either on themselves or on any of their descendants.
+// This is an identical query to &quot;//*[//foo == &#39;bar&#39;]&quot;
+results = SpahQL.state.select(&quot;//[//foo == &#39;bar&#39;]&quot;)
+
+// Grab all items containing the value &quot;bar&quot; on themselves:
+// This is an identical query to &quot;//*[/* == &#39;bar&#39;]&quot;
+results = SpahQL.state.select(&quot;//[/* == &#39;bar&#39;]&quot;)
+
+// Grab all items containing the value &quot;bar&quot; on themselves
+// or any of their descendants.
+// This is an identical query to &quot;//*[//* == &#39;bar&#39;]&quot;
+results = SpahQL.state.select(&quot;//[//* == &#39;bar&#39;]&quot;)</code></pre>
+
+<p>There are a few things to note about the query inside the <code>[]</code> brackets. Firstly, it has access to the full query syntax. Secondly, it runs within the scope of the current path segment. Take this query for example:</p>
+
+<pre><code>// Returns no results - myArr is on the root, and the filter query 
+// runs in the context of /myHash, which has no key &quot;myArr&quot;.
+results = SpahQL.state.select(&quot;/myHash[/myArr]&quot;)</code></pre>
+
+<p>If you want to lookup data on the root from inside a filter query, use the <code>$</code> symbol to force a path to execute on the root context:</p>
+
+<pre><code>// Returns /myHash only if it contains a value with the same contents as 
+// /myArr on the root.
+results = SpahQL.state.select(&quot;/myHash[/* == $/myArr]&quot;)</code></pre>
+
+<p>I&#8217;m sure by now that you&#8217;ve noticed the filter queries contain <strong>comparison operators</strong>. Any query containing a comparison operator is automatically executed as an <a href='#assertion_queries'>assertion query</a>:</p>
+
+<ul>
+<li>
+<p>A <strong>selection</strong> query:</p>
+
+<pre><code>  /myHash</code></pre>
+</li>
+
+<li>
+<p>An <strong>assertion</strong> query:</p>
+
+<pre><code>  /myHash == /someOtherHash</code></pre>
+</li>
+
+<li>
+<p>A <strong>selection</strong> query containing an assertion query as a filter:</p>
+
+<pre><code>  /myHash[/foo == &#39;baz&#39;]</code></pre>
+</li>
+
+<li>
+<p>An <strong>assertion</strong> query containing two selection queries, one of which contains an assertion query as a filter:</p>
+
+<pre><code>  /myHash[/foo == &#39;baz&#39;] == /myArr</code></pre>
+</li>
+</ul>
+
+<h2 id='assertion_queries'>Assertion queries</h2>
+
+<p>We&#8217;ve already seen how assertion queries can be used as filters in <a href='#selection_queries'>selection queries</a>. Assertion queries are also used heavily in Spah&#8217;s <a href='#document_logic'>document logic</a> features.</p>
+
+<p>Assertion queries are run through the <code>assert</code> method on the state:</p>
+
+<pre><code>result = SpahQL.state.assert(myQuery) //-&gt; true or false.</code></pre>
+
+<p>The <code>assert</code> method accepts both selection and assertion queries - if the given query is a selection query, the result will be <code>true</code> if the query returns one or more results with non-false (i.e. not false or null) values.</p>
+
+<p>As discussed in <a href='#spahql_core_concepts'>core concepts</a>, all comparisons in SpahQL use set arithmetic instead of traditional imperative logic and equality. SpahQL comparisons allow you to determine if:</p>
+
+<ul>
+<li>One set is exactly equal to another set</li>
+
+<li>One set contains the same values as another set</li>
+
+<li>One set is a subset of another set</li>
+
+<li>One set is a superset of another set</li>
+</ul>
+
+<h2 id='assertion_queries_literals_and_sets'>Assertion queries: Literals and sets</h2>
+
+<p>SpahQL does support literals - strings, integers, floats, <code>true</code>, <code>false</code> and <code>null</code> may all be used directly in SpahQL queries:</p>
+
+<pre><code>3 // the number 3
+&quot;foo&quot; // the string &quot;foo&quot;
+&#39;foo&#39; // the string &quot;foo&quot;
+true // boolean true
+false // boolean false
+null // null</code></pre>
+
+<p>All comparisons in SpahQL are <strong>set comparisons</strong>. A query like <code>/foo</code> returns a set of results. A literal like <code>3</code> or <code>"somestring"</code> is considered to be a set containing a single entity. Literals may be wrapped in <code>{}</code> mustaches and seperated with commas to create in-place sets:</p>
+
+<pre><code>// a set containing the string &quot;3&quot; and the number 3.
+{&quot;3&quot;,3}</code></pre>
+
+<p>Sets may also be built from a combination of literals and queries:</p>
+
+<pre><code>// a set containing the string &quot;3&quot;, all the results from the 
+// query &quot;/bar&quot; and the string &quot;foo&quot;.
+{&quot;3&quot;,/bar,&quot;foo&quot;}
+// note that the set is flattened - the results from &quot;/bar&quot;
+// are appended to the set in-place. If /bar returned values &quot;a&quot; and &quot;b&quot;,
+// this set would look like: {&quot;3&quot;,&quot;a&quot;,&quot;b&quot;,&quot;foo&quot;}</code></pre>
+
+<p>You may also create ranges:</p>
+
+<pre><code>{&quot;a&quot;..&quot;c&quot;} // a set containing &quot;a&quot;, &quot;b&quot; and &quot;c&quot;
+{0..3} // a set containing 0, 1, 2 and 3.
+{&quot;a&quot;..9} // COMPILER ERROR - sets must be composed of objects of the same type.
+{&quot;a&quot;../foo/bar} // COMPILE ERROR - ranges do not support path lookup.</code></pre>
+
+<h2 id='comparison_operators'>Comparison operators</h2>
+
+<p>SpahQL&#8217;s set arithmetic uses simple operators:</p>
+
+<ul>
+<li>
+<p>Set equality <code>==</code></p>
+
+<p>Asserts that both the left-hand and right-hand sets have a 1:1 relationship between their values. The values may come from different paths in the state, or be literals. The values do not have to be in the same order. Each value has its equality checked based on its type. See <a href='#object_equality'>Object equality</a>.</p>
+
+<pre><code>  // Always true:
+  SpahQL.state.assert(&quot;1 == 1&quot;); // integers
+  SpahQL.state.assert(&quot;&#39;foo&#39; == &#39;foo&#39;&quot;); // strings
+  SpahQL.state.assert(&quot;true&quot;); // boolean
+  SpahQL.state.assert(&quot;/myHash == /myHash&quot;); // queries
+  SpahQL.state.assert(&quot;{1,2,3} == {1..3}&quot;); // set literals
+  
+  // Always false:
+  SpahQL.state.assert(&quot;1 == &#39;1&#39;&quot;); // mixed types
+  SpahQL.state.assert(&quot;true == false&quot;); // boolean comparison
+  SpahQL.state.assert(&quot;false&quot;); // boolean
+  SpahQL.state.assert(&quot;/myHash == /myArr&quot;); // queries
+  SpahQL.state.assert(&quot;{1,2,3} == {&#39;a&#39;..&#39;z&#39;}&quot;); // set literals</code></pre>
+</li>
+
+<li>
+<p>Set inequality <code>!=</code></p>
+
+<p>Asserts that the sets are not identical under the rules of the <code>==</code> operator.</p>
+</li>
+
+<li>
+<p>Subset of <code>}&lt;{</code></p>
+
+<p>Asserts that the left-hand set is a subset of the right-hand set. All values present in the left-hand set must have a matching counterpart in the right-hand set.</p>
+</li>
+
+<li>
+<p>Superset of <code>}&gt;{</code></p>
+
+<p>Asserts that the left-hand set is a superset of the right-hand set. All values present in the right-hand set must have a matching counterpart in the left-hand set.</p>
+</li>
+
+<li>
+<p>Joint set <code>}~{</code></p>
+
+<p>Asserts that the left-hand set contains one or more values that are also present in the right-hand set.</p>
+</li>
+
+<li>
+<p>Disjoint set <code>}!{</code></p>
+
+<p>Asserts that the left-hand set contains no values that are also present in the right-hand set.</p>
+</li>
+
+<li>
+<p>Rough equality <code>=~</code></p>
+
+<p>Asserts that one or more values from the left-hand set are roughly equal to one or more values from the right-hand set. See <a href='#object_equality'>Object equality</a>.</p>
+</li>
+
+<li>
+<p>Greater than (or equal to) <code>&gt;=</code> and <code>&gt;</code></p>
+
+<p>Asserts that one or more values from the left-hand set is greater than (or equal to) one or more values from the right-hand set.</p>
+</li>
+
+<li>
+<p>Less than (or equal to) <code>&lt;``=</code> and <code>&lt;</code></p>
+
+<p>Asserts that one or more values from the left-hand set is less than (or equal to) one or more values from the right-hand set.</p>
+</li>
+</ul>
+
+<h2 id='object_equality'>Object equality</h2>
+
+<p>The equality of objects is calculated based on their type. Firstly, for two objects to be equal under strict equality (<code>==</code>) they must have the same base type.</p>
+
+<ul>
+<li><strong>Object equality</strong>: The objects being compared must contain the same set of keys, and the value of each key must be the same in each object. If the value is an object or an array, it will be evaluated recursively.</li>
+
+<li><strong>Array equality</strong>: The arrays must each contain the same values in the same order. If any value is an array or object, it will be evaluated recursively.</li>
+
+<li><strong>Number, String, Bool, null</strong>: The objects must be of equal type and value.</li>
+</ul>
+
+<p>Under rough equality (<code>=~</code>) the rules are altered:</p>
+
+<ul>
+<li><strong>Strings</strong> are evaluated to determine if the left-hand value matches the right-hand value, evaluating the right-hand value as a regular expression e.g. <code>"bar" =~ "^b"</code> returns <code>true</code> but <code>"bar" =~ "^a"</code> returns <code>false</code></li>
+
+<li><strong>Numbers</strong> are evaluated with integer accuracy only (using Math.floor, numeric.floor or an equivalent operation)</li>
+
+<li><strong>Arrays</strong> behave as if compared with the joint set operator.</li>
+
+<li><strong>Objects</strong> are roughly equal if both hashes contain one or more keys with the same corresponding values. Values are compared using strict equality.</li>
+
+<li><strong>Booleans and null</strong> are evaluated based on truthiness rather than exact equality. <code>false =~ null</code> is <code>true</code> but <code>true =~ false</code> is <code>false</code>.</li>
+</ul>
+
+<p>N.B: Objects that are of different types are never roughly equal.</p>
+
+<p>When using inequality operators <code>&lt;</code>, <code>=&lt;</code>, <code>&gt;</code>, <code>&gt;=</code>:</p>
+
+<ul>
+<li><strong>Strings</strong> are evaluated based on alphanumeric sorting. <code>"a" &lt;= "b"</code> returns <code>true</code> but <code>"z" &gt;= "a"</code> returns <code>false</code>.</li>
+
+<li><strong>Numbers</strong> are evaluated, as you&#8217;d expect, based on their native values.</li>
+
+<li><strong>Arrays, Objects, Booleans, null</strong> are not compatible with these operators and will automatically result in <code>false</code> being returned.</li>
+</ul>
+
+<h2 id='properties'>Properties</h2>
+
+<p>Properties are like imaginary paths on objects in your state. Each property uses the <code>.propertyName</code> syntax and may be used in any path query:</p>
+
+<ul>
+<li>
+<p><strong>.type</strong> Returns the object type as &#8216;Object&#8217;, &#8216;Array&#8217;, &#8216;String&#8217;, &#8216;Number&#8217;, &#8216;Boolean&#8217; or &#8216;null&#8217;</p>
+
+<pre><code>  results = SpahQL.state.select(&quot;/myArr/.type&quot;); //-&gt; [QueryResult]
+  results[0].path //-&gt; &quot;/myArr/.type&quot;
+  results[0].value //-&gt; &#39;Array&#39;
+  
+  // Find all arrays everywhere. 
+  results = SpahQL.state.select(&quot;//[/.type == &#39;Array&#39;]&quot;)
+  results[0].path //-&gt; &quot;/myArr&quot;
+  results[1].path //-&gt; &quot;/myPrimitives&quot;</code></pre>
+</li>
+
+<li>
+<p><strong>.size</strong> Returns the object&#8217;s size if it is a String (number of characters), Array (number of items) or Object (number of keys)</p>
+
+<pre><code>  // Number of keys in the root
+  results = SpahQL.state.select(&quot;/.size&quot;);
+  results[0].path //-&gt; &quot;/.size&quot;
+  results[0].value //-&gt; 3
+  
+  // Find all strings longer than 3 characters
+  results = SpahQL.state.select(&quot;//[/.type == &#39;String&#39;][/.size &gt; 3]&quot;)
+  results[0].path //-&gt; &quot;/myHash/mySubHash/bar&quot;</code></pre>
+</li>
+
+<li>
+<p><strong>.explode</strong> Returns the object broken into a set that may be compared to other sets. Strings are exploded into a set of characters. Arrays and objects do not support this property - use the wildcard (*) character instead.</p>
+
+<pre><code>  // Does a string contain all these characters?
+  results = SpahQL.state.assert(&quot;/myStr/.explode }&gt;{ {&#39;a&#39;,&#39;b&#39;,&#39;c&#39;}&quot;)</code></pre>
+</li>
+</ul>
+
+<h1 id='document_logic'>Document logic</h1>
+
+<p>In a Spah application, document logic (show this, hide that, populate this with that) is moved away from in-place Erb views and into a place where both the client and the server will have access to it - the document itself. In doing this, we want to avoid doing anything silly like adding new tags or attributes that break HTML validity, or dirtying up your markup with billions of extra nested div elements.</p>
+
+<p>Spah handles document logic with HTML5 data attributes. Elements may query the state and declare how they should be altered when the query result is returned. When cold-booting your application from the server, the document logic is evaluated and run in-place before sending the HTML down the wire - this is what allows Spah to respond to HTML requests with valid, useful documents. On the client side, updates to the state cause any embedded document logic to be re-evaluated automatically. All document logic is achieved using <a href='#spahql'>State Queries</a>. Conditions such as <code>if</code> statements use truthiness queries, as seen in the <a href='#assertion_queries'>state query documentation</a>.</p>
+
+<p>Spah provides the following operations on document logic:</p>
+
+<h2 id='hide_or_show_an_element'>Hide or show an element</h2>
+
+<p>Show/hide of an element is achieved by appending <code>display: none;</code> to the element&#8217;s <code>style</code> attribute if it should be hidden.</p>
+
+<pre><code>language:html
+
+&lt;form class=&quot;add-tags&quot; data-show-if=&quot;/user-authenticated&quot;&gt;
+  This form will only show if the query &quot;/user-authenticated&quot; returns true
+&lt;/form&gt;
+
+&lt;form class=&quot;add-tags&quot; data-show-unless=&quot;/user-anonymous&quot;&gt;
+  An alternative way of expressing a similar query using 
+  the &quot;data-*-unless&quot; syntax. All conditions support both 
+  the -if and -unless syntaxes.
+&lt;/form&gt;</code></pre>
+
+<h2 id='add_or_remove_element_classes'>Add or remove element classes</h2>
+
+<p>Use the <code>data-class-[classname]-if</code> or <code>-unless</code> attribute to specify that a specific class should be appended to the element&#8217;s <code>class</code> attribute. language:html</p>
+
+<pre><code>&lt;li class=&quot;item&quot; data-class-current-if=&quot;/items[0]/important&quot;&gt;
+  This list item will have the class &quot;important&quot; if the first item in the 
+  array at &quot;/items&quot; has the &quot;important&quot; property
+&lt;/li&gt;</code></pre>
+
+<h2 id='set_element_id'>Set element ID</h2>
+
+<p>Use the <code>data-id-[id]-if</code> or <code>-unless</code> to specify that an element should be given a new <code>id</code> under certain circumstances. If the condition causes Spah to write the ID on an element, Spah will automatically remove the ID from any other elements that previously possessed it.</p>
+
+<pre><code>language:html
+
+&lt;li class=&quot;item&quot; data-id-current_item-if=&quot;/items.last/id == 3&quot;&gt;
+  This list item will have the id &quot;current_item&quot; if the last object 
+  in the items array has the property &quot;id&quot; with value 3.
+&lt;/li&gt;</code></pre>
+
+<h2 id='stash_and_unstash_element_content'>Stash and unstash element content</h2>
+
+<p>Stashing content allows you to render semantically-null empty elements into your document, with their content stowed in a data attribute for later use. Stashing only occurs if there is no content already stashed on the element - thus stashed content may be used for state-toggling. See <a href='#advanced_document_logic_example'>example</a>.</p>
+
+<pre><code>language:html
+
+&lt;div  class=&quot;new-message-notification&quot; 
+      data-stash-unless=&quot;/messages[/unread]/.size &gt; 0&quot;&gt;
+
+      You have new messages!
+  
+      (This text will be moved into the &quot;data-stashed-content&quot; attribute 
+      on the containing DIV element if the user has no new messages. 
+      This way, your markup won&#39;t contain a hidden, but erroneous, 
+      new message notification.)
+&lt;/div&gt;
+
+&lt;!-- When the content is stashed, the element will look like this: --&gt;
+&lt;div  class=&quot;new-message-notification&quot; 
+      data-stash-unless=&quot;/messages[/unread]/.size &gt; 0&quot; 
+      data-stashed-content=&quot;You%20have%20new%20messages%21....&quot;&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id='populate_element_from_a_template'>Populate element from a template</h2>
+
+<p>Spah can use your shared <a href='#templating_with_mustache'>Mustache templates</a> to render state data into a containing element. On the client side, the Spah client will automatically add a <a href='#responding_to_state_changes_with_javascript'>jQuery responder</a> to the path referenced in the <code>data-populate-with</code> attribute, ensuring that the populated content is updated when the state is modified.</p>
+
+<pre><code>language:html
+
+&lt;ul class=&quot;users&quot; data-populate-if=&quot;/users/.length &gt; 0&quot; 
+                  data-populate-with=&quot;/users&quot; 
+                  data-populate-template=&quot;/views/users/single&quot;&gt;
+                 
+  This text will be replaced with the results of running the template contained
+  in an element with ID &quot;/views/users/single&quot; through Mustache.js using data from
+  the state at /users as the payload.
+  
+  If the data found at /users is an array, the array will be wrapped in an object 
+  so that Mustache can make it available: {&quot;items&quot;: [content, of, array]}
+&lt;/ul&gt;</code></pre>
+
+<h2 id='using_multiple_operations_on_a_single_element'>Using multiple operations on a single element</h2>
+
+<p>All of the above operations may be combined on a single element. The order in which the operations will run is strictly defined in order of the type of operation. <code>-if</code> operations always run before <code>-unless</code> operations.</p>
+
+<ol>
+<li>data-show-if and data-show-unless</li>
+
+<li>data-class-[classname]-if, data-class-[classname]-unless</li>
+
+<li>data-id-[id]-if, data-id-[id]-unless</li>
+
+<li>data-stash-if, data-stash-unless</li>
+
+<li>data-populate-if, data-populate-unless</li>
+</ol>
+
+<h2 id='advanced_document_logic_example'>Advanced document logic example</h2>
+
+<p>Let&#8217;s make an advanced example: We want a list of users to default to an &#8220;empty&#8221; state, becoming populated with users if there is a non-empty list of users in the state. If the user list in the state is emptied, then the &#8220;empty&#8221; state should be restored on the element</p>
+
+<pre><code>&lt;ul class=&quot;users&quot;
+    data-class-empty-if=&quot;/users.length &lt; 1&quot;&gt;
+    data-stash-if=&quot;/users.length &gt; 0&quot;
+    data-populate-if=&quot;/users.length &gt; 0&quot;
+    data-populate-with=&quot;/users&quot;
+    data-populate-template=&quot;/views/users/single&quot;&gt;
+    
+    &lt;li class=&quot;empty&quot;&gt;
+      No users found.
+    &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<p>Because stash operations run before populate operations, the following chain of events will occur:</p>
+
+<ol>
+<li>
+<p>The element will render in the &#8220;empty&#8221; state, with class &#8220;empty&#8221; applied.</p>
+</li>
+
+<li>
+<p>If the <code>/users</code> array is empty, it will remain in the empty state</p>
+</li>
+
+<li>
+<p>If the <code>/users</code> array becomes non-empty:</p>
+
+<ol>
+<li>The &#8220;No users found&#8221; element will be stashed</li>
+
+<li>The <code>ul</code> element will be populated using the template</li>
+
+<li>The &#8220;empty&#8221; class will be removed from the <code>ul</code></li>
+</ol>
+</li>
+
+<li>
+<p>If the <code>/users</code> array reverts to an empty state:</p>
+
+<ol>
+<li>The &#8220;empty&#8221; class will be removed from the <code>ul</code></li>
+
+<li>The &#8220;No users found&#8221; element will be unstashed into the <code>ul</code>, overwriting the rendered template content.</li>
+</ol>
+</li>
+</ol>
+
+<h1 id='templating_with_mustache'>Templating with Mustache</h1>
+
+<h1 id='you_can_still_write_your_markup_with_ruby'>You can still write your markup with Ruby</h1>
+
+<h1 id='responding_to_state_changes_with_javascript'>Responding to state changes with Javascript</h1>
+
+<h1 id='forcing_links_and_forms_to_load_synchronously'>Forcing links and forms to load synchronously</h1>
+
+<p>To prevent Spah from adding asynchronous behaviour, add the <code>data-async="false"</code> attribute to the link or form element:</p>
+
+<pre><code>language:html
+
+&lt;a href=&quot;/login&quot; data-async=&quot;false&quot;&gt;Log in&lt;/a&gt;
+
+&lt;form action=&quot;/login&quot; method=&quot;POST&quot; data-async=&quot;false&quot;&gt;
+  ...
+&lt;/form&gt;</code></pre>
+
+<h1 id='default_client_behaviour'>Default client behaviour</h1>
+
+<h1 id='eager_client_state_changes'>Eager client state changes</h1>
+
+<h1 id='example_node_application'>Example Node application</h1>
+
+<h1 id='example_sinatra_application'>Example Sinatra application</h1>
+
+<h1 id='appendix_spahql_expression_spec'>Appendix: SpahQL Expression spec</h1>
+
+<p>Syntax:</p>
+
+<pre><code>// ATOM_FOO = &quot;foo&quot; - token matches an exact string
+// ATOM_BAR = /.../ - token matches a pattern
+// TOKEN_FOOBAR = ATOM_FOO[,ATOM_BAR] - atom_foo optionally followed by atom bar
+// TOKEN_FOOBARBAR = (ATOM_FOO[,ATOM_BAR])+ - one or more repetitions of the group (atom_foo optionally followed by atom bar)</code></pre>
+
+<p>State machine:</p>
+
+<pre><code>// The expression parser is assumed to be a tokenizer. We will define the following states:
+STATE_NULL = null
+STATE_PATH_QUERY = &quot;path&quot;
+STATE_KEY_NAME = &quot;key&quot;
+STATE_PROPERTY = &quot;prop&quot;
+STATE_FILTER_QUERY = &quot;filt&quot;
+STATE_STRING_LITERAL = &quot;str&quot;
+STATE_NUMERIC_LITERAL = &quot;num&quot;
+STATE_BOOLEAN_LITERAL = &quot;bool&quot;
+STATE_SET_LITERAL = &quot;set&quot;
+
+// We will also assume that the tokenizer maintains a state stack - every time
+// a state is entered, it is pushed onto the STATE_STACK. When the state exits,
+// the STATE_STACK is popped and control is returned to the previous state.
+
+// The state machine begins in the null state. An empty state stack means you are
+// in the null state.</code></pre>
+
+<p>Tokens and compiler behaviour:</p>
+<table>
+  <tr style='background-color: #333; color: #FFF'>
+    <th colspan='3'>Basic literals</th>
+  </tr>
+  <tr style='background-color: #CCC;'>
+    <th>Symbol name</th>
+    <th>Symbol value</th>
+    <th>Compiler behaviour</th>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>ATOM_QUOTE</td>
+    <td><code>/("|')/</code></td>
+    <td>Enters <code>STATE_STRING_LITERAL</code>. In this state, all special atoms and tokens are ignored and simply appended to the current token until the closing quote is encountered. The string state may be entered at any point.</td>
+  </tr>
+  <tr>
+    <td>ATOM_ESCAPE</td>
+    <td><code>"\"</code></td>
+    <td>Only legal in <code>STATE_STRING_LITERAL</code>. Causes the compiler to treat the next character as an ordinary character within a string, appending it to the token without exiting the string state.</td>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>TOKEN_STRING_LITERAL</td>
+    <td><code>/(ATOM_QUOTE).*($1)/</code></td>
+    <td>A complete string literal, wrapped in identical closing quotes. This token is legal in the <code>null</code> state and within the <code>STATE_FILTER_QUERY</code> and <code>STATE_SET_LITERAL</code> state.</td>
+  </tr>
+  <tr>
+    <td>TOKEN_NUMERIC_LITERAL</td>
+    <td><code>/(\d)+?(\.(\d+))/</code></td>
+    <td>An integer or floating-point numeric literal. The value is ascertained using the runtime environment's <code>parseFloat</code> function. Legal in the <code>null</code> state and in the <code>STATE_SET_LITERAL</code> state. Encountering a numeric character in either of these states enters the <code>STATE_NUMERIC_LITERAL</code> state, which terminates upon encountering a non-numeric character or a second period character.</td>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>TOKEN_BOOLEAN_LITERAL</td>
+    <td><code>/true|false/</code></td>
+    <td>An alias for any boolean literal.</td>
+  </tr>
+  <tr>
+    <td>TOKEN_PRIMITIVE_LITERAL</td>
+    <td><code>(TOKEN_STRING_LITERAL|TOKEN_NUMERIC_LITERAL|TOKEN_BOOLEAN_LITERAL)</code></td>
+    <td>An alias for any string or numeric literal.</td>
+  </tr>
+</table><table>
+  <tr style='background-color: #333; color: #FFF'>
+    <th colspan='3'>Set literals</th>
+  </tr>
+  <tr style='background-color: #CCC;'>
+    <th>Symbol name</th>
+    <th>Symbol value</th>
+    <th>Compiler behaviour</th>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>ATOM_SET_START</td>
+    <td><code>"{"</code></td>
+    <td>Announces the start of a set literal. This is legal in the <code>null</code> state only. The parser discriminates between this character and any comparison operators that include this character. Enters the <code>STATE_SET_LITERAL</code> state.</td>
+  </tr>
+  <tr>
+    <td>ATOM_SET_END</td>
+    <td><code>"}"</code></td>
+    <td>Exits the <code>STATE_SET_LITERAL</code> state. Only valid in this state.</td>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>ATOM_SET_DELIMITER</td>
+    <td><code>","</code></td>
+    <td>When encountered in the <code>STATE_SET_LITERAL</code> state, prepares the parser to append a new entry to the set. Only legal in the <code>STATE_SET_LITERAL</code> state. If the separator is immediately followed by  <code>ATOM_SET_END</code>, a compiler error is thrown.</td>
+  </tr>
+  <tr>
+    <td>ATOM_SET_RANGE_DELIMITER</td>
+    <td><code>".."</code></td>
+    <td>Declares a range between the preceding literal and the following literal. The preceding literal must be the first literal in the set, and the following literal must be the last literal in the set. Both literals must be of the same primitive type. This token does not alter the state, allowing the parser to remain in <code>STATE_SET_LITERAL</code>, but it is expected to set flags preventing the parser from breaking the above rules.</td>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>TOKEN_SET_RANGE_LITERAL_STRING</td>
+    <td><code>ATOM_SET_START,TOKEN_STRING_LITERAL,ATOM_SET_RANGE_DELIMITER,TOKEN_STRING_LITERAL,ATOM_SET_END</code></td>
+    <td>An alias for a valid string range e.g. <code>{"a".."z"}</code></td>
+  </tr>
+  <tr>
+    <td>TOKEN_SET_RANGE_LITERAL_NUMERIC</td>
+    <td><code>ATOM_SET_START,TOKEN_NUMERIC_LITERAL,ATOM_SET_RANGE_DELIMITER,TOKEN_NUMERIC_LITERAL,ATOM_SET_END</code></td>
+    <td />
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>TOKEN_SET_LITERAL_MIXED</td>
+    <td><code>ATOM_SET_START,((TOKEN_PRIMITIVE_LITERAL|TOKEN_SELECTION_QUERY)[,ATOM_SET_DELIMITER,(TOKEN_PRIMITIVE_LITERAL|TOKEN_SELECTION_QUERY)]*),ATOM_SET_END</code></td>
+    <td />
+  </tr>
+  <tr>
+    <td>TOKEN_SET_LITERAL</td>
+    <td><code>TOKEN_SET_RANGE_LITERAL_STRING|TOKEN_SET_RANGE_LITERAL_NUMERIC|TOKEN_SET_LITERAL_MIXED</code></td>
+    <td>An alias for any valid set literal</td>
+  </tr>
+</table><table>
+  <tr style='background-color: #333; color: #FFF'>
+    <th colspan='3'>Path queries</th>
+  </tr>
+  <tr style='background-color: #CCC;'>
+    <th>Symbol name</th>
+    <th>Symbol value</th>
+    <th>Compiler behaviour</th>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>ATOM_PATH_DELIMITER</td>
+    <td><code>/\/{1,2}/</code></td>
+    <td>Describes a valid join between two paths. One slash instructs the runner to execute this part of the query at the top-level of the scope object only, while two slashes instructs the runner to recurse down the scope to find all matching keys. When encountered while the parser is already in <code>STATE_PATH_QUERY</code>, the atom instructs the parser to close the current path fragment and to begin a new one.</td>
+  </tr>
+  <tr>
+    <td>ATOM_PATH_ROOT</td>
+    <td><code>"$"</code></td>
+    <td>Forces the subsequent path query to act on the root context, regardless of the current query's execution scope. Must be followed by <code>ATOM_PATH_DELIMITER</code> or else a compiler error will be thrown.</td>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>TOKEN_PATH_START</td>
+    <td><code>[ATOM_PATH_ROOT,]ATOM_PATH_DELIMITER</code></td>
+    <td>Describes a valid opener for a path query. Encountering this atom whilst in the <code>null</code> or <code>STATE_SET_LITERAL</code> states will throw the parser into the <code>STATE_PATH_QUERY</code> state.</td>
+  </tr>
+  <tr>
+    <td>TOKEN_PATH_KEYNAME</td>
+    <td><code>/\*|[a-zA-Z0-9-_]*/</code></td>
+    <td>A wildcard <code>*</code> or an optional alphanumeric path. Underscores and dashes are also supported in key names.</td>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>ATOM_FILTER_QUERY_START</td>
+    <td><code>"["</code></td>
+    <td>Instructs the parser to enter the <code>STATE_FILTER_QUERY</code> state within the current path fragment. During the <code>STATE_FILTER_QUERY</code> state, the parser reads ahead until the matching <code>ATOM_FILTER_QUERY_END</code> bracket is found. The collected token is then parsed as a separate query and attached to the current path fragment. The tokenizer should then resume at the character immediately following the <code>ATOM_FILTER_QUERY_END</code> token. **Note this means that special atoms and tokens encountered in the <code>STATE_FILTER_QUERY</code> state are ignored by the current parser context.**</td>
+  </tr>
+  <tr>
+    <td>ATOM_FILTER_QUERY_END</td>
+    <td><code>"]"</code></td>
+    <td>Causes the parser to exit the <code>STATE_FILTER_QUERY</code> state and return control to the previous state. Only allowed within <code>STATE_FILTER_QUERY</code>. Encountering this token in any other state (except <code>STATE_STRING_LITERAL</code>) should cause a compiler error.</td>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>TOKEN_PATH_PROPERTY</td>
+    <td><code>/\.\w+/</code></td>
+    <td>Instructs the parser to attach a property modifier to the current path component. Only allowable in <code>STATE_PATH_QUERY</code>.</td>
+  </tr>
+  <tr>
+    <td>TOKEN_FILTER_QUERY</td>
+    <td><code>ATOM_FILTER_QUERY_START,TOKEN_ASSERTION_QUERY,ATOM_FILTER_QUERY_END</code></td>
+    <td>An alias for any valid filter query token.</td>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>TOKEN_PATH_COMPONENT</td>
+    <td><code>(TOKEN_PATH_PROPERTY|[TOKEN_PATH_KEY][,TOKEN_FILTER_QUERY]*)</code></td>
+    <td>An alias for any valid path component. A property, or a key followed by any number of filter queries.</td>
+  </tr>
+  <tr>
+    <td>TOKEN_SELECTION_QUERY</td>
+    <td><code>TOKEN_PATH_START[,TOKEN_PATH_COMPONENT[,ATOM_PATH_DELIMITER,TOKEN_PATH_COMPONENT]+]*</code></td>
+    <td>An alias for any valid selection query. A path opener, followed by any number of path components separated with the <code>ATOM_PATH_DELIMITER</code>.</td>
+  </tr>
+</table><table>
+  <tr style='background-color: #333; color: #FFF'>
+    <th colspan='3'>Comparisons and assertions</th>
+  </tr>
+  <tr style='background-color: #CCC;'>
+    <th>Symbol name</th>
+    <th>Symbol value</th>
+    <th>Compiler behaviour</th>
+  </tr>
+  <tr style='background-color: #EEE'>
+    <td>TOKEN_SET_COMPARISON_OPERATOR</td>
+    <td><code>/(\}[!&gt;&lt;]{1}\{)|([&lt;&gt;~!=]=)/</code></td>
+    <td>Any of the set comparison operators detailed in [Comparison operators][comparison_operators]. Only allowable in the <code>null</code> state and the <code>STATE_PATH_QUERY</code> state. Encountering this token in the <code>STATE_PATH_QUERY</code> state will cause the path query to exit.</td>
+  </tr>
+  <tr>
+    <td>TOKEN_ASSERTION_QUERY</td>
+    <td><code>(TOKEN_SELECTION_QUERY|TOKEN_SET_LITERAL)[, TOKEN_COMPARISON_OPERATOR, (TOKEN_SELECTION_QUERY|TOKEN_SET_LITERAL)]</code></td>
+    <td>An alias for any valid assertion query. At least one selection query or set literal optionally followed by a comparison operator and another set or selection query.</td>
+  </tr>
+</table>
+<h1 id='appendix_spahql_query_execution_spec'>Appendix: SpahQL query execution spec</h1>
+
+<p>SpahQL selection queries are, fundamentally, reductive. At the start of execution, a selection query is given the root data context against which it will run. As the execution moves between the path segments, the data is reduced (and possibly forked) before being passed to the next path segment:</p>
+
+<pre><code>data = {foo: {bar: {baz: &quot;str&quot;}}}
+query = &quot;/foo/bar/baz&quot;</code></pre>
+
+<p>At each point in the above query:</p>
+
+<ol>
+<li>The root <code>data</code> object is handed to the first path component, which selects the key <code>foo</code>.</li>
+
+<li>The resulting data <code>{bar: {baz: "str"}}</code> is handed to the next path component which selects the key <code>bar</code></li>
+
+<li>The resulting data <code>{baz: "str"}</code> is handed to the final path segment, which selects the key <code>baz</code></li>
+
+<li>The key &#8220;baz&#8221; is a string with value &#8220;str&#8221;. This is returned as a result set with one item.</li>
+</ol>
+
+<p>If at any point a query runs out of data, the execution is aborted and an empty result set is returned:</p>
+
+<pre><code>data = {foo: {bar: {baz: &quot;str&quot;}}}
+query = &quot;/foo/NOTBAR/baz&quot;</code></pre>
+
+<p>In this case, the query exits and returns <code>[]</code> when it is unable to find any matching data for the <code>NOTBAR</code> portion of the query.</p>
+
+<p>Recursive paths force the query runner to fork the execution:</p>
+
+<pre><code>data = {foo: {bar: {baz: &quot;str&quot;, bar: &quot;inner-bar&quot;}}}
+query = &quot;/foo//bar/baz&quot;</code></pre>
+
+<p>In this instance:</p>
+
+<ol>
+<li>The root <code>data</code> object is handed to the first path component, which selects the key <code>foo</code>.</li>
+
+<li>The remaining data <code>{bar: {baz: "str", bar: "inner-bar"}}</code> is handed to the next path query, which <strong>recursively</strong> searches for the key <code>bar</code>.</li>
+
+<li>The recursive search returns results from two paths: <code>/foo/bar</code>, which contains a hash, and <code>/foo/bar/bar</code> which is a value within a sub-hash.</li>
+
+<li>The two result sets are handed down to the <code>baz</code> portion of the query.</li>
+
+<li>The <code>baz</code> key appears in only one of the previous data constructs, and this result is added to the final result set.</li>
+</ol>
+
+<p>And so we can see that the overall progression is:</p>
+
+<pre><code>data -&gt; reduce -&gt; array of result sets -&gt; reduce -&gt; array of result sets -&gt; reduce -&gt; finalise</code></pre>
+
+<p>The finalisation step flattens the returned resultsets as a set of <code>QueryResult</code> objects. The final result set is a union of each of the final result sets made unique by result path.</p>
+
+<p>In the case of <strong>filters</strong>, an additional reduce step is introduced into the path segment specifying the filter:</p>
+
+<pre><code>data = {foo: {bar: {baz: &quot;str&quot;, bar: &quot;inner-bar&quot;}}}
+query = &quot;/foo/[//baz == &#39;str&#39;]&quot;</code></pre>
+
+<p>In this case:</p>
+
+<ol>
+<li>The root <code>data</code> object is handed to the first path segment, which retrieves the key <code>foo</code>.</li>
+
+<li>The resulting data is handed to the next path segment, which specifies no key - therefore all keys are acceptable.</li>
+
+<li>All keys in the resulting data have the filter query <code>//baz =='str'</code> run against their values. Those keys for which the filter query returns <code>true</code> are added to the result set for this path segment.</li>
+
+<li>The query ends - the results (all values defined directly on <code>/foo</code> that may be recursed to find a key <code>baz</code> with value <code>str</code>) are flattened and returned as the query result.</li>
+</ol>
+
+<p>Example execution flow:</p>
+<img src='https://img.skitch.com/20110511-f6t1iwt3jq4gxyd2hnk7fyfjdd.jpg' />
+<p><strong>Properties</strong> act like special keys on paths:</p>
+
+<pre><code>data = {foo: {bar: {baz: &quot;str&quot;, bar: &quot;inner-bar&quot;}}}
+query = &quot;/.size&quot; // returns the number of keys on the root object
+query = &quot;//baz/.size&quot; // returns the sizes of all keys named &quot;baz&quot;</code></pre>
+
+<p>There is no other special behaviour for properties - they simply act like key names.</p>
+     </article>
+    
+  </body>
+</html>

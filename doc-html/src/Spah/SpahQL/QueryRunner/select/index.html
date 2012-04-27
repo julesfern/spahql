@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Spah  v0.0.0 API documentation | SpahQL.QueryRunner.select</title>
+  <meta name="generator" content="PDoc" />
+  
+  <script charset="utf-8" src="../../../../javascripts/pdoc/prototype.js" type="text/javascript"></script>
+  <script charset="utf-8" src="../../../../javascripts/pdoc/application.js" type="text/javascript"></script>
+<script charset="utf-8" src="../../../../javascripts/pdoc/tabs.js" type="text/javascript"></script>
+  <script charset="utf-8" src="../../../../javascripts/pdoc/item_index.js" type="text/javascript"></script>
+  
+  <link charset="utf-8" href="../../../../stylesheets/pdoc/api.css" media="screen, projection" rel="stylesheet" type="text/css" />
+<link charset="utf-8" href="../../../../stylesheets/pdoc/pygments.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  
+  <script type="text/javascript">
+    PDoc.pathPrefix = '../../../../';
+  </script>
+</head>
+  <body>
+
+    <div id="sidebar">
+      <ul id="sidebar_tabs" class="sidebar-tabs">
+        <li>
+          <a href="#menu_pane">Menu</a>
+        </li>
+        <li>
+          <a href="#search_pane">Search</a>
+        </li>
+      </ul> <!-- .sidebar-tabs -->
+
+      <form class="search-ribbon">
+        <label>
+          <span class="hidden">Search</span>
+          <input type="text" id="search" size="20" title="Search" />
+        </label>
+      </form>
+      
+      <div class="sidebar-pane scrollable" id="menu_pane">
+        <ul class="menu-items" id="api_menu"><li><div class="menu-item"><a class="class current-parent" href="../../../../Spah/index.html" title="Spah (class)">Spah</a></div><ul><li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/index.html" title="SpahQL.DOM (class)">SpahQL.DOM</a></div><ul><li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/Blueprint/index.html" title="SpahQL.DOM.Blueprint (class)">SpahQL.DOM.Blueprint</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/Document/index.html" title="SpahQL.DOM.Document (class)">SpahQL.DOM.Document</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/Errors/index.html" title="SpahQL.DOM.Errors (class)">SpahQL.DOM.Errors</a></div><ul><li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/Errors/InvalidModifierError/index.html" title="SpahQL.DOM.Errors.InvalidModifierError (class)">SpahQL.DOM.Errors.InvalidModifierError</a></div></li></ul></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/Modifiers/index.html" title="SpahQL.DOM.Modifiers (class)">SpahQL.DOM.Modifiers</a></div><ul><li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/Modifiers/ClassName/index.html" title="SpahQL.DOM.Modifiers.ClassName (class)">SpahQL.DOM.Modifiers.ClassName</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/Modifiers/ElementId/index.html" title="SpahQL.DOM.Modifiers.ElementId (class)">SpahQL.DOM.Modifiers.ElementId</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/DOM/Modifiers/Show/index.html" title="SpahQL.DOM.Modifiers.Show (class)">SpahQL.DOM.Modifiers.Show</a></div></li></ul></li></ul></li>
+<li><div class="menu-item"><a class="class current-parent" href="../../../../Spah/SpahQL/index.html" title="SpahQL (class)">SpahQL</a></div><ul><li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Callbacks/index.html" title="SpahQL.Callbacks (class)">SpahQL.Callbacks</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/DataHelper/index.html" title="SpahQL.DataHelper (class)">SpahQL.DataHelper</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Errors/index.html" title="SpahQL.Errors (class)">SpahQL.Errors</a></div><ul><li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Errors/SpahQLError/index.html" title="SpahQL.Errors.SpahQLError (class)">SpahQL.Errors.SpahQLError</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Errors/SpahQLRunTimeError/index.html" title="SpahQL.Errors.SpahQLRunTimeError (class)">SpahQL.Errors.SpahQLRunTimeError</a></div></li></ul></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Query/index.html" title="SpahQL.Query (class)">SpahQL.Query</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/QueryParser/index.html" title="SpahQL.QueryParser (class)">SpahQL.QueryParser</a></div></li>
+<li><div class="menu-item"><a class="class current-parent" href="../../../../Spah/SpahQL/QueryRunner/index.html" title="SpahQL.QueryRunner (class)">SpahQL.QueryRunner</a></div><ul><li><div class="menu-item"><a class="class-method" href="../../../../Spah/SpahQL/QueryRunner/assert/index.html" title="SpahQL.QueryRunner.assert (class method)">assert</a></div></li>
+<li><div class="menu-item"><a class="class-method" href="../../../../Spah/SpahQL/QueryRunner/evalAssertion/index.html" title="SpahQL.QueryRunner.evalAssertion (class method)">evalAssertion</a></div></li>
+<li><div class="menu-item"><a class="class-method current" href="../../../../Spah/SpahQL/QueryRunner/select/index.html" title="SpahQL.QueryRunner.select (class method)">select</a></div></li></ul></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Strategiser/index.html" title="SpahQL.Strategiser (class)">SpahQL.Strategiser</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/index.html" title="SpahQL.Token (class)">SpahQL.Token</a></div><ul><li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/Base/index.html" title="SpahQL.Token.Base (class)">SpahQL.Token.Base</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/Boolean/index.html" title="SpahQL.Token.Boolean (class)">SpahQL.Token.Boolean</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/ComparisonOperator/index.html" title="SpahQL.Token.ComparisonOperator (class)">SpahQL.Token.ComparisonOperator</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/FilterQuery/index.html" title="SpahQL.Token.FilterQuery (class)">SpahQL.Token.FilterQuery</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/KeyName/index.html" title="SpahQL.Token.KeyName (class)">SpahQL.Token.KeyName</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/Numeric/index.html" title="SpahQL.Token.Numeric (class)">SpahQL.Token.Numeric</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/PathComponent/index.html" title="SpahQL.Token.PathComponent (class)">SpahQL.Token.PathComponent</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/SelectionQuery/index.html" title="SpahQL.Token.SelectionQuery (class)">SpahQL.Token.SelectionQuery</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/Set/index.html" title="SpahQL.Token.Set (class)">SpahQL.Token.Set</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/Simple/index.html" title="SpahQL.Token.Simple (class)">SpahQL.Token.Simple</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/SpahQL/Token/String/index.html" title="SpahQL.Token.String (class)">SpahQL.Token.String</a></div></li></ul></li></ul></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/State/index.html" title="SpahQL.State (class)">SpahQL.State</a></div><ul><li><div class="menu-item"><a class="class" href="../../../../Spah/State/Strategies/index.html" title="SpahQL.State.Strategies (class)">SpahQL.State.Strategies</a></div></li></ul></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/StateClient/index.html" title="SpahQL.StateClient (class)">SpahQL.StateClient</a></div></li>
+<li><div class="menu-item"><a class="class" href="../../../../Spah/StateServer/index.html" title="SpahQL.StateServer (class)">SpahQL.StateServer</a></div></li></ul></li></ul><!--- #api_menu =-->
+      </div> <!-- .sidebar-pane -->
+      <div class="sidebar-pane" id="search_pane">
+        <ul id="search_results" class="search-results menu-items scrollable"></ul>
+      </div> <!-- .sidebar-pane -->
+    </div> <!-- #sidebar -->
+
+    <div id="page">
+      
+
+      <div id="main" class="page-content">
+        
+
+
+
+
+
+<ul class="breadcrumbs clearfix">
+  <li><a href="../../../../">Home</a></li>
+  
+    <li>&rarr; <a href="../../../../Spah/index.html" title="Spah (class)">Spah</a></li>
+  
+    <li>&rarr; <a href="../../../../Spah/SpahQL/index.html" title="SpahQL (class)">SpahQL</a></li>
+  
+    <li>&rarr; <a href="../../../../Spah/SpahQL/QueryRunner/index.html" title="SpahQL.QueryRunner (class)">QueryRunner</a></li>
+  
+    <li>&rarr; <a href="../../../../Spah/SpahQL/QueryRunner/select/index.html" title="SpahQL.QueryRunner.select (class method)">select</a></li>
+  
+</ul>
+
+
+  <p id="src_code_href"><a href="http://github.com/danski/spah/blob/master/src/SpahQL.QueryRunner.js#22">src code</a></p>
+
+
+<h2 class="page-title">
+  <span class="type">class method</span> SpahQL.QueryRunner.select
+</h2>
+
+
+
+
+<div class="section">
+  <div class="section-title">
+  </div> <!-- .section-title -->
+  <div class="section-content">
+    <div class="method-description">
+      
+        <pre class="syntax"><code class="ebnf">SpahQL.QueryRunner.select(query, rootData[,scopeData][, scopePath]) &rarr; Array</code></pre>
+
+  <ul class="argument-list">
+    
+      <li>
+        <code class="argument-name">rootData</code>
+        
+          <span class="argument-types">(<code>Object</code>)</span>
+        
+         &ndash; The root data context against which to run the query
+      </li>
+    
+      <li>
+        <code class="argument-name">scopeData</code>
+        
+          <span class="argument-types">(<code>Object</code>)</span>
+        
+         &ndash; An optional additional data context which will be the local scope for this query. If not set, will be set internally to <code>rootData</code>.
+      </li>
+    
+      <li>
+        <code class="argument-name">scopePath</code>
+        
+          <span class="argument-types">(<code>String</code>)</span>
+        
+         &ndash; An optional path indicating the scope to which this query has been restricted.
+      </li>
+    
+  </ul> <!-- .argument-list -->
+
+      
+
+      <p>Executes a selection query against the given dataset. Returns an array of result instances.</p>
+      
+      
+
+
+
+
+      
+    </div>
+  </div> <!-- .section-content -->
+</div> <!-- .section -->
+
+      </div> <!-- #main -->
+      
+      <div id="footer">
+        <p><a href="http://github.com/danski/spah">Spah</a> v0.0.0 API documentation.</p>
+        <p>
+          
+            Last updated on April 17, 2012 at 07:01 UTC.
+          
+          Generated by <a href="http://pdoc.org">PDoc</a>.
+          Uses <a href="http://famfamfam.com/lab/icons/silk/" title="famfamfam.com: Silk Icons">Silk Icons</a> and portions of <a href="http://github.com/280north/aristo/tree/master" title="280north's aristo at master - GitHub">Aristo</a>.
+        </p>
+        
+      </div> <!-- #footer -->
+
+    </div> <!-- #page -->
+  </body>
+</html>

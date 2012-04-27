@@ -1,0 +1,6 @@
+*.tmproj
+.DS_Store
+node_modules/*
+*.pdoc.*
+*.sublime-workspace
+npm-debug.log

@@ -1,0 +1,24 @@
+{
+  "name": "spah",
+  "preferGlobal": "false",
+  "version": "0.1.0",
+  "author": "Dan Glegg <dan@angryamoeba.co.uk>",
+  "description": "A framework for building single-page applications without resorting to shady tricks.",
+  "contributors": [],
+  "main": "./src/Spah-edge.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danski/SpahQL.git"
+  },
+  "keywords": [
+    "json", "query", "ql", "language", "spah"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "license": "MIT",
+  "engine": {
+    "node": ">= 0.6.0 < 0.7.0-"
+  }
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    
+    <link rel="stylesheet" href="css/normalize.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/ir_black.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="js/highlight.pack.js"></script>
+    <script type="text/javascript" src="js/jquery.1.5.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.scrollTo-1.4.2-min.js"></script>
+    <script type="text/javascript" src="js/nav.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        hljs.initHighlighting();
+        Nav.init("#nav-pages", "#nav-overview");
+      });
+    </script>
+  </head>
+  <body>
+    
+    <div class="nav-wrapper">
+      <nav id="nav-pages">
+        {{navigation}}
+      </nav>
+      <nav id="nav-overview">
+      </nav>
+    </div>
+     
+     <article>
+      {{content}}
+     </article>
+    
+  </body>
+</html>

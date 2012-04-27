@@ -1,0 +1,425 @@
+{
+    "Selection": [
+    { 
+      "name": "Root", "query": "/", "data": {"a": 0, "b": {"c": 2}},
+      "result": [
+        ["/", {"a": 0, "b": {"c": 2}}]
+      ]
+    },
+    { 
+      "name": "Basic object key", "query": "/obj", 
+      "result": [
+        ["/obj", {"a": 1, "b": 2, "c": 3}]
+      ]
+    },
+    { 
+      "name": "Basic array key", "query": "/arr/1", 
+      "result": [
+        ["/arr/1", "e"]
+      ]
+    },
+    { 
+      "name": "Nested keys in an object", "query": "/objNested/c/j/1", 
+      "result": [
+        ["/objNested/c/j/1", "b"]
+      ]
+    },
+    { 
+      "name": "Nested keys in an array", "query": "/arrNested/2/2", 
+      "result": [
+        ["/arrNested/2/2", {"a": 1, "b": 2, "c": 3}]
+      ]
+    },
+    { 
+      "name": "Wildcard single-depth", "query": "/arrNested/*", 
+      "result": [
+        ["/arrNested/0", ["a", "b", "c"]], 
+        ["/arrNested/1", ["d", "e", "f"]], 
+        ["/arrNested/2", ["g", "h", {"a": 1, "b": 2, "c": 3}]]
+      ]
+    },
+    { 
+      "name": "Wildcard double-depth", "query": "/arrNested/*/*", 
+      "result": [
+        ["/arrNested/0/0", "a"], 
+        ["/arrNested/0/1", "b"], 
+        ["/arrNested/0/2", "c"],
+        ["/arrNested/1/0", "d"], 
+        ["/arrNested/1/1", "e"], 
+        ["/arrNested/1/2", "f"],
+        ["/arrNested/2/0", "g"], 
+        ["/arrNested/2/1", "h"], 
+        ["/arrNested/2/2", {"a": 1, "b": 2, "c": 3}]
+      ]
+    },
+    { 
+      "name": "Wildcard triple-depth", "query": "/arrNested/*/*/*", 
+      "result": [
+        ["/arrNested/2/2/a", 1], 
+        ["/arrNested/2/2/b", 2], 
+        ["/arrNested/2/2/c", 3]
+        ]
+    },
+    {
+      "name": "Root-level recursion", "query": "//j",
+      "result": [
+          ["/objNested/c/j", ["a", "b", "c"]], 
+          ["/arrWithObj/2/j", 10]
+      ]
+    },
+    {
+      "name": "Nested recursion", "query": "/objNested//a",
+      "result": [
+        ["/objNested/a", {"a": 1, "b": 2, "c": 3}], 
+        ["/objNested/a/a", 1]
+      ]
+    },
+    {
+      "name": "Depth-controlled recursion using wildcards", "query": "/objNested//c/*/*",
+      "result": [
+        ["/objNested/c/j/0", "a"], 
+        ["/objNested/c/j/1", "b"], 
+        ["/objNested/c/j/2", "c"]
+      ]
+    },
+    {
+      "name": "Nested array key recursion", "query": "/arrNested//0",
+      "result": [
+        ["/arrNested/0", ["a", "b", "c"]],
+        ["/arrNested/0/0", "a"],
+        ["/arrNested/1/0", "d"],
+        ["/arrNested/2/0", "g"]
+      ]
+    },
+    {
+      "name": "Combined filter queries at result scope", "query": "//a[/b][/c]",
+      "result": [
+        ["/objNested/a", {"a": 1, "b": 2, "c": 3}]
+      ]
+    },
+    {
+      "name": "Filter query used at path scope with child keys selected", "query": "//*[/a]/c",
+      "result": [
+        ["/obj/c", 3],
+        ["/objNested/c", {"g": 7, "h": 8, "i": 9, "j": ["a", "b", "c"]}],
+        ["/objNested/a/c", 3],
+        ["/arrNested/2/2/c", 3],
+        ["/objWithArr/c", ["g", "h", "i"]],
+        ["/arrWithObj/0/c", 3]
+      ]
+    },
+    {
+      "name": "Nested filter query", "query": "//*[/b[/0]]/c", 
+      "result": [
+          ["/objWithArr/c", ["g", "h", "i"]]
+      ]
+    },
+    {
+      "name": "Properties: size of array", "query": "/arr/.size",
+      "result": [
+        ["/arr/.size", 3]
+      ]
+    },
+    {
+      "name": "Properties: size of string", "query": "/str/.size",
+      "result": [
+        ["/str/.size", 6]
+      ]
+    },
+    {
+      "name": "Properties: size of hash", "query": "/obj/.size",
+      "result": [
+        ["/obj/.size", 3]
+      ]
+    },
+    {
+      "name": "Properties: size of simple", "query": "/bool/.size",
+          "result": []
+      },
+    {
+      "name": "Properties: recursive size query", "query": "/arrNested//.size",
+      "result": [
+        ["/arrNested/.size", 3],
+        ["/arrNested/0/.size", 3],
+        ["/arrNested/0/0/.size", 1],
+        ["/arrNested/0/1/.size", 1],
+        ["/arrNested/0/2/.size", 1],
+        ["/arrNested/1/.size", 3],
+        ["/arrNested/1/0/.size", 1],
+        ["/arrNested/1/1/.size", 1],
+        ["/arrNested/1/2/.size", 1],
+        ["/arrNested/2/.size", 3],
+        ["/arrNested/2/0/.size", 1],
+        ["/arrNested/2/1/.size", 1],
+        ["/arrNested/2/2/.size", 3]
+      ]
+    },
+    {
+      "name": "Properties: Explode string", "query": "/str/.explode",
+      "result": [
+        ["/str/0", "a"],
+        ["/str/1", "b"],
+        ["/str/2", "c"],
+        ["/str/3", "d"],
+        ["/str/4", "e"],
+        ["/str/5", "f"]
+      ]
+    },
+    {
+      "name": "Properties: Explode unexplodable object", "query": "/arr/.explode",
+      "result": []
+    },
+    {
+      "name": "Properties: object type", "query": "/obj/.type",
+      "result": [
+        ["/obj/.type", "object"]
+      ]
+    },
+    {
+      "name": "Properties: string type", "query": "/str/.type",
+      "result": [
+        ["/str/.type", "string"]
+      ]
+    },
+    {
+      "name": "Properties: object type", "query": "/arr/.type",
+      "result": [
+        ["/arr/.type", "array"]
+      ]
+    },
+    {
+      "name": "Properties: object type", "query": "/bool/.type",
+      "result": [
+        ["/bool/.type", "boolean"]
+      ]
+    },
+    {
+      "name": "Properties: object type", "query": "/num/.type",
+      "result": [
+        ["/num/.type", "number"]
+      ]
+    },
+    {
+      "name": "Set literal with mixed types", "query": "{1,'2',true,false,'foo',3.4,0}",
+      "result": [
+        [null, 1],
+        [null, "2"],
+        [null, true],
+        [null, false],
+        [null, "foo"],
+        [null, 3.4],
+        [null, 0]
+      ]
+    },
+    {
+      "name": "Set literal with embedded query", "query": "{1,'2',/arr,0}",
+      "result": [
+        [null, 1],
+        [null, "2"],
+        ["/arr", ["d","e","f"]],
+        [null, 0]
+      ]
+    },
+    {
+      "name": "Numeric range literal", "query": "{5..7}",
+      "result": [
+        [null, 5],
+        [null, 6],
+        [null, 7]
+      ]
+    },
+    {
+      "name": "String range literal", "query": "{'a'..'d'}",
+      "result": [
+        [null, "a"],
+        [null, "b"],
+        [null, "c"],
+        [null, "d"]
+      ]
+    },
+    {
+      "name": "String range literal complex", "query": "{'a)'..'c)'}",
+      "result": [
+        [null, "a)"],
+        [null, "b)"],
+        [null, "c)"]
+      ]
+    }
+    ],
+    "Assertion": [
+    {
+    "name": "Query strict equality pass", "query": "/objWithArr/c == /objWithArr/c", "result": true
+    },
+    {
+    "name": "Query strict equality fail", "query": "/objWithArr/a == /objWithArr/c", "result": false
+    },
+    {
+    "name": "Query->Set literal strict equality pass", "query": "/arr/* == {'d','e','f'}", "result": true
+    },
+    {
+    "name": "Query->Set literal strict equality fail", "query": "/arr/* == {'d'}", "result": false
+    },
+    {
+    "name": "Set literal strict equality pass", "query": "{'d','e','f'} == {'d','e','f'}", "result": true
+    },
+    {
+    "name": "Set literal strict equality fail", "query": "{'d','e','f'} == {'a','e','f'}", "result": false
+    },
+    {
+    "name": "Query strict inequality pass", "query": "/objWithArr/c != /objWithArr/c", "result": false
+    },
+    {
+    "name": "Query strict inequality fail", "query": "/objWithArr/a != /objWithArr/c", "result": true
+    },
+    {
+    "name": "Query->Set literal strict inequality pass", "query": "/arr/* != {'d','e','f'}", "result": false
+    },
+    {
+    "name": "Query->Set literal strict inequality fail", "query": "/arr/* != {'d'}", "result": true
+    },
+    {
+    "name": "Set literal strict inequality pass", "query": "{'d','e','f'} != {'d','e','f'}", "result": false
+    },
+    {
+    "name": "Set literal strict inequality fail", "query": "{'d','e','f'} != {'a','e','f'}", "result": true
+    },
+    {
+    "name": "Loose equality with string literals pass", "query": "'abcdefg' =~ '^a'", "result": true
+    },
+    {
+    "name": "Loose equality with string literals fail", "query": "'abcdefg' =~ '^d'", "result": false
+    },
+    {
+    "name": "Loose equality with string query pass", "query": "/str =~ '^a'", "result": true
+    },
+    {
+    "name": "Loose equality with string query fail", "query": "/str =~ '^d'", "result": false
+    },
+    {
+    "name": "Loose equality with numeric literals pass", "query": "4.5 =~ 4.1", "result": true
+    },
+    {
+    "name": "Loose equality with numeric literals fail", "query": "4.5 =~ 5", "result": false
+    },
+    {
+    "name": "Loose equality with numeric query pass", "query": "/num =~ 1000.5", "result": true
+    },
+    {
+    "name": "Loose equality with numeric query fail", "query": "/num =~ 0", "result": false
+    },
+    {
+    "name": "Loose equality with array query pass", "query": "/arrNested/0 =~ /objWithArr/a", "result": true
+    },
+    {
+    "name": "Loose equality with array query fail", "query": "/arrNested/0 =~ /objWithArr/b", "result": false
+    },
+    {
+    "name": "Loose equality with hash query pass", "query": "/objWithArr =~ /objWithArrSlice", "result": true
+    },
+    {
+    "name": "Loose equality with hash query fail", "query": "/objWithArr =~ /objNested", "result": false
+    },
+    {
+    "name": "Less than comparison numeric pass", "query": "/obj/a < 2", "result": true
+    },
+    {
+    "name": "Less than comparison numeric fail", "query": "/obj/a < 1", "result": false
+    },
+    {
+    "name": "Less than or equal to comparison numeric pass", "query": "/obj/b <= 2", "result": true
+    },
+    {
+    "name": "Less than or equal to comparison numeric fail", "query": "/obj/b <= 1", "result": false
+    },
+    {
+    "name": "Greater than comparison numeric pass", "query": "/obj/a > 0", "result": true
+    },
+    {
+    "name": "Greater than comparison numeric fail", "query": "/obj/a > 1", "result": false
+    },
+    {
+    "name": "Greater than or equal to comparison numeric pass", "query": "/obj/b >= 2", "result": true
+    },
+    {
+    "name": "Greater than or equal to comparison numeric fail", "query": "/obj/b >= 100", "result": false
+    },
+    {
+    "name": "Less than comparison string pass", "query": "/arrNested/0/0 < 'b'", "result": true
+    },
+    {
+    "name": "Less than comparison string fail", "query": "/arrNested/0/0 < 'a'", "result": false
+    },
+    {
+    "name": "Less than or equal to comparison string pass", "query": "/arrNested/0/1 <= 'b'", "result": true
+    },
+    {
+    "name": "Less than or equal to comparison string fail", "query": "/arrNested/0/1 <= 'a'", "result": false
+    },
+    {
+    "name": "Greater than comparison string pass", "query": "/arrNested/0/1 > 'a'", "result": true
+    },
+    {
+    "name": "Greater than comparison string fail", "query": "/arrNested/0/1 > 'b'", "result": false
+    },
+    {
+    "name": "Greater than or equal to comparison string pass", "query": "/arrNested/0/1 >= 'b'", "result": true
+    },
+    {
+    "name": "Greater than or equal to comparison string fail", "query": "/arrNested/0/1 >= 'c'", "result": false
+    },
+    {
+    "name": "Subset set literals pass", "query": "{1,2,3} }<{ {1,2,3,4}", "result": true
+    },
+    {
+    "name": "Subset set literals fail", "query": "{1,2,3,4} }<{ {1,2,3}", "result": false
+    },
+    {
+    "name": "Subset Query->Set pass", "query": "/arrNested/0/* }<{ {'a','b','c','d'}", "result": true
+    },
+    {
+    "name": "Subset Query->Set fail", "query": "/arrNested/0/* }<{ {'b','c','d'}", "result": false
+    },
+    {
+    "name": "Subset Query->Query pass", "query": "/arrNested/0/* }<{ /objWithArr/a/*", "result": true
+    },
+    {
+    "name": "Subset Query->Query fail", "query": "/arrNested/* }<{ /arr/*", "result": false
+    },
+    {
+    "name": "Superset set literals pass", "query": "{1,2,3,4} }>{ {1,2,3}", "result": true
+    },
+    {
+    "name": "Superset set literals fail", "query": "{1,2,3} }>{ {1,2,3,4}", "result": false
+    },
+    {
+    "name": "Superset Query->Set pass", "query": "/arrNested/0/* }>{ {'a','b'}", "result": true
+    },
+    {
+    "name": "Superset Query->Set fail", "query": "/arrNested/0/* }>{ {'a','b','c','d'}", "result": false
+    },
+    {
+    "name": "Joint set pass", "query": "{'a',1,2} }~{ {false,false,2}", "result": true
+    },
+    {
+    "name": "Joint set fail", "query": "{'a','b','c'} }~{ {'d'}", "result": false
+    },
+    {
+    "name": "Disjoint set pass", "query": "{'a','b','c'} }!{ {'d','e','f'}", "result": true
+    },
+    {
+    "name": "Disjoint set fail", "query": "{'a','b','c'} }!{ {'c','d','e'}", "result": false
+    },
+    {
+    "name": "Item count on a set literal pass", "query": "{true}", "result": true
+    },
+    {
+    "name": "Item count on a set literal fail", "query": "{}", "result": false
+    },
+    {
+    "name": "Item truthiness on a set literal pass", "query": "{true, false}", "result": true
+    },
+    {
+    "name": "Item truthiness on a set literal fail", "query": "{false}", "result": false
+    }
+    ]
+}

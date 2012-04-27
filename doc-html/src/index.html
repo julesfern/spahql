@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Spah  v0.7.0 API documentation | Home</title>
+  <meta name="generator" content="PDoc" />
+  
+  <script charset="utf-8" src="javascripts/pdoc/prototype.js" type="text/javascript"></script>
+  <script charset="utf-8" src="javascripts/pdoc/application.js" type="text/javascript"></script>
+<script charset="utf-8" src="javascripts/pdoc/tabs.js" type="text/javascript"></script>
+  <script charset="utf-8" src="javascripts/pdoc/item_index.js" type="text/javascript"></script>
+  
+  <link charset="utf-8" href="stylesheets/pdoc/api.css" media="screen, projection" rel="stylesheet" type="text/css" />
+<link charset="utf-8" href="stylesheets/pdoc/pygments.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  
+  <script type="text/javascript">
+    PDoc.pathPrefix = '';
+  </script>
+</head>
+  <body>
+
+    <div id="sidebar">
+      <ul id="sidebar_tabs" class="sidebar-tabs">
+        <li>
+          <a href="#menu_pane">Menu</a>
+        </li>
+        <li>
+          <a href="#search_pane">Search</a>
+        </li>
+      </ul> <!-- .sidebar-tabs -->
+
+      <form class="search-ribbon">
+        <label>
+          <span class="hidden">Search</span>
+          <input type="text" id="search" size="20" title="Search" />
+        </label>
+      </form>
+      
+      <div class="sidebar-pane scrollable" id="menu_pane">
+        <ul class="menu-items" id="api_menu"><li><div class="menu-item"><a class="class" href="SpahQL/index.html" title="SpahQL (class)">SpahQL</a></div><ul><li><div class="menu-item"><a class="class" href="SpahQL/Callbacks/index.html" title="SpahQL.Callbacks (class)">SpahQL.Callbacks</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/DataHelper/index.html" title="SpahQL.DataHelper (class)">SpahQL.DataHelper</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Errors/index.html" title="SpahQL.Errors (class)">SpahQL.Errors</a></div><ul><li><div class="menu-item"><a class="class" href="SpahQL/Errors/SpahQLError/index.html" title="SpahQL.Errors.SpahQLError (class)">SpahQL.Errors.SpahQLError</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Errors/SpahQLRunTimeError/index.html" title="SpahQL.Errors.SpahQLRunTimeError (class)">SpahQL.Errors.SpahQLRunTimeError</a></div></li></ul></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Query/index.html" title="SpahQL.Query (class)">SpahQL.Query</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/QueryParser/index.html" title="SpahQL.QueryParser (class)">SpahQL.QueryParser</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/QueryRunner/index.html" title="SpahQL.QueryRunner (class)">SpahQL.QueryRunner</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Strategiser/index.html" title="SpahQL.Strategiser (class)">SpahQL.Strategiser</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/index.html" title="SpahQL.Token (class)">SpahQL.Token</a></div><ul><li><div class="menu-item"><a class="class" href="SpahQL/Token/Base/index.html" title="SpahQL.Token.Base (class)">SpahQL.Token.Base</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/Boolean/index.html" title="SpahQL.Token.Boolean (class)">SpahQL.Token.Boolean</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/ComparisonOperator/index.html" title="SpahQL.Token.ComparisonOperator (class)">SpahQL.Token.ComparisonOperator</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/FilterQuery/index.html" title="SpahQL.Token.FilterQuery (class)">SpahQL.Token.FilterQuery</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/KeyName/index.html" title="SpahQL.Token.KeyName (class)">SpahQL.Token.KeyName</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/Numeric/index.html" title="SpahQL.Token.Numeric (class)">SpahQL.Token.Numeric</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/PathComponent/index.html" title="SpahQL.Token.PathComponent (class)">SpahQL.Token.PathComponent</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/SelectionQuery/index.html" title="SpahQL.Token.SelectionQuery (class)">SpahQL.Token.SelectionQuery</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/Set/index.html" title="SpahQL.Token.Set (class)">SpahQL.Token.Set</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/Simple/index.html" title="SpahQL.Token.Simple (class)">SpahQL.Token.Simple</a></div></li>
+<li><div class="menu-item"><a class="class" href="SpahQL/Token/String/index.html" title="SpahQL.Token.String (class)">SpahQL.Token.String</a></div></li></ul></li></ul></li></ul><!--- #api_menu =-->
+      </div> <!-- .sidebar-pane -->
+      <div class="sidebar-pane" id="search_pane">
+        <ul id="search_results" class="search-results menu-items scrollable"></ul>
+      </div> <!-- .sidebar-pane -->
+    </div> <!-- #sidebar -->
+
+    <div id="page">
+      
+
+      <div id="main" class="page-content">
+        
+
+<div class="page-introduction">
+  <h1 id='spahql_query_manipulate_and_manage_json_data_effortlessly'>SpahQL: Query, manipulate and manage JSON data effortlessly.</h1>
+
+<h1 id='core_concepts'>Core concepts</h1>
+
+<p>Think of SpahQL like jQuery, but instead of handling DOM elements, it handles JSON data. Instead of CSS selectors, you use SpahQL queries. It&#8217;s a querying system for JSON data, aware of hashes, arrays, strings and booleans.</p>
+
+<p>You can use SpahQL to fetch deeply-nested data, traverse large trees, and to query for data based on conditions, and to make assertions about data.</p>
+
+<h1 id='install'>Install</h1>
+
+<h2 id='browserbased_apps'>Browser-based apps</h2>
+
+<h2 id='nodejs__commonjs_apps'>Node.js / CommonJS apps</h2>
+
+<h1 id='getting_started'>Getting started</h1>
+
+<p>Using SpahQL starts out with you putting your data into a <em>SpahQL Database</em>. A <em>database</em> isn&#8217;t a special object - it&#8217;s just a regular SpahQL object holding the root data.</p>
+
+<p>Let&#8217;s start out with an example - the state for a basic Twitter app UI.</p>
+
+<pre><code>var data = {
+  &quot;user&quot;: {
+  &quot;logged_in&quot;: true,
+    &quot;name&quot;: &quot;John Doe&quot;,
+    &quot;handle&quot;: &quot;johndoe&quot;,
+		    &quot;avatar&quot;: {
+					&quot;small&quot;: &quot;https://myapp.com/avatar-small/johndoe.png&quot;,
+					&quot;large&quot;: &quot;https://myapp.com/avatar-large/johndoe.png&quot;
+				}
+		}
+	},
+	&quot;draft_status&quot;: &quot;The meaning of life is&quot;,
+	&quot;active_tab&quot;: &quot;timeline&quot;,
+	&quot;timeline&quot;: [
+		{
+			&quot;type&quot;: &quot;status&quot;,
+			&quot;status&quot;: &quot;FFFFFFFUUUUUUUUUUUU&quot;,
+			&quot;user&quot;: {
+				&quot;name&quot;: &quot;Rage Guy&quot;,
+				&quot;handle&quot;: &quot;rageguy&quot;,
+				&quot;avatar&quot;: {
+					&quot;small&quot;: &quot;https://myapp.com/avatar-small/f7u12.png&quot;,
+					&quot;large&quot;: &quot;https://myapp.com/avatar-large/f7u12.png&quot;
+				}
+			}
+		},
+		...
+	],
+	&quot;mentions&quot;: null
+	&quot;direct_messages&quot;: null
+}</code></pre>
+
+<p>In this state we&#8217;ve got the user&#8217;s profile available to us for display, we know that the &#8220;timeline&#8221; tab is open and populated with some tweets, and we know that the user hasn&#8217;t loaded any mentions or direct messages just yet. We also know that the user has typed something into the status field but has not yet saved it. We&#8217;ll be using this example data below to explore SpahQL&#8217;s capabilities.</p>
+
+<p>To start using this data with SpahQL, we need to put it in a <em>SpahQL database</em>:</p>
+
+<pre><code>var db = SpahQL.db(data);</code></pre>
+
+<h1 id='selecting_data'>Selecting data</h1>
+
+<p>Now that we&#8217;ve got a <em>SpahQL Database</em> assigned to the <code>db</code> variable, we can start to pull data from it using SpahQL <em>selection queries</em>. We call the <code>db</code> object the <em>root</em>.</p>
+
+<p>The query syntax is a little like XPath. Every item in your database can be considered to have a unique <em>path</em>, and you can query for that path specifically, or perform more advanced actions such as recursion and filtering.</p>
+
+<p>To select items from the database, use the <code>select</code> method. This will return a new SpahQL object containing your results.</p>
+
+<p>In the above example, we queried for the path <code>/user</code> which pulled the key &#8220;user&#8221; from the data. We can also chain keys together:</p>
+
+<pre><code>var avatar_large = db.select(&quot;/user/avatar/large&quot;);
+avatar_large.value(); //-&gt; &quot;https://myapp.com/avatar-large/johndoe.png&quot;</code></pre>
+
+<p>The <code>select</code> method returns a SpahQL object, so we can scope queries to results we already have:</p>
+
+<pre><code>var avatars = db.select(&quot;/user/avatar&quot;);
+var avatar_large = avatars.select(&quot;/large&quot;)
+avatar_large.value(); //-&gt; &quot;https://myapp.com/avatar-large/johndoe.png&quot;</code></pre>
+
+<p>Much like XPath, SpahQL supports recursion with a double-slash anywhere in the path. To find all avatars, no matter where they appear in the state, we&#8217;d do this:</p>
+
+<pre><code>var all_avatars = db.select(&quot;//avatar&quot;);</code></pre>
+
+<p>This will return a set containing multiple results from several places in the original <code>db</code> object:</p>
+
+<pre><code>all_avatars.length; //-&gt; 2
+all_avatars.paths(); //-&gt; [&quot;/user/avatar&quot;, &quot;/timeline/0/user/avatar&quot;]
+all_avatars.values(); //-&gt; [&quot;https://myapp.com/avatar-large/johndoe.png&quot;, &quot;https://myapp.com/avatar-large/f7u12.png&quot;]</code></pre>
+
+<p>Notice that the second path returned by <code>all_avatars.paths()</code> starts with <code>/timeline/0</code>. The key <code>0</code> refers to the first item an array, and this is how SpahQL handles arrays in general.</p>
+
+<pre><code>var second_tweet_in_timeline = db.select(&quot;/timeline/1&quot;);</code></pre>
+
+<p>The <code>*</code> (asterisk) character works as a wildcard in paths, allowing you to pull every value from an object without recursion. To grab all tweets from the timeline:</p>
+
+<pre><code>var timeline_tweets = db.select(&quot;/timeline/*&quot;)
+timeline_tweets.paths(); //-&gt; [&quot;/timeline/0&quot;, &quot;/timeline/1&quot;, &quot;/timeline/2&quot;, ...]</code></pre>
+
+<p>We can also <em>filter</em> the results at any point in the query. Here&#8217;s an example where we filter the timeline for all tweets from a given user, and take the actual text of each tweet as the value:</p>
+
+<pre><code>var tweets_from_bob = db.select(&quot;/timeline/*[/user/handle == &#39;bob&#39;]/status&quot;);</code></pre>
+
+<p>In the above, we took all objects from the timeline (<code>/timeline/*</code>) and filtered the list with an assertion (<code>[/user/handle == 'bob']</code>) - then we picked the tweet text from the remaining items (<code>/status</code>).</p>
+
+<p>Note that the contents of the filter were scoped to the object being filtered. This is fine for basic cases, but what if you need to compare the handle of each user to something else stored in the database?</p>
+
+<p>Let&#8217;s add a field to the root object, for handling searches:</p>
+
+<pre><code>db.set(&quot;show_only_from_handle&quot;, &quot;coolguy99&quot;);
+db.select(&quot;/show_only_from_handle&quot;).value(); //-&gt; &quot;coolguy99&quot;</code></pre>
+
+<p>Now to filter the tweets based on this new bit of data, we can use the <code>$</code> (dollar sign) to scope any part of a filter to the root data:</p>
+
+<pre><code>var tweets_filtered = db.select(&quot;/timeline/*[/user/handle == $/show_only_from_handle]/status&quot;);</code></pre>
+
+<p>And voila, we&#8217;ve filtered one part of the state based on the contents of another, and selected some data from within.</p>
+
+<p>Filters may be chained together to produce logical <code>AND</code> gates. Here we&#8217;ll pull all users who have both a large and a small avatar available:</p>
+
+<pre><code>var users_with_both_avatars = db.select(&quot;//user[/avatar/small][/avatar/large]&quot;);</code></pre>
+
+<h1 id='modifying_data'>Modifying data</h1>
+
+<p>SpahQL objects provide a set of methods for modifying their data values. SpahQL always maintains <em>strict pointer equality</em> to the original database data, so be aware that calling these methods will result in alterations being made directly to the object you originally passed to <code>SpahQL.db(your_data)</code>.</p>
+
+<p>Most destructive methods apply only to the first item in a SpahQL result set, and have a partner method which applies to the entire set.</p>
+
+<p>For instance, here are the <code>replace</code> and <code>replaceAll</code> methods - just two of the many methods SpahQL offers for easy data editing:</p>
+
+<pre><code>db.select(&quot;//user&quot;).replace(&quot;This string will replace the first user in the set&quot;);
+db.select(&quot;//user&quot;).replaceAll(&quot;NO USERS FOR YOU&quot;);</code></pre>
+
+<h1 id='listening_for_changes'>Listening for changes</h1>
+
+<p>SpahQL objects are able to dispatch events when certain paths are changed, using an event-bubbling model similar to the HTML DOM.</p>
+
+<pre><code>db.listen(function(db, path, subpaths) {
+	console.log(&quot;Something in the DB was modified. Modified paths: &quot;+subpaths.join(&quot;,&quot;));
+})</code></pre>
+
+<p>The above code listens for changes to the database as a whole. You may scope listeners to certain paths using either of the following methods:</p>
+
+<pre><code>db.listen(&quot;/user&quot;, function(user, path, subpaths) {
+	console.log(&quot;User was modified: &quot;, user.value());
+})
+db.select(&quot;/user&quot;).listen(function(user, path, subpaths) {
+	console.log(&quot;User was modified: &quot;, user.value());
+});</code></pre>
+
+<p>The callback function always receives three arguments; <code>result</code>, a SpahQL object containing the data found at the path on which you registered the listener, <code>path</code>, the path on which you registered the listener (allowing you to assign a single listener function cabable of responding to multiple changes), and <code>subpaths</code>, an array of paths within the <code>path</code> that were detected as having been modified.</p>
+
+<pre><code>db.listen(&quot;/user&quot;, function(user, path, subpaths) {
+	console.log(&quot;Subpaths modified on user (&quot;+path+&quot;): &quot;, subpaths.join(&quot;,&quot;));
+});
+db.select(&quot;/user&quot;).set({handle: &quot;modified-handle&quot;, newobject: {foo: &quot;bar&quot;}});
+// -&gt; prints the following to console:
+// Subpaths modified on user (/user): /handle,/newobject,/newobject/foo</code></pre>
+
+<h1 id='properties'>Properties</h1>
+
+<p>Properties are like imaginary paths on objects in your database. They allow you to make more interesting assertions about your data. Each property uses the <code>.propertyName</code> syntax and may be used in any path query:</p>
+
+<p>Use <code>.type</code> When you need to know what type of data is at any given path. Returns the object type as &#8216;object&#8217;, &#8216;array&#8217;, &#8216;string&#8217;, &#8216;number&#8217;, &#8216;boolean&#8217; or &#8216;null&#8217;:</p>
+
+<pre><code>results = db.select(&quot;/timeline/.type&quot;);
+results.value() //-&gt; &#39;Array&#39;</code></pre>
+
+<p>The type property lets you query for all paths matching more precise criteria:</p>
+
+<pre><code>// Find all arrays everywhere. 
+var all_arrays = db.select(&quot;//[/.type == &#39;array&#39;]&quot;)</code></pre>
+
+<p>Use <code>.size</code> when you need to know about the amount of data in an object. Returns the object&#8217;s size if it is a String (number of characters), Array (number of items) or Object (number of keys):</p>
+
+<pre><code>var timeline_is_empty = db.assert(&quot;/timeline/.size &lt; 1&quot;); //-&gt; false, timeline contains items</code></pre>
+
+<p>Use <code>.explode</code> when you need to break an object down into components. Returns the object broken into a set that may be compared to other sets. Strings are exploded into a set of characters. Arrays and objects do not support this property - use the wildcard <code>*</code> character instead.</p>
+
+<pre><code>// Does the user&#39;s handle contain a, b and c?
+results = db.assert(&quot;/user/handle/.explode }&gt;{ {&#39;a&#39;,&#39;b&#39;,&#39;c&#39;}&quot;)</code></pre>
+
+<h1 id='making_assertions'>Making assertions</h1>
+
+<p>We&#8217;ve already seen how assertion queries can be used as filters in <a href='#selecting_data'>selection queries</a>. Assertion queries are also used heavily in Spah&#8217;s <span>HTML handling</span>.</p>
+
+<p>Since the entity on either side of the comparison operator could contain one or more results (or no results at all), all comparisons in SpahQL are <em>set</em> comparisons.</p>
+
+<p>Assertions are run through the <code>assert</code> method on the state:</p>
+
+<pre><code>result = db.assert(myQuery) //-&gt; true or false.</code></pre>
+
+<p>Assertions don&#8217;t have to use comparisons:</p>
+
+<pre><code>db.assert(&quot;/user&quot;); //-&gt; true, since /user exists and has a truthy value
+db.assert(&quot;/flibbertygibbet&quot;); //-&gt; false, since /flibbertygibbet doesn&#39;t exist, or is false or null</code></pre>
+
+<p>Much like selections, assertions can be scoped to a set of results you already have available:</p>
+
+<pre><code>db.select(&quot;/user&quot;).assert(&quot;/handle&quot;); //-&gt; true, since /user/handle exists</code></pre>
+
+<h1 id='comparisons'>Comparisons</h1>
+
+<p>SpahQL&#8217;s set arithmetic uses the following operators for comparing values. To learn how values are compared, see <a href='#object_equality'>Object equality</a>.</p>
+
+<h2 id='set_equality_'>Set equality <code>==</code></h2>
+
+<p>Asserts that both the left-hand and right-hand sets have a 1:1 relationship between their values. The values do not have to be in the same order.</p>
+
+<h2 id='set_inequality_'>Set inequality <code>!=</code></h2>
+
+<p>Asserts that the sets are not identical under the rules of the <code>==</code> operator.</p>
+
+<h2 id='subset_of_'>Subset of <code>}&lt;{</code></h2>
+
+<p>Asserts that the left-hand set is a subset of the right-hand set. All values present in the left-hand set must have a matching counterpart in the right-hand set.</p>
+
+<h2 id='superset_of_'>Superset of <code>}&gt;{</code></h2>
+
+<p>Asserts that the left-hand set is a superset of the right-hand set. All values present in the right-hand set must have a matching counterpart in the left-hand set.</p>
+
+<h2 id='joint_set_'>Joint set <code>}~{</code></h2>
+
+<p>Asserts that the left-hand set contains one or more values that are also present in the right-hand set.</p>
+
+<h2 id='disjoint_set_'>Disjoint set <code>}!{</code></h2>
+
+<p>Asserts that the left-hand set contains no values that are also present in the right-hand set.</p>
+
+<h2 id='rough_equality_'>Rough equality <code>=~</code></h2>
+
+<p>Asserts that one or more values from the left-hand set are <em>roughly equal</em> to one or more values from the right-hand set. See <a href='#object_equality'>Object equality</a>.</p>
+
+<h2 id='greater_than_or_equal_to__and_'>Greater than (or equal to) <code>&gt;=</code> and <code>&gt;</code></h2>
+
+<p>Asserts that one or more values from the left-hand set is greater than (or equal to) one or more values from the right-hand set.</p>
+
+<h2 id='less_than_or_equal_to__and_'>Less than (or equal to) <code>&lt;=</code> and <code>&lt;</code></h2>
+
+<p>Asserts that one or more values from the left-hand set is less than (or equal to) one or more values from the right-hand set.</p>
+
+<h1 id='literals'>Literals</h1>
+
+<p>SpahQL does support literals - strings, integers, floats, <code>true</code>, <code>false</code> and <code>null</code> may all be used directly in SpahQL queries. Strings may use single or double quotes as you prefer.</p>
+
+<p>Because all SpahQL comparisons compare sets to one another, all literals count as sets containing just one value.</p>
+
+<p>As such, the following basic comparisons work just as you&#8217;d expect:</p>
+
+<pre><code>db.assert(&quot;/user/handle == &#39;johndoe&#39;&quot;) //-&gt; true
+db.assert(&quot;//user/handle == &#39;johndoe&#39;&quot;) //-&gt; false. The left-hand set contains more than one item.</code></pre>
+
+<p>You may use set literals in SpahQL assertions.</p>
+
+<p>A set literal is wrapped in <code>{}</code> mustaches:</p>
+
+<pre><code>db.assert(&quot;//user/handle }~{ {&#39;johndoe&#39;, &#39;anotherguy&#39;}&quot;) //-&gt; true. The left set is a joint set with the right.</code></pre>
+
+<p>Set literals may combine numbers, strings, booleans and even selection queries:</p>
+
+<pre><code>// a set containing all the handles, plus one arbitrary one.
+{&quot;arbitrary_handle&quot;, //user/handle} </code></pre>
+
+<p>Sets may not be nested - in the above example, SpahQL flattens the set literal to contain all the results of querying for <code>//user/handle</code> and one other value, <code>"arbitrary_handle"</code>.</p>
+
+<p>Ranges are also supported in set literals:</p>
+
+<h1 id='object_equality'>Object equality</h1>
+
+<p>There are two kinds of equality in SpahQL. <em>Strict</em> equality is applied with the <code>==</code> and other major operators, while <em>rough</em> equality is applied when using some of the more lenient operators such as <code>=~</code>.</p>
+
+<h2 id='strict_equality'>Strict equality</h2>
+
+<p>The equality of objects is calculated based on their type. Firstly, for two objects to be equal under strict equality (<code>==</code>) they must have the same base type.</p>
+
+<h3 id='object_equality'>Object equality</h3>
+
+<p>The objects being compared must contain the same set of keys, and the value of each key must be the same in each object. If the value is an object or an array, it will be evaluated recursively.</p>
+
+<h3 id='array_equality'>Array equality</h3>
+
+<p>The arrays must each contain the same values in the same order. If any value is an array or object, it will be evaluated recursively.</p>
+
+<h3 id='number_string_bool_null'>Number, String, Bool, null</h3>
+
+<p>The objects must be of equal type and value.</p>
+
+<h2 id='rough_equality'>Rough equality</h2>
+
+<p>Under rough equality (<code>=~</code>) the rules are altered:</p>
+
+<h3 id='rough_string_equality'>Rough String equality</h3>
+
+<p>Strings are evaluated to determine if the left-hand value matches the right-hand value, evaluating the right-hand value as a regular expression e.g. <code>"bar" =~ "^b"</code> returns <code>true</code> but <code>"bar" =~ "^a"</code> returns <code>false</code></p>
+
+<h3 id='rough_number_equality'>Rough Number equality</h3>
+
+<p>Numbers are evaluated with integer accuracy only (using Math.floor, numeric.floor or an equivalent operation)</p>
+
+<h3 id='rough_array_equality'>Rough Array equality</h3>
+
+<p>Arrays behave as if compared with the joint set operator.</p>
+
+<h3 id='rough_object_equality'>Rough Object equality</h3>
+
+<p>Objects are roughly equal if both hashes contain one or more keys with the same corresponding values. Values are compared using strict equality.</p>
+
+<h3 id='rough_boolean_and_null_equality'>Rough Boolean and Null equality</h3>
+
+<p>Booleans and Null objects are evaluated based on truthiness rather than exact equality. <code>false =~ null</code> is <code>true</code> but <code>true =~ false</code> is <code>false</code>.</p>
+
+<p>When using inequality operators <code>&lt;</code>, <code>=&lt;</code>, <code>&gt;</code>, <code>&gt;=</code>:</p>
+
+<ul>
+<li><strong>Strings</strong> are evaluated based on alphanumeric sorting. <code>"a" &lt;= "b"</code> returns <code>true</code> but <code>"z" &gt;= "a"</code> returns <code>false</code>.</li>
+
+<li><strong>Numbers</strong> are evaluated, as you&#8217;d expect, based on their native values.</li>
+
+<li><strong>Arrays, Objects, Booleans, null</strong> are not compatible with these operators and will automatically result in <code>false</code> being returned.</li>
+</ul>
+
+<h1 id='spahql_strategies'>SpahQL Strategies</h1>
+
+<p><em>Strategies</em> are a mechanism provided by SpahQL allowing you to define a queue of asynchronous actions to be run in order against a SpahQL object, provided that the value of the query result matches the criteria you specify. Pattern-wise, they&#8217;re somewhere between a macro and a stored procedure. Strategies are managed using the <code>Strategiser</code> class.</p>
+
+<pre><code>	var state = SpahQL.db({a: {aa: &quot;a.aa.val&quot;, bb: &quot;a.bb.val&quot;}, b: {bb: &quot;b.bb.val&quot;, cc: &quot;b.cc.val&quot;}});
+	var strategiser = new SpahQL.Strategiser();</code></pre>
+
+<p>Strategies are objects which define a set of target paths, a condition which must be met for the strategy to run, and an action to take against the matched paths.</p>
+
+<pre><code>	// Add a strategy to the strategiser...
+	strategiser.addStrategy(
+		// which will take action on /aa and /b/cc, but only if the assertion &quot;/b/bb&quot; returns true
+		{&quot;paths&quot;: [&quot;/aa&quot;, &quot;/b/cc&quot;], &quot;if&quot;: &quot;/b/bb&quot;}, 
+		// with a named category
+		&quot;reduce&quot;,
+		// when triggered, the strategy will be called
+		function(results, root, attachments, strategy) {
+				// make changes to the matched results
+				results.deleteAll();
+				// signal that the strategiser can advance to the next strategy in the queue
+				strategy.done();
+		}
+	);</code></pre>
+
+<p>Strategies must specify the key <em>path</em> or <em>paths</em>, a path or array of paths for the strategy to modify. Strategies may optionally use the key <em>if</em> or <em>unless</em>, containing a SpahQL assertion whose expectation must be met for this strategy to be included. When we execute the strategies against a target SpahQL object, <em>path</em>, <em>paths</em>, <em>if</em> and/or <em>unless</em> will be evaluated relative to the target.</p>
+
+<p>Strategies also specify an <em>action</em>, a function containing the strategy&#8217;s behaviour. It receives the arguments <em>results</em>, a SpahQL instance containing matches for the <em>path</em>, <em>root</em>, the original target SpahQL instance, <em>attachments</em>, an arbitrary object you may pass in when you execute the strategies, and <em>strategy</em>, an object containing flow control functions allowing you to signal that the strategy has completed.</p>
+
+<p>Specifying multiple paths using the <em>paths</em> key is equivalent to registering multiple strategies each with the same expectation and action - the action function will be called once for each query specified in the <em>paths</em> array and calling <code>strategy.done()</code> will advance the queue to the next path in this strategy, or to the next strategy.</p>
+
+<p>Execution is as follows:</p>
+
+<pre><code>strategiser.run(target, category, attachments, callback);</code></pre>
+
+<p>When applied to the above example:</p>
+
+<pre><code>	// Clone the State first to run the strategies without modifying the original
+	// Run the strategies in the &quot;reduce&quot; category
+	// Pass {foo: &quot;bar&quot;} as an attachment that will be available to all the strategies
+	// Pass a callback function which will receive the modified SpahQL and the attachments
+	strategiser.run(state.clone(), &quot;reduce&quot;, {foo: &quot;bar&quot;}, function(clone, attachments) {
+			console.log(clone.select(&quot;/aa&quot;).length()); //-&gt; 0, as the above strategy deleted this value
+	});</code></pre>
+</div> <!-- .section -->
+
+              <div class="section section-sections">
+                <div class="section-title">
+                  <h3>Sections</h3>
+                </div> <!-- .section-title -->
+                <div class="section-content">
+
+  <ul class="section-list">
+    
+  </ul>
+              </div> <!-- .section-content -->
+            </div> <!-- .section -->
+
+      </div> <!-- #main -->
+      
+      <div id="footer">
+        <p><a href="http://github.com/danski/spahql">SpahQL</a> v0.7.0 API documentation.</p>
+        <p>
+          
+            Last updated on April 27, 2012 at 17:42 UTC.
+          
+          Generated by <a href="http://pdoc.org">PDoc</a>.
+          Uses <a href="http://famfamfam.com/lab/icons/silk/" title="famfamfam.com: Silk Icons">Silk Icons</a> and portions of <a href="http://github.com/280north/aristo/tree/master" title="280north's aristo at master - GitHub">Aristo</a>.
+        </p>
+        
+      </div> <!-- #footer -->
+
+    </div> <!-- #page -->
+  </body>
+</html>
