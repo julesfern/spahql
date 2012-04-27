@@ -10,6 +10,7 @@
     <script type="text/javascript" src="js/highlight.pack.js"></script>
     <script type="text/javascript" src="js/jquery.1.5.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.scrollTo-1.4.2-min.js"></script>
+    <script type="text/javascript" src="js/spahql-min.js"></script>
     <script type="text/javascript" src="js/nav.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
@@ -39,9 +40,23 @@
 
 <h1 id='install'>Install</h1>
 
+<p>SpahQL has no dependencies - all you need is SpahQL itself.</p>
+
 <h2 id='browserbased_apps'>Browser-based apps</h2>
 
+<p>Download the <a href='https://raw.github.com/danski/spahql/master/spahql-min.js'>latest minified JS</a> and include it in your project.</p>
+
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;path/to/spahql-min.js&quot;&gt;&lt;/script&gt;</code></pre>
+
 <h2 id='nodejs__commonjs_apps'>Node.js / CommonJS apps</h2>
+
+<p>SpahQL is available through NPM, so installation is painless.</p>
+
+<pre><code>npm install spahql</code></pre>
+
+<p>Once installed, require it like any other CommonJS dependency.</p>
+
+<pre><code>var spahql = require(&#39;spahql&#39;);</code></pre>
 
 <h1 id='getting_started'>Getting started</h1>
 
@@ -214,7 +229,7 @@ results = db.assert(&quot;/user/handle/.explode }&gt;{ {&#39;a&#39;,&#39;b&#39;,
 
 <h1 id='making_assertions'>Making assertions</h1>
 
-<p>We&#8217;ve already seen how assertion queries can be used as filters in <a href='#selecting_data'>selection queries</a>. Assertion queries are also used heavily in Spah&#8217;s <span>HTML handling</span>.</p>
+<p>We&#8217;ve already seen how assertion queries can be used as filters in <a href='#selecting_data'>selection queries</a>. Assertions can also be used on their own using SpahQL&#8217;s <code>assert</code> method.</p>
 
 <p>Since the entity on either side of the comparison operator could contain one or more results (or no results at all), all comparisons in SpahQL are <em>set</em> comparisons.</p>
 
