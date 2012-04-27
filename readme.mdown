@@ -1,6 +1,7 @@
 #SpahQL: Query, manipulate and manage JSON data effortlessly.
 
 [github]: http://github.com/danski/spahql
+[js_minified]: https://raw.github.com/danski/spahql/master/spahql-min.js
 
 [spahql_getting_started]: #getting_started
 [selection_queries]: #selecting_data
@@ -20,11 +21,23 @@ You can use SpahQL to fetch deeply-nested data, traverse large trees, and to que
 
 #Install
 
+SpahQL has no dependencies - all you need is SpahQL itself.
+
 ##Browser-based apps
+
+Download the [latest minified JS][js_minified] and include it in your project.
+
+	<script type="text/javascript" src="path/to/spahql-min.js"></script>
 
 ##Node.js / CommonJS apps
 
+SpahQL is available through NPM, so installation is painless.
 
+	npm install spahql
+
+Once installed, require it like any other CommonJS dependency.
+
+	var spahql = require('spahql');
 
 #Getting started
 
@@ -197,7 +210,7 @@ Use <code>.explode</code> when you need to break an object down into components.
 
 #Making assertions
 
-We've already seen how assertion queries can be used as filters in [selection queries][selection_queries]. Assertion queries are also used heavily in Spah's [HTML handling][document_logic].
+We've already seen how assertion queries can be used as filters in [selection queries][selection_queries]. Assertions can also be used on their own using SpahQL's <code>assert</code> method.
 
 Since the entity on either side of the comparison operator could contain one or more results (or no results at all), all comparisons in SpahQL are _set_ comparisons.
 
