@@ -510,7 +510,7 @@ exports["SpahQL"] = {
 		test.deepEqual(myDb.paths(), myDbClone.paths());
 		test.deepEqual(myDb.values(), myDbClone.values());
 
-		myDbClone.delete();
+		myDbClone.destroy();
 		test.ok(myDbClone.length+1, myDb.length);
 		test.notDeepEqual(myDb.sourceData(), myDbClone.sourceData());
 
@@ -690,64 +690,64 @@ exports["SpahQL"] = {
 		test.done();
 	},
 
-	"delete() deletes from the parent": function(test) {
+	"destroy() deletes from the parent": function(test) {
 		var inner = {aa: "aa"};
 		var outer = {a: inner, b: inner};
 
 		var db = SpahQL.db(outer);
 
-		db.select("/a").delete();
+		db.select("/a").destroy();
 
 		test.deepEqual(db.value(), {b: inner});
 		test.done();
 	},
 
-	"delete() ignored on root object": function(test) {
+	"destroy() ignored on root object": function(test) {
 		var inner = {aa: "aa"};
 		var outer = {a: inner, b: inner};
 
 		var db = SpahQL.db(outer);
 
-		db.delete();
+		db.destroy();
 
 		test.deepEqual(db.value(), {a: inner, b: inner});
 		test.done();
 	},
 
-	"delete() deletes a key from an array": function(test) {
+	"destroy() deletes a key from an array": function(test) {
 		var inner = [0,1,2,3,4];
 		var outer = {a: inner, b: inner};
 
 		var db = SpahQL.db(outer);
 
-		db.select("/a").delete(3);
+		db.select("/a").destroy(3);
 
 		test.deepEqual(db.value(), {a: inner, b: inner});
 		test.deepEqual(inner, [0,1,2,4]);
 		test.done();
 	},
 
-	"delete() deletes a key from an object": function(test) {
+	"destroy() deletes a key from an object": function(test) {
 		var inner = {aa: "aa", bb: "bb"};
 		var outer = {a: inner, b: inner};
 
 		var db = SpahQL.db(outer);
 
-		db.select("/a").delete("bb");
+		db.select("/a").destroy("bb");
 
 		test.deepEqual(db.value(), {a: inner, b: inner});
 		test.deepEqual(inner, {aa: "aa"});
 		test.done();
 	},
 
-	"deleteAll() works against every item in the set": function(test) {
+	"destroyAll() works against every item in the set": function(test) {
 		var inner1 = {aa: "aa", bb: "bb"};
 		var inner2 = {aa: "aa", bb: "bb"};
 		var outer = {a: inner1, b: inner2};
 
 		var db = SpahQL.db(outer);
 
-		db.select("/*").deleteAll("bb");
+		db.select("/*").destroyAll("bb");
 
 		test.deepEqual(db.value(), {a: inner1, b: inner2});
 		test.deepEqual(inner1, {aa: "aa"});

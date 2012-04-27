@@ -780,7 +780,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   },
 
   /**
-   * SpahQL#delete([key]) -> SpahQL
+   * SpahQL#destroy([key]) -> SpahQL
    *
    * Deletes data from the first result in this set. If a key is supplied, the key will be deleted from value.
    * If no arguments are given, the entire result will be deleted from its parent.
@@ -791,7 +791,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    *
    * The root data construct may not be deleted. This method always returns self.
    **/
-  "delete": function(target, key) {
+  "destroy": function(target, key) {
     if(!target || typeof(target)!="object") {
       key = target;
       target = this[0];
@@ -825,7 +825,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
       var k = this.keyName(target.path);
       var p = this.parent(target);
       if(p && k) {
-        p.delete(k);
+        p.destroy(k);
       }
     }
     
@@ -833,12 +833,12 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   },
 
   /**
-   * SpahQL#deleteAll([key]) -> SpahQL
+   * SpahQL#destroyAll([key]) -> SpahQL
    *
    * Just like #delete, but called against every item in this set. Returns self.
    **/
-  "deleteAll": function(key) {
-    for(var i=0; i<this.length; i++) this.delete(this[i], key);
+  "destroyAll": function(key) {
+    for(var i=0; i<this.length; i++) this.destroy(this[i], key);
     return this;
   },
 
@@ -914,6 +914,9 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
       oldValue, 
       result.value
     );
-  },
+  }
 
 });
+
+if(typeof(module) != 'undefined' && typeof(module.exports) != 'undefined') module.exports = SpahQL;
+if(typeof(window) != 'undefined') window.SpahQL = SpahQL;

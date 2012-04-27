@@ -30,6 +30,6 @@ SpahQL_classCreate("SpahQL.Token", {
    **/
   "throwParseErrorAt": function(i, query, message) {
     throw new Error("Parse error: '"+(message||"failure")+"' at index "+i+" in query '"+query+"'.");
-  },
+  }
   
 });

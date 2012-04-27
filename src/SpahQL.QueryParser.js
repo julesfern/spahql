@@ -130,7 +130,7 @@ SpahQL_classCreate("SpahQL.QueryParser", {
     **/
    "throwParseErrorAt": function(i, query, message) {
      throw new Error("Parse error: '"+(message||"failure")+"' at index "+i+" in query '"+query+"'.");
-   },
+   }
    
 
  });

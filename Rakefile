@@ -26,21 +26,39 @@ task :docs do
   Rake::Task["docs:prose"].invoke
 end
 
-desc "Build the javascript application from source. N.B. Google Closure must be in your environment path."
-task :build, :compiler do |t, args|
-  puts "Building"
+desc "Build the javascript application from source. N.B. Google Closure must be in your environment path as compilar.jar"
+task :build do |t, args|
+  require 'json'
+  pwd = File.dirname(__FILE__)
+
+  src_dir = "#{pwd}/src"
+  manifest_path = "#{src_dir}/build.json"
+  concat_target = "#{pwd}/spahql.js"
+  compile_target = "#{pwd}/spahql-min.js"
+
+  puts "Getting build manifest from #{manifest_path}"
+  manifest = JSON.parse(File.open(manifest_path).read)
+  manifest_files = manifest["files"]
+  manifest_js = []
+  manifest_files.each do |f|
+    f_path = File.join(src_dir, f)
+    puts "Reading #{f_path}"
+    manifest_js << File.open(f_path).read
+  end
+
+  puts "Concatenating source from #{pwd} to #{concat_target}"
+  # Load build.json and read each file
+  concat_js = manifest_js.join("\n\r\n\r")
+  File.open(concat_target, "w") {|f| f.write concat_js }
+
+  puts "Building from #{pwd}/spahql.js to #{compile_target}"
+  `java -jar ~/Downloads/compiler.jar --js #{concat_target} --js_output_file #{compile_target}`
 end
 
 desc "Runs lint against the client's javascript source. Defaults to the Google Closure linter."
 task :lint, :linter do |t, args|
   
-end  
-
-desc "Run the client-side javascript tests"
-task :test, :environment, :needs=>:build do |t, args|
-  puts "testing"
-end
-    
+end    
 
 namespace :docs do
 

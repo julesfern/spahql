@@ -1,11 +1,11 @@
 {
-  "name": "spah",
+  "name": "SpahQL",
   "preferGlobal": "false",
-  "version": "0.1.0",
+  "version": "0.7.0",
   "author": "Dan Glegg <dan@angryamoeba.co.uk>",
-  "description": "A framework for building single-page applications without resorting to shady tricks.",
+  "description": "A query language and data model for deep Javascript object structures.",
   "contributors": [],
-  "main": "./src/Spah-edge.js",
+  "main": "spahql.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/danski/SpahQL.git"

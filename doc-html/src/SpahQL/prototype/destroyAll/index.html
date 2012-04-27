@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Spah  v0.7.0 API documentation | SpahQL#sourceData</title>
+  <title>Spah  v0.7.0 API documentation | SpahQL#destroyAll</title>
   <meta name="generator" content="PDoc" />
   
   <script charset="utf-8" src="../../../javascripts/pdoc/prototype.js" type="text/javascript"></script>
@@ -71,7 +71,7 @@
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/containing/index.html" title="SpahQL#containing (instance method)">containing</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/containingAll/index.html" title="SpahQL#containingAll (instance method)">containingAll</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/destroy/index.html" title="SpahQL#destroy (instance method)">destroy</a></div></li>
-<li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/destroyAll/index.html" title="SpahQL#destroyAll (instance method)">destroyAll</a></div></li>
+<li><div class="menu-item"><a class="instance-method current" href="../../../SpahQL/prototype/destroyAll/index.html" title="SpahQL#destroyAll (instance method)">destroyAll</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/detach/index.html" title="SpahQL#detach (instance method)">detach</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/each/index.html" title="SpahQL#each (instance method)">each</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/filter/index.html" title="SpahQL#filter (instance method)">filter</a></div></li>
@@ -94,7 +94,7 @@
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/select/index.html" title="SpahQL#select (instance method)">select</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/set/index.html" title="SpahQL#set (instance method)">set</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/setAll/index.html" title="SpahQL#setAll (instance method)">setAll</a></div></li>
-<li><div class="menu-item"><a class="instance-method current" href="../../../SpahQL/prototype/sourceData/index.html" title="SpahQL#sourceData (instance method)">sourceData</a></div></li>
+<li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/sourceData/index.html" title="SpahQL#sourceData (instance method)">sourceData</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/type/index.html" title="SpahQL#type (instance method)">type</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/types/index.html" title="SpahQL#types (instance method)">types</a></div></li>
 <li><div class="menu-item"><a class="instance-method" href="../../../SpahQL/prototype/unlisten/index.html" title="SpahQL#unlisten (instance method)">unlisten</a></div></li>
@@ -121,16 +121,16 @@
   
     <li>&rarr; <a href="../../../SpahQL/index.html" title="SpahQL (class)">SpahQL</a></li>
   
-    <li>&rarr; <a href="../../../SpahQL/prototype/sourceData/index.html" title="SpahQL#sourceData (instance method)">sourceData</a></li>
+    <li>&rarr; <a href="../../../SpahQL/prototype/destroyAll/index.html" title="SpahQL#destroyAll (instance method)">destroyAll</a></li>
   
 </ul>
 
 
-  <p id="src_code_href"><a href="http://github.com/danski/spahql/blob/master/src/SpahQL.js#322">src code</a></p>
+  <p id="src_code_href"><a href="http://github.com/danski/spahql/blob/master/src/SpahQL.js#840">src code</a></p>
 
 
 <h2 class="page-title">
-  <span class="type">instance method</span> SpahQL#sourceData
+  <span class="type">instance method</span> SpahQL#destroyAll
 </h2>
 
 
@@ -142,11 +142,11 @@
   <div class="section-content">
     <div class="method-description">
       
-        <pre class="syntax"><code class="ebnf">SpahQL#sourceData() &rarr; Object</code></pre>
+        <pre class="syntax"><code class="ebnf">SpahQL#destroyAll([key]) &rarr; <a href="../../../SpahQL/index.html" title="SpahQL (class)">SpahQL</a></code></pre>
 
       
 
-      <p>The original, root-level object from which this SpahQL instance draws data.</p>
+      <p>Just like #delete, but called against every item in this set. Returns self.</p>
       
       
 
