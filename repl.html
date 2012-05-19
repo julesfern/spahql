@@ -49,10 +49,14 @@
 
 		$("#twitter-get").click(function(e) {
 			e.preventDefault();
-			$.ajax("http://api.twitter.com/1/statuses/public_timeline.json", {
-				"dataType": "jsonp",
-				"success": function(data) {
+			$.ajax({
+				"url": "http://api.twitter.com/1/statuses/public_timeline.json?callback=?",
+				"dataType": "json",
+				"success": function(data, status, jqXHR) {
 					$("#json").val(JSON.stringify(data));
+				},
+				"error": function(jqXHR) {
+
 				}
 			});
 		});
