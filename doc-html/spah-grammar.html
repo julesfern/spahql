@@ -4,18 +4,22 @@
     <title>Appendix: SpahQL Grammar and execution spec</title>
     
     <link rel="stylesheet" href="css/normalize.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="css/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/nav.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/ir_black.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/repl.css" type="text/css" media="screen" />
     
     <script type="text/javascript" src="js/highlight.pack.js"></script>
     <script type="text/javascript" src="js/jquery.1.5.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.scrollTo-1.4.2-min.js"></script>
     <script type="text/javascript" src="js/spahql-min.js"></script>
+    <script type="text/javascript" src="js/spahql-repl.js"></script>
     <script type="text/javascript" src="js/nav.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
         hljs.initHighlighting();
-        Nav.init("#nav-pages", "#nav-overview");
+        Nav.init(function(overview) {
+          $("nav .current").first().after(overview);
+        });
       });
     </script>
   </head>
@@ -24,10 +28,11 @@
 <a href="https://github.com/danski/spahql"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
 
     <div class="nav-wrapper">
-      <nav id="nav-pages">
-        <ul><li><a href="index.html">SpahQL: Query, manipulate and manage JSON data effortlessly.</a></li><li><a class="current" href="#">Appendix: SpahQL Grammar and execution spec</a></li><li><a href="src/index.html">API</a></li></ul>
-      </nav>
-      <nav id="nav-overview">
+      <nav id="nav-overview" class="overview">
+        <h3>SpahQL</h3>
+        <h4><a href="repl.html">Try SpahQL</a></h4>
+        <h4><a href="index.html">SpahQL Manual</a></h4>
+        <h4><a href="src/index.html">API</a></h4>
       </nav>
     </div>
      

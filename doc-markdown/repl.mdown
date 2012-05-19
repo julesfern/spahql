@@ -1,0 +1,111 @@
+<script type="text/javascript">
+	$(function() {
+		var repl = new REPL();
+		$("#REPL").submit(function(e) {
+			e.preventDefault();
+			var $form = $(this), $input = $("#json", $form), $query = $("#query", $form), $target = $("#print", $form);
+			repl.exec($input.val(), $query.val(), $target);
+			return false;
+		});
+
+		$("#twitter-get").click(function(e) {
+			e.preventDefault();
+			$.ajax("http://api.twitter.com/1/statuses/public_timeline.json", {
+				"dataType": "jsonp",
+				"success": function(data) {
+					$("#json").val(JSON.stringify(data));
+				}
+			});
+		});
+	});
+</script>
+
+<form action="#" method="GET" id="REPL">
+	<h1>Try SpahQL</h1>
+	<fieldset class="read">
+		<label for="json">JSON data</label>
+		<textarea id="json" name="json" class="text">Enter some JSON here</textarea>
+		<a id="twitter-get" class="twitter" href="">Populate with Twitter timeline</a>
+	</fieldset>
+	<fieldset class="execute">
+		<label for="query">SpahQL query</label>
+		<input type="text" id="query" name="query" class="text" />
+		<input type="submit" value="Run" class="submit" />
+	</fieldset>
+	<div class="print" id="print">
+	</div>
+</form>
+
+#Examples
+
+Select from an object by path: 
+
+	/key/subkey
+
+Select from an array:
+
+	/0
+	/1
+	/2
+	...
+
+Select from an array of objects:
+
+	/0/text //-> text of first tweet in timeline
+
+Select recursively by path:
+
+	//text
+
+Select all keys in an object:
+
+	/*
+
+Select all matching a criteria:
+
+	//*[/text/.size == 140] //-> all tweets with a text exactly 140 characters in length
+
+Set literals:
+
+	{"i'm not a tweet", /0/text, /1/text} //-> Text from first two tweets and one extra string as a single set
+
+Basic literals:
+
+	3
+	"three"
+	true
+	false
+
+Properties:
+
+	/.size //-> Number of tweets
+	/0/text/.size //-> Number of characters in first tweet
+
+Basic equalities:
+
+	/0/text == "does the first tweet match this?"
+
+Basic inequalities:
+
+	/.size > 10 //-> Timeline longer than 10 tweets?
+	/0/text/.size <= 100 //-> First tweet 100 characters or less?
+
+Rough equalities:
+
+	/0/text =~ "^first tweet matches this regex\?"
+
+Supersets:
+
+	//text }>{ "is there a tweet matching this?"
+
+Subsets:
+
+	/0/text }<{ {"does", "the first", "tweet", "match", "any of these?"}
+
+Joint sets:
+
+	//text }~{ {"any", "tweets", "matching", "any of these?"}
+
+Disjoint sets:
+
+	/0/text }!{ {"shouldn't", "match", "any of these"}

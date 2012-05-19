@@ -1,0 +1,136 @@
+#REPL {
+  margin-top: 40px;
+  padding: 0 10px 10px 10px;
+  background-color: rgba(0, 147, 216, 0.53);
+  
+  border: 3px solid rgba(255,255,255,0.3);
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+#REPL h1 {
+  margin-top: 0;
+  color: #FFF;
+  font-size: 1.5em;
+  padding: 10px 0;
+  margin: 0;
+  border: none;
+}
+#REPL a, #REPL a:visited {
+  color: #FFF;
+  text-decoration: underline;
+  font-size: 0.7em;
+  display: block;
+  text-align: right;
+}
+#REPL fieldset {
+	position: relative;
+	background: #0094d8;
+	border: 4px solid #FFF;
+	margin-bottom: 10px;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+#REPL fieldset:after, #REPL fieldset:before {
+	top: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+#REPL fieldset:after {
+	border-top-color: #0094d8;
+	border-width: 20px;
+	left: 50%;
+	margin-left: -20px;
+}
+#REPL fieldset:before {
+	border-top-color: #FFF;
+	border-width: 26px;
+	left: 50%;
+	margin-left: -26px;
+}
+#REPL .read {
+  z-index: 2000;
+}
+#REPL .execute {
+  z-index: 1500;
+  
+  border-color: #7ec7e9;
+  background-color: #006a9b;
+}
+#REPL .execute:after {
+  border-top-color: #006a9b;
+}
+#REPL .execute:before {
+  border-top-color: #7ec7e9;
+}
+#REPL .print {
+  position: relative;
+  z-index: 1000;
+  background-color: #002e43;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border: 4px solid #0285c1;
+  
+  padding: 10px;
+}
+#REPL .result {
+  
+}
+#REPL .assertion {
+  padding-bottom: 7px;
+  margin-bottom: 7px;
+  border-bottom: 1px solid #FFF;
+}
+#REPL .bool {
+  font-family: monospace;
+}
+#REPL .selection ol {
+  margin: 10px 0 0 25px;
+  padding: 0;
+}
+#REPL .selection li {
+  border: none;
+  box-shadow: none;
+  background: rgba(0,0,0,0.3);
+  margin: 0 0 5px 0;
+}
+#REPL .selection .value {
+  display: block;
+  font-family: monospace;
+  font-size: 1.2em;
+  background: #000;
+  padding: 5px;
+  border: 1px solid #999;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+#REPL .selection .path {
+  display: block;
+  font-size: 0.8em;
+}
+#REPL .selection .from-source {
+  
+}
+#REPL .selection .from-literal .path {
+  font-style: italic;
+  color: #CCC;
+}
+
+#REPL label {
+  display: block;
+}
+#REPL .submit {
+}
+#REPL .text {
+  display: block;
+  width: 99%;
+  border: none;
+}

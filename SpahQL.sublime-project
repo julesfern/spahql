@@ -29,7 +29,12 @@
 	"folders":
 	[
 		{
-			"path": "/home/danski/projects/spahql"
+			"file_exclude_patterns":
+			[
+				".DS_Store",
+				"*.pdoc.yaml"
+			],
+			"path": "~/Sites/spahql"
 		}
 	],
 	"settings":

@@ -1,6 +1,6 @@
 LIB_NAME = "SpahQL"
 LIB_GITHUB_URL = "http://github.com/danski/spahql"
-LIB_HOMEPAGE_URL = LIB_GITHUB_URL
+LIB_HOMEPAGE_URL = "http://danski.github.com/spahql"
 LIB_LICENSE_TYPE = "MIT"
 LIB_DESCRIPTION_SHORT = "A query language for JSON data"
 LIB_DESCRIPTION_LONG = "Fetch, filter, modify and make assertions about deep Javascript data structures"
@@ -152,7 +152,8 @@ namespace :docs do
       payload = {
         "title" => title,
         "navigation" => nav_html,
-        "content" => html
+        "content" => html,
+        "file" => File.basename(ifile).split(".").first
       }
       html_with_template = Liquid::Template.parse(@template).render(payload)
       
@@ -196,7 +197,7 @@ namespace :docs do
         :pretty_urls => false,
         :bust_cache => true,
         :name => LIB_NAME,
-        :short_name => 'Spah',
+        :short_name => 'SpahQL',
         :home_url => LIB_HOMEPAGE_URL,
         :doc_url => LIB_HOMEPAGE_URL,
         :version => LIB_VERSION,

@@ -1,16 +1,14 @@
 Nav = function() {
   
 }
-Nav.init = function(pageListSelector, headingListSelector) {
-  var pNav = $(pageListSelector);
-  var hNav = $(headingListSelector);
-
-  this.addHelperMarkup();
-  this.formatCode();
-  this.buildOverview(hNav);
+Nav.init = function(injectorCallback) {
+  var overview = this.buildOverview(injectorCallback);
+  this.addScrollListener(overview);
   this.addToggleBehaviours();
   this.addLinkBehaviours();
-  this.addScrollListener();
+  
+  this.addHelperMarkup();
+  this.formatCode();
 }
 
 Nav.addHelperMarkup = function() {
@@ -45,18 +43,17 @@ Nav.formatCode = function() {
   });
 };
 
-Nav.buildOverview = function(target) {
+Nav.buildOverview = function(injectorCallback) {
 
   
   // Build the heading index
   var hTags = ["h1", "h2", "h3", "h4", "h5", "h6"];
   var hSel = hTags.join(", ");
-  var hPrev;
+  var hPrev, liPrev, target;
   
   // target is always a LIST and we're appending LI's to it
-  target.append("<ul class=\"h1\"></ul>");
-  
-  var liPrev;
+  var rootList = $("<ol class=\"h1\"></ol>");
+  injectorCallback(rootList);  
   
   $(hSel, $("article")).each(function(index) {
     if(index == 0) {
@@ -65,7 +62,7 @@ Nav.buildOverview = function(target) {
     else {
       var $h = $(this);
 
-      var newLi = $("<li class=\"hidden\"><a href=\"#"+$h.attr("id")+"\">"+$h.html()+"</a><ul></ul></li>");
+      var newLi = $("<li class=\"hidden\"><a href=\"#"+$h.attr("id")+"\">"+$h.html()+"</a><ol></ol></li>");
 
       if(hPrev && (this.tagName == hPrev.tagName)) {
         // console.log("keeping scope: "+this.tagName+" ('"+$h.html()+"')");
@@ -74,7 +71,7 @@ Nav.buildOverview = function(target) {
         // Starting out or descending scope
         // console.log("entering scope: "+this.tagName+" ('"+$h.html()+"')");
         // Go to new target
-        target = $("ul", (liPrev||target)).first();
+        target = ($("ol", (liPrev)).length > 0)? $("ol", liPrev).first() : rootList;
         // Add toggler to previous target
         if(liPrev && hPrev) {
           liPrev.addClass("has-subtopics");
@@ -88,7 +85,7 @@ Nav.buildOverview = function(target) {
         // console.log("exiting scope: "+this.tagName+" ('"+$h.html()+"')");
         // Exiting scope, determine how many exits we're making
         var prevT = target;
-        target = target.closest("ul."+this.tagName.toLowerCase());
+        target = target.closest("ol."+this.tagName.toLowerCase());
       }
       // Append to current scope
       target.append(newLi);
@@ -97,6 +94,8 @@ Nav.buildOverview = function(target) {
       liPrev = newLi; 
     }
   });
+  
+  return rootList;
 }
 
 Nav.addToggleBehaviours = function() {
@@ -122,13 +121,11 @@ Nav.expandTree = function(li) {
   var $li = $(li);
   $li.removeClass("hidden");
   $li.addClass("shown");
-  var sublist = $li.children("ul");
+  var sublist = $li.children("ol");
   if(sublist.children("li").length > 0) {
     sublist.slideDown(250);
   }
   $li.children("a.nav-toggle").html("-");
-
-  $("nav").scrollTo($li);
 }
 
 Nav.collapseTree = function(li) {
@@ -136,7 +133,7 @@ Nav.collapseTree = function(li) {
   if($li.hasClass("manual")) return;
   $li.removeClass("shown");
   $li.addClass("hidden");
-  $li.children("ul").slideUp(250);
+  $li.children("ol").slideUp(250);
   $li.children("a.nav-toggle").html("+");
 }
 
@@ -157,15 +154,16 @@ Nav.navigate = function(dest) {
   // Scroll main content view
   Nav.scrollTarget = dest;
   $.scrollTo($(dest), 500, {onAfter: function() {
+    document.location = document.location.toString().split("#")[0]+dest;
     Nav.scrollTarget = null;
   }});
 }
 
-Nav.makeDestinationCurrent = function(dest) {
+Nav.makeDestinationCurrent = function(dest, hNav) {
   var navLi = $("nav a[href='"+dest+"']").parents("li");
   navLi.addClass("current");
   // Collapse all nav trees that aren't a part of this
-  var navItems = $("nav li");
+  var navItems = $("li", hNav);
   navItems.each(function(i) {
     var $item = $(this);
     // If this list item contains a link to the destination, we expand it
@@ -179,23 +177,23 @@ Nav.makeDestinationCurrent = function(dest) {
   });
 }
 
-Nav.addScrollListener = function() {
+Nav.addScrollListener = function(hNav) {
   $(window).scroll(function(event) {
     // Find the first visible header and highlight it as current in the nav
     var docViewTop = $(window).scrollTop();
     var docViewBottom = docViewTop + $(window).height();
     
     // Strip current classes
-    $("nav li").removeClass("current");
+    $("li", hNav).removeClass("current");
     
     // Find first visible header and if no header is visible, find closest to document top
     // OR take the current async scroll target first
     if(Nav.scrollTarget) {
-      Nav.makeDestinationCurrent(Nav.scrollTarget);
+      Nav.makeDestinationCurrent(Nav.scrollTarget, hNav);
     }
     else {
       var lastAboveFrameHeader;
-      $("h1:not(article h1:first-child), h2, h3, h4, h5, h6").each(function(i) {
+      $("h1:not(h1:first-child), h2, h3, h4, h5, h6", $("article")).each(function(i) {
         var $elem = $(this);
         var elemTop = $elem.offset().top;
         var elemBottom = elemTop + $elem.height();
@@ -210,12 +208,12 @@ Nav.addScrollListener = function() {
         }
         else if(belowFrame && lastAboveFrameHeader) {
           // If we went below frame, run action against last aboveFrame header
-          Nav.makeDestinationCurrent("#"+lastAboveFrameHeader.attr("id"));
+          Nav.makeDestinationCurrent("#"+lastAboveFrameHeader.attr("id"), hNav);
           return false;
         }
         else if(inFrame) {
           // If in frame, this is the badger
-          Nav.makeDestinationCurrent("#"+$elem.attr("id"));
+          Nav.makeDestinationCurrent("#"+$elem.attr("id"), hNav);
           return false;
         }
       }); 
