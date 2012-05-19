@@ -134,3 +134,7 @@
   width: 99%;
   border: none;
 }
+#REPL textarea {
+  height: 20em;
+  font-size: 0.7em;
+}

@@ -7,20 +7,6 @@
 			repl.exec($input.val(), $query.val(), $target);
 			return false;
 		});
-
-		$("#twitter-get").click(function(e) {
-			e.preventDefault();
-			$.ajax({
-				"url": "http://api.twitter.com/1/statuses/public_timeline.json?callback=?",
-				"dataType": "json",
-				"success": function(data, status, jqXHR) {
-					$("#json").val(JSON.stringify(data));
-				},
-				"error": function(jqXHR) {
-					repl.renderError($("#print"), "Problem pulling JSON from Twitter. You'll need to paste your own JSON :(")
-				}
-			});
-		});
 	});
 </script>
 
@@ -28,8 +14,76 @@
 	<h1>Try SpahQL</h1>
 	<fieldset class="read">
 		<label for="json">JSON data</label>
-		<textarea id="json" name="json" class="text">Enter some JSON here</textarea>
-		<a id="twitter-get" class="twitter" href="">Populate with Twitter timeline</a>
+		<textarea id="json" name="json" class="text">
+{
+	"hash1": {
+		"a": "hash.a",
+		"b": "hash.b",
+		"c": "hash.c",
+		"subhash": {
+			"a": "hash.subhash.a",
+			"b": "hash.subhash.b",
+			"c": "hash.subhash.c"
+		}
+	},
+	"hash2": {
+		"a": "hash.a",
+		"b": "hash.b",
+		"c": "hash.c",
+		"subhash": {
+			"a": "hash.subhash.a",
+			"b": "hash.subhash.b",
+			"c": "hash.subhash.c"
+		}
+	},
+	"arr1": [
+		"first",
+		"second", 
+		"third",
+		"fourth",
+		"fifth"
+	],
+	"arr2": [
+		"first",
+		"second", 
+		"third",
+		"fourth",
+		"fifth"
+	],
+	"arrayofobjects": [
+		{
+		"a": "arrayofobjects.0.a",
+		"b": "arrayofobjects.0.b",
+		"c": "arrayofobjects.0.c",
+		"subhash": {
+			"a": "arrayofobjects.0.subhash.a",
+			"b": "arrayofobjects.0.subhash.b",
+			"c": "arrayofobjects.0.subhash.c"
+			}
+		},
+		{
+		"a": "arrayofobjects.1.a",
+		"b": "arrayofobjects.1.b",
+		"c": "arrayofobjects.1.c",
+		"subhash": {
+			"a": "arrayofobjects.1.subhash.a",
+			"b": "arrayofobjects.1.subhash.b",
+			"c": "arrayofobjects.1.subhash.c"
+			}
+		},
+		{
+		"a": "arrayofobjects.1.a",
+		"b": "arrayofobjects.1.b",
+		"c": "arrayofobjects.1.c",
+		"subhash": {
+			"a": "arrayofobjects.1.subhash.a",
+			"b": "arrayofobjects.1.subhash.b",
+			"c": "arrayofobjects.1.subhash.c"
+			}
+		}
+	]
+}
+		</textarea>
 	</fieldset>
 	<fieldset class="execute">
 		<label for="query">SpahQL query</label>
@@ -44,34 +98,34 @@
 
 Select from an object by path: 
 
-	/key/subkey
+	/hash/subhash
 
 Select from an array:
 
-	/0
-	/1
-	/2
+	/arr1/0
+	/arr2/1
+	/arr1/2
 	...
 
 Select from an array of objects:
 
-	/0/text //-> text of first tweet in timeline
+	/arrayofobjects/0/a
 
 Select recursively by path:
 
-	//text
+	/arrayofobjects//a //-> all "a" keys in /arrayofobjects
 
 Select all keys in an object:
 
-	/*
+	/hash1/* //-> all keys from /hash1
 
 Select all matching a criteria:
 
-	//*[/text/.size == 140] //-> all tweets with a text exactly 140 characters in length
+	//*[/.type == 'array'][/.size > 0] //-> all non-empty arrays
 
 Set literals:
 
-	{"i'm not a tweet", /0/text, /1/text} //-> Text from first two tweets and one extra string as a single set
+	{"extra string", /arr1/0, /arr2/*} //-> A single set containing a string literal, the first item from /arr1 and all items from /arr2
 
 Basic literals:
 
@@ -82,34 +136,39 @@ Basic literals:
 
 Properties:
 
-	/.size //-> Number of tweets
-	/0/text/.size //-> Number of characters in first tweet
+	/.size //-> Number of keys on the root object
+	/arr1/.size //-> Length of /arr1
+	/arr1/0/.size //-> Length of string at /arr1/0
+
+	/arr1/.type //-> "array"
+	/.type //-> "object"
 
 Basic equalities:
 
-	/0/text == "does the first tweet match this?"
+	/hash1/a == "does the value match this?"
+	/hash1 == /hash2 //-> will be compared recursively
 
 Basic inequalities:
 
-	/.size > 10 //-> Timeline longer than 10 tweets?
-	/0/text/.size <= 100 //-> First tweet 100 characters or less?
+	/arr1/.size > 10 //-> /arr1 longer than 10 items?
+	/arr1/0/.size <= 100 //-> /arr/0 is 100 characters or less?
 
 Rough equalities:
 
-	/0/text =~ "^first tweet matches this regex\?"
+	/hash1/a =~ "^value matches this regex\?"
 
 Supersets:
 
-	//text }>{ "is there a tweet matching this?"
+	//a }>{ "is there an "a" key matching this?"
 
 Subsets:
 
-	/0/text }<{ {"does", "the first", "tweet", "match", "any of these?"}
+	/hash1/a }<{ {"does", "the", "value", "match", "any of these?"}
 
 Joint sets:
 
-	//text }~{ {"any", "tweets", "matching", "any of these?"}
+	//a }~{ {"any", "'a' keys", "matching", "any of these?"}
 
 Disjoint sets:
 
-	/0/text }!{ {"shouldn't", "match", "any of these"}
+	//a }!{ {"none of the", "'a' keys", "match", "any of these"}
