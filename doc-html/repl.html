@@ -56,7 +56,7 @@
 					$("#json").val(JSON.stringify(data));
 				},
 				"error": function(jqXHR) {
-
+					repl.renderError($("#print"), "Problem pulling JSON from Twitter. You'll need to paste your own JSON :(")
 				}
 			});
 		});
