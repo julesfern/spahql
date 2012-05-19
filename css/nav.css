@@ -1,0 +1,406 @@
+/* @override 
+	http://localhost:4000/css/nav.css */
+
+body {
+  overflow-x: hidden;
+  font-family: Georgia, serif;
+  background: #EFEFEF url('../img/classy_fabric.png');
+  background-attachment: fixed;
+  font-size: 17px;
+  color: #F5F5F5;
+}
+
+p {
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+a, a:visited, h1:first-child {
+  color: #0793db;
+}
+
+.clearfix {
+  clear: both !important;
+}
+
+/* Set up nav positions */
+
+/* @group Block styles */
+
+nav {
+  position: fixed;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  border-right: 1px solid #0094d8;
+  font-size: 18px;
+  box-shadow: 0px 0px 100px #000;
+  z-index: 500;
+}
+article {
+  margin: 10px 50px 50% 300px;
+  max-width: 900px;
+}
+
+/* All lists */
+nav h1 {
+  text-align: center;
+  margin: 0;
+  padding: 0.5em 0;
+  background: #000;
+}
+nav h3 {
+  margin: 0;
+  padding: 0.5em;
+  color: #FFF;
+}
+nav h4 {
+  margin: 0 0 0 20px;
+  padding: 0.5em;
+  font-weight: normal;
+}
+nav h4 a, nav h4 a:visited {
+  color: #DDD;
+}
+nav h4.current {
+  background-color: #0094d8;
+}
+nav h4.current a {
+  color: #FFF;
+}
+
+nav ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #0094d8;
+  font-size: 0.85em;
+}
+nav > h3 + ol,
+nav > h4 + ol {
+  margin-left: 40px;
+}
+nav > ol > li > a {
+  display: block;
+  padding: 10px;
+  border-top: 1px solid #444;
+}
+nav > ol > li:last-child > a {
+  border-bottom: 1px solid #444;
+}
+
+/* Overview list */
+
+.overview li {
+  transition: background-color 0.3s ease-out;
+  -webkit-transition: background-color 0.3s ease-out;
+  -moz-transition: background-color 0s ease-out;
+}
+.overview li.current {
+  background-color: rgba(0,0,0, 0.2);
+}
+.overview ol ol {
+  margin: 0 0 0 0em;
+  padding: 0 0 0 2em;
+}
+.overview ol ol li {
+  padding: 0 0 0.5em 0;
+}
+.overview ol ol li a {
+  padding: 0.5em 0.5em 0 0.5em;
+}
+.overview ol a {
+  display: block;
+  padding-left: 40px;
+  font-size: 1em;
+  color: #FFF;
+}
+.overview ol ol li.has-subtopics > a {
+  margin-bottom: 1em;
+}
+.overview ol ol li.has-subtopics.shown {
+  padding-bottom: 0;
+}
+.overview a.nav-toggle {
+  display: block;
+  float: left;
+  background: #FFF;
+  padding: 1px 5px;
+  text-align: center;
+  line-height: 0.8em;
+  width: 0.7em;
+  height: 1em;
+  color: #0094d8;
+  margin-top: 0.6em;
+  margin-left: 0.6em;
+  margin-right: 5px;
+  border: 1px solid #005f88;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  text-decoration: none;
+}
+
+/* @end */
+
+/* @group Article body */
+
+article {
+  line-height: 1.6em;
+}
+
+article > * {
+  max-width: 600px;
+  margin: 0 auto 1.5em auto;
+}
+
+article h1 {
+  line-height: 1.3em;
+}
+
+article h1, 
+article h2, 
+article h3, 
+article h4 {
+  margin-top: 20px;
+  padding: 10px 0 20px 0;
+  border-bottom: 5px solid #CCC;
+  font-size: 2em;
+}
+
+article > h1:first-child {
+  background: #000;
+  width: 100%;
+  position: relative;
+  border: none;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 5%;
+  font-size: 2.3em;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  box-shadow: 0 0 5px #0793db;
+}
+
+article h2 {
+  padding-bottom: 10px;
+  border-bottom-width: 2px;
+  font-size: 1.3em;
+}
+
+article h3 {
+  padding-bottom: 5px;
+  border-bottom-width: 2px;
+  font-size: 1em;
+}
+
+article em {
+  color: #fcfda0;
+}
+article strong {
+  color: #dda128;
+}
+
+article img {
+  display: block;
+  margin: 20px auto;
+}
+
+article .pre-wrapper,
+article p > code, 
+article > code {
+  background: #000;
+  color: #FFF;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  box-shadow: 0 0 5px #000;
+}
+
+article .pre-wrapper {
+  display: block;
+  padding: 10px;
+}
+article .pre-wrapper pre {
+  width: auto;
+  margin: 0;
+  white-space: pre;
+  overflow-x: auto;
+}
+article .pre-wrapper pre code {
+  display: inline-block;
+}
+
+article code {
+  color: #FFF;
+  background: #333;
+  font-size: small;
+  line-height: 1.4em;
+}
+article p > code, article > code {
+  display: inline-block;
+  padding: 0.4em 0.3em;
+  
+}
+
+
+article > .code-pair {
+  clear: both;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  margin-bottom: 1.5em;
+}
+article > div.code-pair > .text-container {
+  float: left;
+  width: 36%;
+  background: gold;
+  box-shadow: 0px 0px 10px black;
+   -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  position: relative;
+  z-index: 2000;
+  color: #333;
+}
+article > div.code-pair p {
+  width: auto;
+  padding: 10px;
+  margin: 0;
+}
+article > div.code-pair p a,
+article > div.code-pair p em,
+article > div.code-pair p strong {
+  color: black;
+}
+article > div.code-pair p code {
+  box-shadow: none;
+  background: none;
+  border: none;
+  padding: 2px;
+  color: #666;
+}
+
+article > .code-pair > .pre-wrapper,
+article > .code-pair > code {
+  float: right;
+  margin: 0;
+  width: 60%;
+}
+
+article ul, article ol {
+  padding: 1em 0 0 0;
+}
+article ul {
+
+}
+
+article li ul {
+  background: none;
+}
+
+article li {
+  background: #222;
+  padding: 10px 10px 10px 20px;
+  margin: 0 0 10px 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 5px #1577b8;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+article li:last-child {
+}
+
+article li > *:last-child {
+  margin-bottom: 0;
+}
+
+/* @end */
+
+@media only screen and (min-width: 1150px) {
+  article > div.code-pair > .text-container:before {
+    content: " ";
+    border-style: dashed;
+    border-color: transparent;
+    border-width: 0.53em;
+    display: -moz-inline-box;
+    display: inline-block;
+    /* Use font-size to control the size of the arrow. */
+    font-size: 1.2em;
+    height: 0;
+    line-height: 0;
+    position: absolute;
+    vertical-align: middle;
+    width: 0;
+    border-left-width: 1em;
+    border-left-style: solid;
+    border-left-color: gold;
+    top: 0.5em;
+    right: -1.2em;
+  }
+}
+
+@media only screen and (max-width: 1149px) {
+	article {
+      max-width: 650px;
+  		margin-right: 50px;
+	}
+  article > * {
+    max-width: 550px;
+  }
+  article > div.code-pair > .text-container {
+    margin-bottom: 0.5em;
+  }
+  article > div.code-pair > .text-container,
+  article > div.code-pair > .pre-wrapper,
+  article > div.code-pair > code {
+    float: none;
+    width: auto;
+  }
+  article > div.code-pair > .text-container:before {
+    content: " ";
+    border-style: dashed;
+    border-color: transparent;
+    border-width: 0.53em;
+    display: -moz-inline-box;
+    display: inline-block;
+    /* Use font-size to control the size of the arrow. */
+    font-size: 1.2em;
+    height: 0;
+    line-height: 0;
+    position: absolute;
+    vertical-align: middle;
+    width: 0;
+    border-top-width: 1em;
+    border-top-style: solid;
+    border-top-color: gold;
+    bottom: -1.2em;
+    left: 0.5em;
+    z-index: 1000;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+	.overview {
+  		display: none;
+	}
+	article {
+  		margin: 0 auto;
+  		padding: 0 10px 10px 10px;
+	}
+}
+
+@media only screen and (max-width: 650px) {
+  article > div.code-pair > p,
+  article > div.code-pair > .pre-wrapper,
+  article > div.code-pair > code {
+    float: none;
+    width: auto;
+  }
+}
