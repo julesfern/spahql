@@ -52,33 +52,33 @@
 	],
 	"arrayofobjects": [
 		{
-		"a": "arrayofobjects.0.a",
-		"b": "arrayofobjects.0.b",
-		"c": "arrayofobjects.0.c",
+		"a": "AA 0",
+		"b": "BB 0",
+		"c": "CC 0",
 		"subhash": {
-			"a": "arrayofobjects.0.subhash.a",
-			"b": "arrayofobjects.0.subhash.b",
-			"c": "arrayofobjects.0.subhash.c"
+			"a": "AAAA 0",
+			"b": "BBBB 0",
+			"c": "CCCC 0"
 			}
 		},
 		{
-		"a": "arrayofobjects.1.a",
-		"b": "arrayofobjects.1.b",
-		"c": "arrayofobjects.1.c",
+		"a": "AA 1",
+		"b": "BB 1",
+		"c": "CC 1",
 		"subhash": {
-			"a": "arrayofobjects.1.subhash.a",
-			"b": "arrayofobjects.1.subhash.b",
-			"c": "arrayofobjects.1.subhash.c"
+			"a": "AAAA 1",
+			"b": "BBBB 1",
+			"c": "CCCC 1"
 			}
 		},
 		{
-		"a": "arrayofobjects.1.a",
-		"b": "arrayofobjects.1.b",
-		"c": "arrayofobjects.1.c",
+		"a": "AA 2",
+		"b": "BB 2",
+		"c": "CC 2",
 		"subhash": {
-			"a": "arrayofobjects.1.subhash.a",
-			"b": "arrayofobjects.1.subhash.b",
-			"c": "arrayofobjects.1.subhash.c"
+			"a": "AAAA 2",
+			"b": "BBBB 2",
+			"c": "CCCC 2"
 			}
 		}
 	]
