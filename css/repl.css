@@ -132,5 +132,9 @@
 #REPL .text {
   display: block;
   width: 99%;
-  border: none;
+  border: 1px solid #002e43;
+}
+#REPL textarea {
+  height: 20em;
+  font-size: 0.7em;
 }
