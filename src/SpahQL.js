@@ -783,7 +783,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    * SpahQL#rename(key) -> SpahQL
    * - key (Object): The key to replace this query result's key.
    *
-   * Replaces the key of the first item in this set, modifying the queried data
+   * Renames the key of the first item in this set, modifying the queried data
    * in the process. If the first item in this set is the root, no action will be taken.
    *
    * Returns self.
@@ -807,7 +807,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   /**
    * SpahQL#renameAll(key) -> SpahQL
    *
-   * Works just like #replace, but takes action against every result in this set.
+   * Works just like #rename, but takes action against every result in this set.
    *
    **/
   "renameAll": function(key) {
