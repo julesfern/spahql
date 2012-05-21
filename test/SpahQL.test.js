@@ -690,6 +690,55 @@ exports["SpahQL"] = {
 		test.done();
 	},
 
+  "rename() on a child key renames the key in-place and updates the data store": function(test) {
+	  var data = {a: 'one', b: 'two'};
+	  var db = SpahQL.db(data);
+      
+	  var res = db.select("/a");
+	  res.rename('c');
+      
+	  test.equal(res.value(), 'one');
+	  test.equal(db.select("/c").value(), 'one');
+	  test.done();
+  },
+  
+  "rename() on the root object is ignored": function(test) {
+  	var hsh = {a: {aa: "aaval"}, b: {aa: "bbval"}};
+  	var db = SpahQL.db(hsh);
+  
+  	db.rename('test');
+  
+  	test.equal(db.value(), hsh);
+  	test.equal(db.select("/test").value(), null);
+    test.done();
+  },
+  
+  "rename() triggers listeners": function(test) {
+  	var hsh = {a: {aa: "aaval"}, b: {aa: "bbval"}};
+  	var db = SpahQL.db({"hsh": hsh});
+  
+  	var res = db.select("/hsh");
+  
+  	res.listen(function(result, path, subpaths) {  		
+  	  // NOTE: the expectation here needs defining? @kolektiv  
+  		test.done();
+  	})
+  
+    res.replace('test');
+  },
+  
+  "renameAll() works against every item in the set": function(test) {
+  	var db = SpahQL.db({ a: 'test', b: { a: 'test' }});
+  
+  	db.select("//a").renameAll('c');
+  
+  	test.deepEqual(
+  		db.select("/").value(),
+  		{ c: 'test', b: { c: 'test' }}
+  	);
+  	test.done();
+  },
+
 	"destroy() deletes from the parent": function(test) {
 		var inner = {aa: "aa"};
 		var outer = {a: inner, b: inner};
