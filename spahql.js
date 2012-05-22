@@ -780,6 +780,44 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   },
 
   /**
+   * SpahQL#rename(key) -> SpahQL
+   * - key (Object): The key to replace this query result's key.
+   *
+   * Renames the key of the first item in this set, modifying the queried data
+   * in the process. If the first item in this set is the root, no action will be taken.
+   *
+   * Returns self.
+   **/
+  "rename": function(key, result) {
+    var target = result || this[0];
+
+    if (target) {
+      var prev = target.value;
+      var p = this.parent(target);
+      if (p) {
+        p.set(key, prev);
+        p.destroy(target);
+      } else {
+        this.resultModified(target, prev);
+      }
+      }
+    return this;
+  },
+
+  /**
+   * SpahQL#renameAll(key) -> SpahQL
+   *
+   * Works just like #rename, but takes action against every result in this set.
+   *
+   **/
+  "renameAll": function(key) {
+    for (var i = 0; i < this.length; i++) {
+      this.rename(key, this[i]);
+    }
+    return this;
+  },
+
+  /**
    * SpahQL#destroy([key]) -> SpahQL
    *
    * Deletes data from the first result in this set. If a key is supplied, the key will be deleted from value.
@@ -920,6 +958,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
 
 if(typeof(module) != 'undefined' && typeof(module.exports) != 'undefined') module.exports = SpahQL;
 if(typeof(window) != 'undefined') window.SpahQL = SpahQL;
+
 
 /**
  * class SpahQL.Callbacks
@@ -1094,14 +1133,12 @@ SpahQL_classCreate("SpahQL.Query", {
     * 
     * The string from which this query was originally parsed.
     **/
-   "rawString": null,
    
    /**
     * SpahQL.Query#primaryToken -> Primary token (set literal or selection query)
     *
     * The first (non-optional) token in the query.
     **/
-   "primaryToken": null,
    
    /**
      * SpahQL.Query#comparisonOperator -> String comparison operator
@@ -1109,21 +1146,26 @@ SpahQL_classCreate("SpahQL.Query", {
      * The optional comparison operator. If this is set, the query is an assertion query and there must
      * be a secondary token defined.
      **/
-   "comparisonOperator": null,
    
    /**
      * SpahQL.Query#secondaryToken -> Secondary token (set literal or selection query)
      *
      * The second (optional) token in the query. Cannot be defined without a comparison operator.
      **/
-   "secondaryToken": null,
    
    /**
     * SpahQL.Query#assertion -> Boolean assertion flag
     *
     * Set to <code>true</code> if the query is an assertion query.
     **/
-   "assertion": false
+
+   "init": function(primaryToken, comparisonOperator, secondaryToken, assertion, rawString) {
+      this.primaryToken = primaryToken || null;
+      this.comparisonOperator = comparisonOperator || null;
+      this.secondaryToken = secondaryToken || null;
+      this.assertion = assertion || false,
+      this.rawString = rawString || null;
+   }
    
  });
 
@@ -2212,8 +2254,6 @@ SpahQL_classExtend("SpahQL.Token.Simple", SpahQL.Token.Base, {
   
   // Instance
   // ----------------------
-    
-  "value": null,
 
   /**
    * new SpahQL.Token.Simple(value)
@@ -2221,9 +2261,8 @@ SpahQL_classExtend("SpahQL.Token.Simple", SpahQL.Token.Base, {
    * Instantiate a new simple token with the given primitive value.
    **/
   "init": function(value) {
-    this.value = value;
+    this.value = (typeof(value)!='undefined')? value : null;
   },
-
 
   /**
    * SpahQL.Token#toSet() -> SpahQL.Token.Set
@@ -2489,14 +2528,12 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
    *
    * Contains all tokens included in this set, in the order in which they were encountered.
    **/
-  "tokens": [],
   
   /**
    * SpahQL.Token.Set#isRange -> Boolean
    *
    * A flag indicating whether or not this token is to be evaluated as a range.
    **/
-  "isRange": false,
   
   /**
    * new SpahQL.Token.Set(value)
@@ -2913,14 +2950,12 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
      *
      * The key specified in this path component, if a keyname was used.
      **/
-    "key": null,
     
     /**
      * SpahQL.Token.PathComponent#property -> String
      *
      * The property specified in this path component, if a property name was used.
      **/
-    "property": null,
     
     /**
      * SpahQL.Token.PathComponent#recursive -> Boolean
@@ -2928,7 +2963,6 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
      * A flag indicating whether or not this path component should recurse through its
      * scope data during evaluation.
      **/
-    "recursive": false,
     
     /**
      * SpahQL.Token.PathComponent#filterQueries -> Array Token.FilterQuery
@@ -2936,7 +2970,6 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
      * Lists all filter queries associated with this path component, in the order in which they were 
      * encountered during parsing.
      **/
-    "filterQueries": [],
     
     /**
      * new SpahQL.Token.PathComponent(key, property, recursive, filterQueries)
@@ -3159,14 +3192,12 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
      * Contains all path components that comprise this selection query, in the order in which they
      * were encountered during parsing.
      **/
-    "pathComponents": [],
     
     /**
      * SpahQL.Token.SelectionQuery#useRoot -> Boolean
      *
      * A flag indicating whether or not this query is locked to the root data context.
      **/
-    "useRoot": false,
     
     /**
      * new SpahQL.Token.SelectionQuery(pathComponents, useRoot)

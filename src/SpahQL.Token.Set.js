@@ -91,14 +91,12 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
    *
    * Contains all tokens included in this set, in the order in which they were encountered.
    **/
-  "tokens": [],
   
   /**
    * SpahQL.Token.Set#isRange -> Boolean
    *
    * A flag indicating whether or not this token is to be evaluated as a range.
    **/
-  "isRange": false,
   
   /**
    * new SpahQL.Token.Set(value)

@@ -13,8 +13,6 @@ SpahQL_classExtend("SpahQL.Token.Simple", SpahQL.Token.Base, {
   
   // Instance
   // ----------------------
-    
-  "value": null,
 
   /**
    * new SpahQL.Token.Simple(value)
@@ -22,9 +20,8 @@ SpahQL_classExtend("SpahQL.Token.Simple", SpahQL.Token.Base, {
    * Instantiate a new simple token with the given primitive value.
    **/
   "init": function(value) {
-    this.value = value;
+    this.value = (typeof(value)!='undefined')? value : null;
   },
-
 
   /**
    * SpahQL.Token#toSet() -> SpahQL.Token.Set

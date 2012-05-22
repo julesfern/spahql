@@ -61,14 +61,12 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
      * Contains all path components that comprise this selection query, in the order in which they
      * were encountered during parsing.
      **/
-    "pathComponents": [],
     
     /**
      * SpahQL.Token.SelectionQuery#useRoot -> Boolean
      *
      * A flag indicating whether or not this query is locked to the root data context.
      **/
-    "useRoot": false,
     
     /**
      * new SpahQL.Token.SelectionQuery(pathComponents, useRoot)

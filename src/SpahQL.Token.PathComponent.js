@@ -91,14 +91,12 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
      *
      * The key specified in this path component, if a keyname was used.
      **/
-    "key": null,
     
     /**
      * SpahQL.Token.PathComponent#property -> String
      *
      * The property specified in this path component, if a property name was used.
      **/
-    "property": null,
     
     /**
      * SpahQL.Token.PathComponent#recursive -> Boolean
@@ -106,7 +104,6 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
      * A flag indicating whether or not this path component should recurse through its
      * scope data during evaluation.
      **/
-    "recursive": false,
     
     /**
      * SpahQL.Token.PathComponent#filterQueries -> Array Token.FilterQuery
@@ -114,7 +111,6 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
      * Lists all filter queries associated with this path component, in the order in which they were 
      * encountered during parsing.
      **/
-    "filterQueries": [],
     
     /**
      * new SpahQL.Token.PathComponent(key, property, recursive, filterQueries)
