@@ -780,6 +780,44 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   },
 
   /**
+   * SpahQL#rename(key) -> SpahQL
+   * - key (Object): The key to replace this query result's key.
+   *
+   * Renames the key of the first item in this set, modifying the queried data
+   * in the process. If the first item in this set is the root, no action will be taken.
+   *
+   * Returns self.
+   **/
+  "rename": function(key, result) {
+    var target = result || this[0];
+
+    if (target) {
+      var prev = target.value;
+      var p = this.parent(target);
+      if (p) {
+        p.set(key, prev);
+        p.destroy(target);
+      } else {
+        this.resultModified(target, prev);
+      }
+      }
+    return this;
+  },
+
+  /**
+   * SpahQL#renameAll(key) -> SpahQL
+   *
+   * Works just like #rename, but takes action against every result in this set.
+   *
+   **/
+  "renameAll": function(key) {
+    for (var i = 0; i < this.length; i++) {
+      this.rename(key, this[i]);
+    }
+    return this;
+  },
+
+  /**
    * SpahQL#destroy([key]) -> SpahQL
    *
    * Deletes data from the first result in this set. If a key is supplied, the key will be deleted from value.
