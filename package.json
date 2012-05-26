@@ -4,7 +4,9 @@
   "version": "0.7.3",
   "author": "Dan Glegg <dan@angryamoeba.co.uk>",
   "description": "A query language and data model for deep Javascript object structures.",
-  "contributors": [],
+  "contributors": [
+    "David Ellis <d.f.ellis@ieee.org>"
+  ],
   "main": "spahql.js",
   "repository": {
     "type": "git",
@@ -16,6 +18,7 @@
   "dependencies": {
   },
   "devDependencies": {
+    "nodeunit": "*"
   },
   "license": "MIT",
   "engine": {

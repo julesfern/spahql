@@ -804,5 +804,22 @@ exports["SpahQL"] = {
 		test.done();
 	},
 
+	"toString() produces a JSON representation of the db and query results": function(test) {
+		var db = SpahQL.db({foo: "bar"});
+		var val = db.select("/foo");
+
+		test.equal(db+"", JSON.stringify({foo: "bar"}));
+		test.equal(val+"", "bar")
+		test.done();
+	},
+
+	"valueOf() produces the raw query results": function(test) {
+		var db = SpahQL.db({foo: "bar"});
+		var val = db.select("/foo");
+		
+		test.ok(isNaN(db/1));
+		test.deepEqual([db.valueOf(), val.valueOf()], [{foo: "bar"}, "bar"]);
+		test.done();
+	}
 
 }

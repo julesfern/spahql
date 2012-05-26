@@ -222,7 +222,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   "inCommonJS": function() {
     return (typeof(exports) == "object");
   }
-  
+
 }, {
 
   // INSTANCE
@@ -951,6 +951,29 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
       result.sourceData, 
       oldValue, 
       result.value
+    );
+  },
+
+  /**
+   * SpahQL.valueOf() -> JSON Literal
+   *
+   * Returns a JSON literal of the query results. A shortcut for including the raw select result in
+   * another operation, such as [].concat(db.select("//foo"), db.select("//bar"))
+   **/
+  "valueOf": function() {
+    return JSON.parse(this.toString());
+  },
+
+  /**
+   * SpahQL.toString() -> JSON Serialization
+   *
+   * Returns a JSON serialized string of the query results. Used by valueOf above.
+   **/
+  "toString": function() {
+    return JSON.stringify(
+      this.length > 1 ? this.map(function(item) { return item.value; }) :
+      this.length > 0 ? this[0].value :
+      null
     );
   }
 
