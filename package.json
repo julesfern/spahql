@@ -5,7 +5,8 @@
   "author": "Dan Glegg <dan@angryamoeba.co.uk>",
   "description": "A query language and data model for deep Javascript object structures.",
   "contributors": [
-    "David Ellis <d.f.ellis@ieee.org>"
+    "David Ellis <d.f.ellis@ieee.org>",
+    "Andrew Cherry <andrew@xyncro.com>"
   ],
   "main": "spahql.js",
   "repository": {

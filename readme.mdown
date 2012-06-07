@@ -148,6 +148,10 @@ Filters may be chained together to produce logical <code>AND</code> gates. Here 
 
 	var users_with_both_avatars = db.select("//user[/avatar/small][/avatar/large]");
 
+#Working with results
+
+
+
 #Modifying data
 
 SpahQL objects provide a set of methods for modifying their data values. SpahQL always maintains _strict pointer equality_ to the original database data, so be aware that calling these methods will result in alterations being made directly to the object you originally passed to <code>SpahQL.db(your_data)</code>.

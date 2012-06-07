@@ -32,9 +32,11 @@
 			"file_exclude_patterns":
 			[
 				".DS_Store",
-				"*.pdoc.yaml"
+				"*.pdoc.yaml",
+				"spahql.js",
+				"*-min.js"
 			],
-			"path": "~/Sites/spahql"
+			"path": "."
 		}
 	],
 	"settings":

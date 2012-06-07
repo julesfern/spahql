@@ -85,6 +85,8 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
     PROPERTY_TYPE: "type",
     PROPERTY_SIZE: "size",
     PROPERTY_EXPLODE: "explode",
+    PROPERTY_KEY: "key",
+    PROPERTY_PATH: "path",
     
     /**
      * SpahQL.Token.PathComponent#key -> String
@@ -250,6 +252,13 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
               results.push(SpahQL.result(path+"/"+c, scopeData.charAt(c), rootData));
             }
           }
+          break;
+        case this.PROPERTY_PATH:
+          results.push(SpahQL.result(pPath, (path||"/"), rootData));
+          break;
+        case this.PROPERTY_KEY:
+          var pKey = (!path||path==""||path=="/")? path : path.substring(path.lastIndexOf("/")+1);
+          results.push(SpahQL.result(pPath, pKey, rootData));
           break;
         default:
           throw new SpahQL.Errors.SpahQLRunTimeError("Unrecognised property token '"+property+"'.");

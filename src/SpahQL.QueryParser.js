@@ -71,7 +71,6 @@ SpahQL_classCreate("SpahQL.QueryParser", {
               }
             }
             else {
-              console.log("!!!", parsedQuery);
               this.throwParseErrorAt(i, query, "Unexpected token, expected EOL or TOKEN_COMPARISON_OPERATOR");
             }
           }
@@ -84,10 +83,21 @@ SpahQL_classCreate("SpahQL.QueryParser", {
         i = windAhead;
       }
       
-     // Stash and return
-     this.queryCache[query] = parsedQuery;
-     SpahQL.log("Generated and cached query '"+str+"' ->", parsedQuery);
-     return parsedQuery;
+      // Vet parsed query
+      if(!parsedQuery.primaryToken) {
+        this.throwParseErrorAt(0, query, "Failed to parse query, expected TOKEN_SET_LITERAL or TOKEN_SELECTION_QUERY");
+      }
+      else if(parsedQuery.comparisonOperator && !parsedQuery.secondaryToken) {
+        this.throwParseErrorAt(query.length-1, query, "Query contains comparison operator but has no secondary term - expected TOKEN_SET_LITERAL or TOKEN_SELECTION_QUERY");
+      }
+      else {
+      // Stash and return
+        this.queryCache[query] = parsedQuery;
+        SpahQL.log("Generated and cached query '"+str+"' ->", parsedQuery);
+        return parsedQuery;
+      }
+
+     
    },
 
    /**

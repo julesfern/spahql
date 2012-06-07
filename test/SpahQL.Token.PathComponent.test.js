@@ -25,7 +25,7 @@ exports["SpahQL.Token.PathComponent"] = {
     test.done();
   },
 
-  "Evalutes at the root scope without a key": function(test) {
+  "Evaluates at the root scope without a key": function(test) {
     var token = SpahQL.Token.PathComponent.parseAt(0, "/")[1];
     var data = {a: {aa: "aaval"}};
 
@@ -172,6 +172,78 @@ exports["SpahQL.Token.PathComponent"] = {
       ]
     );
     test.done();
-  }
+  },
+
+  "Evaluates the .path property at the root": function(test) {
+    var token = SpahQL.Token.PathComponent.parseAt(0, "/.path")[1];
+    var data = {a: {a: "aa"}, useType: "object", b: {a: {ab: "ab"}}, c: {a: 1}};
+
+    test.deepEqual(token.evaluate(data, data, "/"),
+      [
+        {path: "/.path", value: "/", sourceData: data}
+      ]
+    );
+    test.done();
+  },
+
+  "Evaluates the .path property at a specified key": function(test) {
+    var token = SpahQL.Token.PathComponent.parseAt(0, "/.path")[1];
+    var data = {a: {a: "aa"}, useType: "object", b: {a: {ab: "ab"}}, c: {a: 1}};
+
+    test.deepEqual(token.evaluate(data, data.a.a, "/a/a"),
+      [
+        {path: "/a/a/.path", value: "/a/a", sourceData: data}
+      ]
+    );
+    test.done();
+  },
+
+  "Evaluates the .path property as a sub-property of another property": function(test) {
+    var token = SpahQL.Token.PathComponent.parseAt(0, "/.path")[1];
+    var data = {a: {a: "aa"}, useType: "object", b: {a: {ab: "ab"}}, c: {a: 1}};
+
+    test.deepEqual(token.evaluate(data, data.a.a.length, "/a/a/.size"),
+      [
+        {path: "/a/a/.size/.path", value: "/a/a/.size", sourceData: data}
+      ]
+    );
+    test.done();
+  },
+
+  "Evaluates the .key property at the root": function(test) {
+    var token = SpahQL.Token.PathComponent.parseAt(0, "/.key")[1];
+    var data = {a: {a: "aa"}, useType: "object", b: {a: {ab: "ab"}}, c: {a: 1}};
+
+    test.deepEqual(token.evaluate(data, data, "/"),
+      [
+        {path: "/.key", value: "", sourceData: data}
+      ]
+    );
+    test.done();
+  },
+
+  "Evaluates the .key property a the specified key": function(test) {
+    var token = SpahQL.Token.PathComponent.parseAt(0, "/.key")[1];
+    var data = {a: {a: "aa"}, useType: "object", b: {a: {ab: "ab"}}, c: {a: 1}};
+
+    test.deepEqual(token.evaluate(data, data.a, "/a"),
+      [
+        {path: "/a/.key", value: "a", sourceData: data}
+      ]
+    );
+    test.done();
+  },
+
+  "Evaluates the .key property as a sub-property of another property": function(test) {
+    var token = SpahQL.Token.PathComponent.parseAt(0, "/.key")[1];
+    var data = {a: {a: "aa"}, useType: "object", b: {a: {ab: "ab"}}, c: {a: 1}};
+
+    test.deepEqual(token.evaluate(data, data.a.a.length, "/a/a/.size"),
+      [
+        {path: "/a/a/.size/.key", value: ".size", sourceData: data}
+      ]
+    );
+    test.done();
+  },
   
 };

@@ -251,6 +251,12 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   },
 
   /**
+   * SpahQL#length -> Number
+   *
+   * Returns the number of results in this set.
+   **/
+
+  /**
    * SpahQL#item(index) -> SpahQL
    * - index (Number): The index of the item you're after
    *
