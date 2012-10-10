@@ -12,7 +12,7 @@
  * Registers a created class with the Spah package using both CamelCase and commonJs-style naming schemes.
  * The Spah package is already registered with the window or the commonJS exports object automatically.
  **/
-SpahQL_classRegister = function(name, klass) {
+var SpahQL_classRegister = function(name, klass) {
   // Register on the Spah constant
   var nameNS = name.split(".");
   var w = (typeof(window)=='undefined')? {} : window;
@@ -45,10 +45,10 @@ SpahQL_classRegister = function(name, klass) {
  * - klassProps (Object): A hash of class-level properties and functions
  * - instanceProps (Object): A hash of instance-level properties and functions to be applied to the class' prototype.
  *
- * Creates a new class that extends another class. Follows the same rules as SpahQL_classCreate. The superclass does not 
+ * Creates a new class that extends another class. Follows the same rules as SpahQL_classCreate. The superclass does not
  * need to be a part of the Spah package.
  **/
-SpahQL_classExtend = function(name, superKlass, constructor, klassProps, instanceProps) {
+var SpahQL_classExtend = function(name, superKlass, constructor, klassProps, instanceProps) {
   // Massage args
   var con, kP, iP;
 
@@ -66,7 +66,7 @@ SpahQL_classExtend = function(name, superKlass, constructor, klassProps, instanc
     con = iP.init;
   }
 
-  var klass;  
+  var klass;
   // Treat instance properties - create proto
   var proto = Object.create(superKlass.prototype);
   for(var i in iP) {
@@ -96,7 +96,7 @@ SpahQL_classExtend = function(name, superKlass, constructor, klassProps, instanc
   klass.prototype = proto;
 
   // Treat superclass class properties
-  for(var s in superKlass) { 
+  for(var s in superKlass) {
     klass[s] = superKlass[s];
   }
   // Treat class properties
@@ -117,13 +117,13 @@ SpahQL_classExtend = function(name, superKlass, constructor, klassProps, instanc
  *
  * Creates a class internal to the Spah library and namespace.
  **/
-SpahQL_classCreate = function(name, constructor, klassProps, instanceProps) {
+var SpahQL_classCreate = function(name, constructor, klassProps, instanceProps) {
   // Make the class constructor
   return SpahQL_classExtend(name, Object, constructor, klassProps, instanceProps)
 };
 
-SpahQL = SpahQL_classExtend("SpahQL", Array, {
-  
+var SpahQL = SpahQL_classExtend("SpahQL", Array, {
+
   /**
    * SpahQL.db(data) -> SpahQL
    *
@@ -154,12 +154,12 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
       return new this(this.result(path, value, sourceData));
    },
 
-  /** 
+  /**
    * SpahQL.select(query, rootData[,scopeData][,path]) -> SpahQL
    * - query (String): A valid SpahQL query. This may not be an assertion query.
    * - rootData (Object, Array): The root data context being queried.
    * - scopeData (Object, Array): The actual data context being queried, which should be a sub-context of the rootData.
-   * - scopePath (String): Optional: If the data being queried is a member item of a larger queryable data construct, providing the path 
+   * - scopePath (String): Optional: If the data being queried is a member item of a larger queryable data construct, providing the path
    *    for the queryable object will ensure that results are generated with an accurate path attribute.
    *
    * Executes a query against the given data construct and retrieves all objects that match the supplied query.
@@ -169,13 +169,13 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
     if(pQuery.assertion) throw new this.SpahQLRunTimeError("Cannot call SpahQL.select() with an assertion query.");
     return new this(this.QueryRunner.select(pQuery, rootData, scopeData, scopePath));
   },
-  
+
   /**
    * SpahQL.assert(query, data) -> Boolean
    * - query (String): A valid SpahQL query. This may not be an assertion query.
    * - rootData (Object, Array): The root data context being queried.
    * - scopeData (Object, Array): The actual data context being queried, which should be a sub-context of the rootData.
-   * - scopePath (String): Optional: If the data being queried is a member item of a larger queryable data construct, providing the path 
+   * - scopePath (String): Optional: If the data being queried is a member item of a larger queryable data construct, providing the path
    *    for the queryable object will ensure that results are generated with an accurate path attribute.
    *
    * Executes an assertion query and returns the appropriate boolean result.
@@ -230,9 +230,9 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
 
   /**
    * new SpahQL(results[, result1][, result2])
-   * 
+   *
    * Instantiate a new SpahQL monad with the given set of results. Each result is an object with keys
-   * "path" (indicating the absolute path of the item), "value" (indicating the value at this path) and 
+   * "path" (indicating the absolute path of the item), "value" (indicating the value at this path) and
    * "sourceData" (indicating the original data structure from which this data was culled).
    *
    * It's recommended that you leave this method to be used by Spah's internals, and instead use
@@ -263,7 +263,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   /**
    * SpahQL#first() -> SpahQL
    *
-   * Retrieves the first item from this set as a new SpahQL instance - which will be empty if this set is also empty. 
+   * Retrieves the first item from this set as a new SpahQL instance - which will be empty if this set is also empty.
    **/
   "first": function() {
     return this.item(0);
@@ -272,7 +272,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   /**
    * SpahQL#last() -> SpahQL
    *
-   * Retrieves the last item from this set as a new SpahQL instance - which will be empty if this set is also empty. 
+   * Retrieves the last item from this set as a new SpahQL instance - which will be empty if this set is also empty.
    **/
   "last": function() {
     return this.item(this.length-1);
@@ -329,7 +329,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    * - callback (Function): A callback to execute against each result in the set. The callback will receive the arguments (index, total).
    *    within the function, the <code>this</code> keyword will refer to the QueryResult for this iteration.
    *
-   * Executes the callback function with each item in this resultset. The 
+   * Executes the callback function with each item in this resultset. The
    * loop is halted if the callback at any time returns false. This method will
    * return true if the loop completes, and false if it is halted midway. If the callback
    * function does not return anything, the loop will continue to completion.
@@ -339,7 +339,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
       if(callback.apply(this.item(i), [i, this.length]) == false) break;
     }
     return this;
-  },  
+  },
 
   /**
    * SpahQL#map(callback) -> Array
@@ -382,7 +382,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    *      select("/foo/foo").first().assert("/foo") // Is exactly the same as just asserting /foo/foo/foo.
    **/
   "assert": function(query) {
-    var result = true; 
+    var result = true;
     this.each(function() {
       if(!SpahQL.assert(query, this.sourceData(), this.value(), this.path())) {
         result = false;
@@ -394,12 +394,12 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
 
   /**
    * SpahQL#parentPath() -> String or null
-   * 
+   *
    * Returns the parent path for the first item in this set, or null if this item is the root.
    * For instance, a result with path "/foo/bar/baz" has parent path "/foo/bar"
    **/
   "parentPath": function(path) {
-    var p = path || this.path(); 
+    var p = path || this.path();
     var pp = (!p || p == "/")? null : p.substring(0, p.lastIndexOf("/"));
     return (pp=="")? "/" : pp;
   },
@@ -420,7 +420,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    * SpahQL#parent() -> null, SpahQL
    *
    * Retrieves the parent object from the data construct that originally generated this
-   * query result. Remember to always assume that the data may have been modified in the 
+   * query result. Remember to always assume that the data may have been modified in the
    * meantime.
    **/
   "parent": function(result) {
@@ -446,7 +446,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
 
   /**
    * SpahQL#keyName() -> String or null
-   * 
+   *
    * Returns the name for the first item in this set, based on its path. If the item is the root
    * or if the result was not created from a path query then the method will return null.
    *
@@ -458,12 +458,12 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
     return (!p || p == "/")? null : p.substring(p.lastIndexOf("/")+1);
   },
 
-  /** 
+  /**
    * SpahQL#keyNames() -> Array
    *
    * Returns an array of key names for all items in this set, based on the path of each item in the set.
    * Items which are not the result of path queries, such as set literals, will appear as null entries in the array.
-   **/ 
+   **/
   "keyNames": function() {
     var scope = this;
     return this.map(function() {
@@ -515,7 +515,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    *    foo.paths() //-> ["/a/foo", "/b/foo"]
    *    foo.containing("/a/foo").paths() //-> ["/a/foo"], because the path was matched exactly
    *    foo.containing("/b/foo/bar/baz").paths() //-> ["/b/foo"], because '/b/foo' is a superpath for the given path
-   *    
+   *
    **/
   "containing": function(obj, strict) {
     var paths, matchesRequired;
@@ -647,7 +647,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
         // Query result
         var sdi = sourceDatas.indexOf(sd);
         var sdc;
-        
+
         // For each sourceData found, clone it
         if(sdi < 0) {
           sdc = SpahQL.db(this.dh.deepClone(sd));
@@ -659,7 +659,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
         else {
           sdc = sourceDataCloneDBs[sdi];
         }
-        
+
         // Now sourcedata is cloned, we can requery for the result
         var cloneResult = sdc.select(path);
         if(cloneResult[0]) results.push(cloneResult[0]);
@@ -824,7 +824,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    * If no arguments are given, the entire result will be deleted from its parent.
    *
    * Deletion takes different effects depending on the data type of this query result.
-   * Arrays are spliced, removing the specified index from the array without leaving an empty space. 
+   * Arrays are spliced, removing the specified index from the array without leaving an empty space.
    * Objects/Hashes will have the specified key removed, if the key exists.
    *
    * The root data construct may not be deleted. This method always returns self.
@@ -840,7 +840,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
       var modified = false;
       var oldVal, newVal;
       var type = this.type(target.value);
-      
+
       // Shallow-clone original value...
       // Original value is cloned so that new value can remain pointed to source data.
       var cKey = SpahQL.DataHelper.coerceKeyForObject(key, target.value);
@@ -866,7 +866,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
         p.destroy(k);
       }
     }
-    
+
     return this;
   },
 
@@ -891,13 +891,13 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    * Note that this method listens for changes on all items in this set:
    *
    *    var db = SpahQL.db(some_data);
-   *    
+   *
    *    // Callback triggered whenever the first item in any array anywhere is modified
-   *    db.select("//0").modified(function() {...}) 
-   *    
+   *    db.select("//0").modified(function() {...})
+   *
    *    // Callback triggered only when a specific array is modified
    *    db.select("//0").item(0).modified(function() {....})
-   *    
+   *
    *
    * Upon modification, the callback will be triggered with arguments:
    * - <code>result</code>: A SpahQL instance containing one result item, the item modified. This may be <code>undefined</code> if the data at that path was removed during the modification.
@@ -919,7 +919,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
       if(remove) SpahQL.Callbacks.removeCallbackForPathModifiedOnObject(path, res.sourceData, cbFunc);
       else SpahQL.Callbacks.addCallbackForPathModifiedOnObject(path, res.sourceData, cbFunc);
     }
-    
+
     return this;
   },
 
@@ -947,9 +947,9 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    **/
   "resultModified": function(result, oldValue) {
     SpahQL.Callbacks.pathModifiedOnObject(
-      result.path, 
-      result.sourceData, 
-      oldValue, 
+      result.path,
+      result.sourceData,
+      oldValue,
       result.value
     );
   },
@@ -983,17 +983,17 @@ if(typeof(module) != 'undefined' && typeof(module.exports) != 'undefined') modul
 if(typeof(window) != 'undefined') window.SpahQL = SpahQL;
 
 
-/**
+/**
  * class SpahQL.Callbacks
  *
  * Stores and manages the dispatch of modification callbacks on any data source that can be queried with SpahQL.
  **/
- 
+
 SpahQL_classCreate("SpahQL.Callbacks", {
-  
+
   // Singleton
   // --------------------
-  
+
   /**
    * SpahQL.Callbacks.callbacks -> Object
    *
@@ -1002,16 +1002,16 @@ SpahQL_classCreate("SpahQL.Callbacks", {
    * callback function itself.
    **/
   "callbacks": {},
-  
+
   "reset": function() {
     this.callbacks = {};
   },
-  
+
   /**
    * SpahQL.Callbacks.callbacksForPathInObject(path, object) -> Array
    * - path (String): The path for which you are pulling all registered callbacks.
    * - object (Object): The object (which should have previously been queried with SpahQL) in which the path exists.
-   * 
+   *
    **/
   "callbacksForPathInObject": function(path, object) {
     var pathCallbacks = this.callbacks[path];
@@ -1023,7 +1023,7 @@ SpahQL_classCreate("SpahQL.Callbacks", {
     }
     return matchingCallbacks;
   },
-  
+
   /**
    * SpahQL.Callbacks.pathModifiedOnObject(path, data, oldvalue, newvalue) -> void
    * - path (String): The absolute path for the modified object
@@ -1037,24 +1037,24 @@ SpahQL_classCreate("SpahQL.Callbacks", {
    **/
   "pathModifiedOnObject": function(path, data, oldvalue, newvalue) {
     if(!path) return;
-    
+
     // Create the dispatch strategy based on the modified paths, to avoid duplicate dispatch.
     // IMPORTANT: Deepest paths dispatch first.
     var dispatchQueue = [];
     // Use comparison function to get a full accounting for what has changed inside that scope
-    var scopeModifications = SpahQL.DataHelper.compare(oldvalue, newvalue, path);    
+    var scopeModifications = SpahQL.DataHelper.compare(oldvalue, newvalue, path);
     for(var modifiedPath in scopeModifications) {
       // Get the oldvalue, newvalue etc.
       var modificationData = scopeModifications[modifiedPath];
-      
-      // Push path and all uptree paths onto queue, ensuring uniqueness      
+
+      // Push path and all uptree paths onto queue, ensuring uniqueness
       var currentPath = modifiedPath;
       while(currentPath.lastIndexOf("/") >= 0) {
         if(dispatchQueue.indexOf(currentPath) < 0) dispatchQueue.push(currentPath);
         currentPath = (currentPath.lastIndexOf("/") == 0 && currentPath.length>1)? "/" : currentPath.substring(0, currentPath.lastIndexOf("/"));
       }
     }
-    
+
     // Sort dispatch queue based on depth
     dispatchQueue.sort(function(a, b) {
       // Count slashes
@@ -1063,17 +1063,17 @@ SpahQL_classCreate("SpahQL.Callbacks", {
       return (a.split("/").length > b.split("/").length)? -1: 1;
     })
     SpahQL.log("Path modified on data store, formulated the following dispatch strategy: ["+dispatchQueue.join(" -> ")+"]. Data store: ", data);
-    
+
     // Now run the dispatch queue
     // For each path with modifications in the dispatch queue, locate all modified
     // subpaths in the modification list.
-    
+
     for(var i=0; i<dispatchQueue.length; i++) {
       var dispatchPath = dispatchQueue[i];
       var pathCallbacks = this.callbacks[dispatchPath];
-      
+
       SpahQL.log("Triggering registered path callbacks for "+dispatchPath+": "+((!pathCallbacks)? "No callbacks to trigger" : pathCallbacks.length+" callbacks to trigger"));
-      
+
       if(pathCallbacks) {
         for(var j=0; j<pathCallbacks.length; j++) {
           if(pathCallbacks[j][0] == data) {
@@ -1093,12 +1093,12 @@ SpahQL_classCreate("SpahQL.Callbacks", {
       }
     }
   },
-  
+
   "addCallbackForPathModifiedOnObject": function(path, object, callback) {
     this.callbacks[path] = this.callbacks[path] || [];
     this.callbacks[path].push([object, callback]);
   },
-  
+
   "removeCallbackForPathModifiedOnObject": function(path, object, callback) {
     var pathCallbacks = this.callbacks[path];
     if(pathCallbacks) {
@@ -1110,10 +1110,10 @@ SpahQL_classCreate("SpahQL.Callbacks", {
       }
     }
   }
-  
+
 });
 
-/**
+/**
  * class SpahQL.Errors
  *
  * A containing namespace for all exceptions generated within the SpahQL library.
@@ -1136,46 +1136,46 @@ SpahQL.Errors.SpahQLError.prototype = Error.prototype;
 SpahQL.Errors.SpahQLRunTimeError = function(message) { this.name = "SpahQLRunTimeError"; this.message = (message || ""); };
 SpahQL.Errors.SpahQLRunTimeError.prototype = SpahQL.Errors.SpahQLError.prototype;
 
-/**
+/**
  * class SpahQL.Query
  *
- * A <code>Query</code> instance is the result of running a string state query such as "/foo/bar/baz == 1" through the <code>SpahQL.QueryParser</code>. 
+ * A <code>Query</code> instance is the result of running a string state query such as "/foo/bar/baz == 1" through the <code>SpahQL.QueryParser</code>.
  * Queries are parsed only once, upon registration. The QueryParser maintains a cache of pre-existing parsed queries keyed by the original query string.
  **/
- 
+
 SpahQL_classCreate("SpahQL.Query", {
   // Singletons
   // ---------------------
 },{
- 
+
   // Instance
   // ----------------------
-   
+
    /**
     * SpahQL.Query#rawString -> String original representation
-    * 
+    *
     * The string from which this query was originally parsed.
     **/
-   
+
    /**
     * SpahQL.Query#primaryToken -> Primary token (set literal or selection query)
     *
     * The first (non-optional) token in the query.
     **/
-   
+
    /**
      * SpahQL.Query#comparisonOperator -> String comparison operator
      *
      * The optional comparison operator. If this is set, the query is an assertion query and there must
      * be a secondary token defined.
      **/
-   
+
    /**
      * SpahQL.Query#secondaryToken -> Secondary token (set literal or selection query)
      *
      * The second (optional) token in the query. Cannot be defined without a comparison operator.
      **/
-   
+
    /**
     * SpahQL.Query#assertion -> Boolean assertion flag
     *
@@ -1189,27 +1189,27 @@ SpahQL_classCreate("SpahQL.Query", {
       this.assertion = assertion || false,
       this.rawString = rawString || null;
    }
-   
+
  });
 
-/**
+/**
  * class SpahQL.QueryParser
  *
  * Parses string queries from data-\*-if attributes and client-side responders and produces parsed <code>SpahQL.Query</code> instances.
  * Maintains a cache of previously-parsed queries for speed.
  **/
- 
+
 SpahQL_classCreate("SpahQL.QueryParser", {
-   
+
    // Singletons
    // ---------------------------------
-   
+
    /**
     * SpahQL.QueryParser.queryCache -> Object cached queries
     * Holds a cache of previously-parsed queries indexed by string representation.
     **/
    "queryCache": {},
-   
+
    /**
     * SpahQL.QueryParser.parseQuery(str) -> SpahQL.Query instance
     * - str (String): The string query e.g. "/foo/bar == 3"
@@ -1229,14 +1229,14 @@ SpahQL_classCreate("SpahQL.QueryParser", {
       // Create query instance
       var parsedQuery = new SpahQL.Query();
           parsedQuery.rawString = str;
-      
+
       // Pull tokens from the query. Expecting (TOKEN_SELECTOR_QUERY|TOKEN_SET_LITERAL)[,TOKEN_COMPARISON_OPERATOR,(TOKEN_SELECTOR_QUERY|TOKEN_SET_LITERAL)]
       var readAheadResult;
       var i = 0;
       while(readAheadResult = SpahQL.Token.parseAt(i, query)) {
         var windAhead = readAheadResult[0];
         var token = readAheadResult[1];
-        
+
         if(token instanceof SpahQL.Token.ComparisonOperator) {
           if(parsedQuery.comparisonOperator) {
             this.throwParseAt(i, query, "Found unexpected TOKEN_COMPARISON_OPERATOR, expected EOL");
@@ -1254,7 +1254,7 @@ SpahQL_classCreate("SpahQL.QueryParser", {
           if(typeof(token.toSet) == "function") {
             token = token.toSet();
           }
-          
+
           if(parsedQuery.primaryToken) {
             if(parsedQuery.comparisonOperator) {
               if(parsedQuery.secondaryToken) {
@@ -1272,12 +1272,12 @@ SpahQL_classCreate("SpahQL.QueryParser", {
           else {
             parsedQuery.primaryToken = token;
           }
-          
+
         }
-        
+
         i = windAhead;
       }
-      
+
      // Stash and return
      this.queryCache[query] = parsedQuery;
      SpahQL.log("Generated and cached query '"+str+"' ->", parsedQuery);
@@ -1316,20 +1316,20 @@ SpahQL_classCreate("SpahQL.QueryParser", {
 
      return output; // Strip spaces from query
    },
-   
+
    /**
     * SpahQL.QueryParser.throwParseErrorAt(i, query, message) -> void
-    * 
+    *
     * Throws an exception at the given index in the given query string with the given error message.
     **/
    "throwParseErrorAt": function(i, query, message) {
      throw new Error("Parse error: '"+(message||"failure")+"' at index "+i+" in query '"+query+"'.");
    }
-   
+
 
  });
 
-/**
+/**
  * class SpahQL.QueryRunner
  *
  * Class responsible for executing parsed <code>SpahQL.Query</code> queries and returning sets
@@ -1338,10 +1338,10 @@ SpahQL_classCreate("SpahQL.QueryParser", {
  * Unless you're spelunking or fixing bugs, the only methods you care about are _select_ and _assert_.
  **/
 SpahQL_classCreate("SpahQL.QueryRunner", {
-  
+
   // Singletons
   // ------------------------
-  
+
   /**
    * SpahQL.QueryRunner.select(query, rootData[,scopeData][, scopePath]) -> Array
    * - rootData (Object): The root data context against which to run the query
@@ -1356,7 +1356,7 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
     scopeData = scopeData || rootData;
     return query.primaryToken.evaluate(rootData, scopeData, scopePath);
   },
-  
+
   /**
    * SpahQL.QueryRunner.assert(query, rootData[, scopeData][, scopePath]) -> Boolean result
    * - query (SpahQL.Query): A parsed query instance
@@ -1364,7 +1364,7 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
    * - scopeData (Object): An optional additional data context which will be the local scope for this query. If not set, will be set internally to <code>rootData</code>.
    * - scopePath (String): An optional path indicating the scope to which this query has been restricted.
    *
-   * Executes and ssserts the truthiness of a selection or assertion query against the given dataset. 
+   * Executes and ssserts the truthiness of a selection or assertion query against the given dataset.
    * Returns a boolean indicating the overall result of the query - if the query is not an assertion
    * query, it will return true if the query returns one or more results.
    **/
@@ -1372,7 +1372,7 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
     scopeData = scopeData || rootData;
     return this.evalAssertion(query.primaryToken, query.secondaryToken, query.comparisonOperator, rootData, scopeData, scopePath);
   },
-  
+
   /**
    * SpahQL.QueryRunner.evalAssertion(primaryToken, secondaryToken, comparisonOperator, rootData, scopeData, scopePath) -> Boolean result
    * - primaryToken (Object): A selection query or set literal token as delivered by the query parser.
@@ -1394,7 +1394,7 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
     for(var p in primarySet) {
       primaryValues.push(primarySet[p].value);
     }
-    
+
     var secondarySet, secondaryValues;
     if(secondaryToken) {
       secondarySet = secondaryToken.evaluate(rootData, scopeData, scopePath);
@@ -1407,10 +1407,10 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
       // No secondary token - just assert based on the primary set
       return SpahQL.DataHelper.truthySet(primaryValues);
     }
-    
+
     var comparisonEval = comparisonOperator.evaluate(rootData, scopeData);
     var comparisonType = comparisonEval[0].value;
-    
+
     // Now run the comparisons
     switch(comparisonType) {
       case SpahQL.Token.ComparisonOperator.COMPARISON_STRICT_EQUALITY:
@@ -1446,11 +1446,11 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
         return SpahQL.DataHelper.superSet(secondaryValues, primaryValues);
         break;
     }
-  }  
-  
+  }
+
 });
 
-/**
+/**
  * class SpahQL.DataHelper
  *
  * This is a singleton helper dedicated to deep-merging complex JSON structures and returning both
@@ -1459,35 +1459,35 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
 
 // Dependencies
 SpahQL_classCreate("SpahQL.DataHelper", {
-  
+
   /**
    * SpahQL.DataHelper.compare(original, delta[, atPath]) -> Object
    *
-   * Compares two objects at the given path (defaulting to "/") and returns a hash of differences between the two, 
+   * Compares two objects at the given path (defaulting to "/") and returns a hash of differences between the two,
    * keyed by path. The hash has array values, each including a SpahQL modification symbol, the original data value
    * and the delta data value.
    **/
   "compare": function(original, delta, atPath) {
     var pathStack = (atPath=="/")? "" : atPath;
     var modifications = {};
-    
+
     var oType = this.objectType(original);
     var dType = this.objectType(delta);
     var oIsSimple = (oType != "object" && oType != "array");
     var dIsSimple = (dType != "object" && dType != "array");
-    
+
     // Escale
     if(this.eq(original, delta)) {
       // Items are equivalent
       return modifications;
-    } 
+    }
     else if(oIsSimple && dIsSimple) {
       // Compare simple -> simple
       var m = this.modificationSymbol(delta, original);
       if(m) modifications[atPath] = [m, original, delta];
     }
-    
-    
+
+
     if(!dIsSimple) {
       // New value is complex - we'll run all subkeys against the keys on the original, if they exist
       for(var dK in delta) {
@@ -1498,7 +1498,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
         }
       }
     }
-    
+
     if(!oIsSimple) {
       // Original value is complex - we'll run all subkeys against keys on the delta, if they exist
       // All keys in complex are nullified recursively
@@ -1509,7 +1509,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
         }
       }
     }
-    
+
     // Register working path as modified if we got this far and didn't register anything for the mod path.
     if(!modifications[atPath]) {
       var mSym = this.modificationSymbol(delta, original);
@@ -1518,10 +1518,10 @@ SpahQL_classCreate("SpahQL.DataHelper", {
 
     return modifications;
   },
-  
+
   /**
    * SpahQL.DataHelper.modificationSymbol(delta, target) -> String symbol
-   * 
+   *
    * Determines whether the change between two objects, assuming content inequality, is a "+" (addition), "-" (nullification) or "~" (alteration).
    **/
   "modificationSymbol": function(delta, target) {
@@ -1529,10 +1529,10 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     else if(this.objectType(delta) == "null") return "-";
     else if(delta != target) return "~";
   },
-  
+
   /**
    * SpahQL.DataHelper.objectType(obj) -> String type
-   * 
+   *
    * Extends the core typeof(obj) function by adding types "array" and "null".
    **/
   "objectType": function(obj) {
@@ -1543,17 +1543,17 @@ SpahQL_classCreate("SpahQL.DataHelper", {
       return typeof(obj);
     }
   },
-  
+
   /**
    * SpahQL.DataHelper.eq(obj1, obj2[, objN]) -> Boolean equality result
    *
-   * Determines content equality of two or more objects. Booleans, null values, numbers and strings are compared using 
-   * the <code>SpahQL.DataHelper.objectType</code> method and the built-in <code>==</code> operator, but arrays 
+   * Determines content equality of two or more objects. Booleans, null values, numbers and strings are compared using
+   * the <code>SpahQL.DataHelper.objectType</code> method and the built-in <code>==</code> operator, but arrays
    * and hashes are traversed recursively and have their values compared.
    **/
   "eq": function() {
     var aP, aI, aT;
-    
+
     aP = arguments[0];
     for(aI=1; aI<arguments.length; aI++) {
       var a=arguments[aI];
@@ -1577,12 +1577,12 @@ SpahQL_classCreate("SpahQL.DataHelper", {
       else if(a != aP) {
         return false;
       }
-      
+
       aP = a;
     }
     return true;
   },
-  
+
   /**
    * SpahQL.DataHelper.hashKeys(hash) -> Array of keys
    * - hash (Object): The hash being exploded
@@ -1594,7 +1594,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     var keys = Object.keys(hash)
     return keys.sort();
   },
-  
+
   /**
    * SpahQL.DataHelper.hashValues(hash) -> Array of values
    * - hash (Object): The hash being exploded
@@ -1607,7 +1607,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     for(var k in hash) a.push(hash[k]);
     return a;
   },
-  
+
   /**
    * SpahQL.DataHelper.mathGte(left, right) -> Boolean result
    * - left (Object, Array, Boolean, String, Number, null): The value at the left-hand side of the comparator
@@ -1619,7 +1619,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "mathGte": function(left, right) {
     return this.mathCompare(left, right, function(a,b) { return a >= b; });
   },
-  
+
   /**
    * SpahQL.DataHelper.mathGt(left, right) -> Boolean result
    * - left (Object, Array, Boolean, String, Number, null): The value at the left-hand side of the comparator
@@ -1631,7 +1631,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "mathGt": function(left, right) {
     return this.mathCompare(left, right, function(a,b) { return a > b; });
   },
-  
+
   /**
    * SpahQL.DataHelper.mathLte(left, right) -> Boolean result
    * - left (Object, Array, Boolean, String, Number, null): The value at the left-hand side of the comparator
@@ -1643,7 +1643,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "mathLte": function(left, right) {
     return this.mathCompare(left, right, function(a,b) { return a <= b; });
   },
-  
+
   /**
    * SpahQL.DataHelper.mathLt(left, right) -> Boolean result
    * - left (Object, Array, Boolean, String, Number, null): The value at the left-hand side of the comparator
@@ -1655,7 +1655,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "mathLt": function(left, right) {
     return this.mathCompare(left, right, function(a,b) { return a < b; });
   },
-  
+
   /**
    * SpahQL.DataHelper.mathCompare(left, right, callback) -> Boolean result
    * - left (Object, Array, Boolean, String, Number, null): The value at the left-hand side of the comparator
@@ -1675,7 +1675,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     }
     return false;
   },
-  
+
   /**
    * SpahQL.DataHelper.eqRough(left, right) -> Boolean result
    * - left (Object, Array, Boolean, String, Number, null): The value at the left-hand side of the comparator
@@ -1711,7 +1711,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
       }
     }
   },
-  
+
   /**
    * SpahQL.DataHelper.eqStringRough(left, right) -> Boolean result
    * - left (String): The value at the left-hand side of the comparator
@@ -1723,7 +1723,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "eqStringRough": function(left, right) {
     return (left.match(new RegExp(right, "g")));
   },
-  
+
   /**
    * SpahQL.DataHelper.eqNumberRough(left, right) -> Boolean result
    * - left (Number): The value at the left-hand side of the comparator
@@ -1734,7 +1734,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "eqNumberRough": function(left, right) {
     return (Math.floor(left) == Math.floor(right));
   },
-  
+
   /**
    * SpahQL.DataHelper.eqArrayRough(left, right) -> Boolean result
    * - left (Array): The value at the left-hand side of the comparator
@@ -1746,7 +1746,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "eqArrayRough": function(left, right) {
     return this.jointSet(left, right);
   },
-  
+
   /**
    * SpahQL.DataHelper.eqHashRough(left, right) -> Boolean result
    * - left (Object): The value at the left-hand side of the comparator
@@ -1761,7 +1761,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     }
     return false;
   },
-  
+
   /**
    * SpahQL.DataHelper.eqBooleanRough(left, right) -> Boolean result
    * - left (Boolean, null): The value at the left-hand side of the comparator
@@ -1773,7 +1773,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "eqBooleanRough": function(left, right) {
     return ((left && right) || (!left && !right));
   },
-  
+
   /**
    * SpahQL.DataHelper.eqSetStrict(set1, set2) -> Boolean result
    * - set1 (Array): The value at the left-hand side of the comparator
@@ -1811,7 +1811,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "eqSetRough": function(set1, set2) {
     return this.jointSetWithCallback(set1, set2, function(a,b) { return this.eqRough(a,b); });
   },
-  
+
   /**
    * SpahQL.DataHelper.jointSet(set1, set2) -> Boolean result
    * - set1 (Array): The value at the left-hand side of the comparator
@@ -1823,7 +1823,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "jointSet": function(set1, set2) {
     return this.jointSetWithCallback(set1, set2, function(a,b) { return this.eq(a,b); });
   },
-  
+
   /**
    * SpahQL.DataHelper.gteSet(set1, set2) -> Boolean result
    * - set1 (Array): The value at the left-hand side of the comparator
@@ -1835,7 +1835,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "gteSet": function(set1, set2) {
     return this.jointSetWithCallback(set1, set2, function(a,b) { return this.mathGte(a,b) });
   },
-  
+
   /**
    * SpahQL.DataHelper.lteSet(set1, set2) -> Boolean result
    * - set1 (Array): The value at the left-hand side of the comparator
@@ -1847,7 +1847,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "lteSet": function(set1, set2) {
     return this.jointSetWithCallback(set1, set2, function(a,b) { return this.mathLte(a,b) });
   },
-  
+
   /**
    * SpahQL.DataHelper.gtSet(set1, set2) -> Boolean result
    * - set1 (Array): The value at the left-hand side of the comparator
@@ -1859,7 +1859,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "gtSet": function(set1, set2) {
     return this.jointSetWithCallback(set1, set2, function(a,b) { return this.mathGt(a,b) });
   },
-  
+
   /**
    * SpahQL.DataHelper.ltSet(set1, set2) -> Boolean result
    * - set1 (Array): The value at the left-hand side of the comparator
@@ -1871,7 +1871,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
   "ltSet": function(set1, set2) {
     return this.jointSetWithCallback(set1, set2, function(a,b) { return this.mathLt(a,b) });
   },
-  
+
   /**
    * SpahQL.DataHelper.jointSetWithCallback(set1, set2, callback) -> Boolean result
    * - set1 (Array): The value at the left-hand side of the comparator
@@ -1892,7 +1892,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     }
     return false;
   },
-  
+
   /**
    * SpahQL.DataHelper.superSet(superset, subset) -> Boolean result
    * - superset (Array): The value being asserted as a superset of the 'subset' argument.
@@ -1915,7 +1915,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     }
     return (subset.length == foundIndexMap.length);
   },
-  
+
   /**
    * SpahQL.DataHelper.truthySet(set) -> Boolean result
    * - set (Array): The value being asserted as a "truthy" set.
@@ -1929,7 +1929,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     }
     return false;
   },
-  
+
   /**
    * SpahQL.DataHelper.coerceKeyForObject(key, obj) -> String, Integer, null
    * - key (Integer, String): The key to be coerced.
@@ -1975,15 +1975,15 @@ SpahQL_classCreate("SpahQL.DataHelper", {
       return obj;
     }
   }
-  
-  
+
+
 });
 
-/**
+/**
  * class SpahQL.Strategiser
  *
  * A generic handler class for managing SpahQL Strategies and applying them to SpahQL objects.
- * 
+ *
  * The Strategiser allows the creation and registration of SpahQL Strategies, which are macros
  * which may be applied to SpahQL objects such as the Spah State.
  *
@@ -2015,7 +2015,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
  		 * - action (Function): An optional function to be used as the strategy's action if you don't like specifying functions in hashes.
  		 *
  		 * Adds a strategy to this strategiser instance. Strategies are macros which may be categorised, and specific categories
- 		 * of strategy run in sequence against any given _target_. The target is always a SpahQL instance, although it need not 
+ 		 * of strategy run in sequence against any given _target_. The target is always a SpahQL instance, although it need not
  		 * be the root query result.
  		 *
  		 * Strategies are hashes containing the following keys:
@@ -2025,8 +2025,8 @@ SpahQL_classCreate("SpahQL.DataHelper", {
  		 * * _action_: A function specifying the strategy's behaviour. Let's look at an example:
  		 *
  		 * 		strategiser.addStrategy({
- 		 * 			"path": "/mentions", 
- 		 * 			"if": "/mentions/.length > 0", 
+ 		 * 			"path": "/mentions",
+ 		 * 			"if": "/mentions/.length > 0",
  		 * 			"action": function(results, target, attachments, strategy) {
 	   * 				// Do something to modify the results and then call...
 	   * 				strategy.done();
@@ -2034,7 +2034,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
  		 * 		}, "myEvent");
  		 *
  		 * The _action_ receives the arguments _results_ (the SpahQL result set matching by the _path_), _target_ (the SpahQL set
- 		 * to which the strategy is being applied), _attachments_ (An arbitrary object fed in by the caller executing the 
+ 		 * to which the strategy is being applied), _attachments_ (An arbitrary object fed in by the caller executing the
  		 * strategy) and _strategy_, an object containing flow control functions used to signal a strategy's completion.
  		 *
  		 * This method returns the strategy object in a common format with the convenience syntax massaged down to something
@@ -2154,7 +2154,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
  				// Check the preconditions if any are present on this strategy
 				if(strategy.condition && (target.assert(strategy.condition) != strategy.expectation)) return exitToStrategyLoop();
 
- 				// Enter the game loop 				
+ 				// Enter the game loop
  				this.runStrategyQueryLoop(0, strategy, target, attachments, exitToStrategyLoop);
  		},
 
@@ -2191,16 +2191,16 @@ SpahQL_classCreate("SpahQL.DataHelper", {
 
  });
 
-/**
+/**
  * class SpahQL.Token
  *
  * A containing module for all token types - queries, filters, comparison operators, sets, literals etc.
  * that are encountered during the parsing process.
  **/
- 
+
 // Define and export
 SpahQL_classCreate("SpahQL.Token", {
-  
+
   /**
    * SpahQL.Token.parseAt(i, query) -> Array result
    *
@@ -2215,30 +2215,30 @@ SpahQL_classCreate("SpahQL.Token", {
             SpahQL.Token.SelectionQuery.parseAt(i, query) ||
             null;
   },
-  
+
   /**
    * SpahQL.Token.throwParseErrorAt(i, query, message) -> void
-   * 
+   *
    * Throws an exception at the given index in the given query string with the given error message.
    **/
   "throwParseErrorAt": function(i, query, message) {
     throw new Error("Parse error: '"+(message||"failure")+"' at index "+i+" in query '"+query+"'.");
   }
-  
+
 });
 
-/**
+/**
  * class SpahQL.Token.Base
  *
  * A simple superclass for all tokens - queries, filters, comparison operators, sets, literals etc.
  * that are encountered during the parsing process
  **/
- 
+
 SpahQL_classCreate("SpahQL.Token.Base", {
-  
+
   // Singleton
   // ---------------------
-  
+
   /**
    * SpahQL.Token.Base.parseAt(index, queryString) -> Array\[resumeIndex, foundToken\] or null
    * Should be overridden by the child class.
@@ -2246,35 +2246,35 @@ SpahQL_classCreate("SpahQL.Token.Base", {
   "parseAt": function() {
     throw "I should have been overridden. Something is disastrously wrong.";
   }
-  
+
 }, {
-  
+
   // Instances
   // ----------------------
-  
+
   "init": function() {
-    
+
   },
-  
+
   "throwRuntimeError": function(token, message) {
     throw new Error("Parse error: '"+(message||"failure to execute")+"' in token "+token+".");
   }
-  
+
 });
 
-/**
+/**
  * class SpahQL.Token.Simple < SpahQL.Token.Base
  *
  * A simple superclass for all simple tokens that carry a single value or subtoken.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.Simple", SpahQL.Token.Base, {
 
   // Singleton
   // ----------------------
-  
+
 }, {
-  
+
   // Instance
   // ----------------------
 
@@ -2289,7 +2289,7 @@ SpahQL_classExtend("SpahQL.Token.Simple", SpahQL.Token.Base, {
 
   /**
    * SpahQL.Token#toSet() -> SpahQL.Token.Set
-   * 
+   *
    * Wraps this token up in a set, allowing it to be used as a top-level evaluatable token.
    **/
   "toSet": function() {
@@ -2307,25 +2307,25 @@ SpahQL_classExtend("SpahQL.Token.Simple", SpahQL.Token.Base, {
   evaluate: function(rootData, scopeData, scopePath) {
     return [SpahQL.result(null, this.value)];
   }
-  
+
 });
 
-/**
+/**
  * class SpahQL.Token.String < SpahQL.Token.Simple
  *
  * A simple token wrapping a string literal value.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.String", SpahQL.Token.Simple, {
-  
+
   // Singleton
   // -----------------------
-  
+
   // Atom configuration: strings
   ATOM_QUOTE_SINGLE: "'",
   ATOM_QUOTE_DOUBLE: '"',
   ATOM_ESCAPE: '\\',
-  
+
   /**
    * SpahQL.Token.String.parseAt(i, query) -> Array\[resumeIndex, foundToken\] or null
    *
@@ -2335,7 +2335,7 @@ SpahQL_classExtend("SpahQL.Token.String", SpahQL.Token.Simple, {
   "parseAt": function(i, query) {
     var ch = query.charAt(i);
     if(ch == this.ATOM_QUOTE_SINGLE || ch == this.ATOM_QUOTE_DOUBLE) {
-      var j = 0;       
+      var j = 0;
       var quoteType = ch;
       var str = "";
       while(true) {
@@ -2358,33 +2358,33 @@ SpahQL_classExtend("SpahQL.Token.String", SpahQL.Token.Simple, {
       return [i+j, new this(str)];
     }
     else {
-      return null; 
+      return null;
     }
   }
-  
+
 }, {
-  
+
   // Instance
   // -----------------------
-  
+
 })
 
 
-/**
+/**
  * class SpahQL.Token.Numeric < SpahQL.Token.Simple
  *
  * A simple token wrapping an integer or floating-point numeric literal value.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.Numeric", SpahQL.Token.Simple, {
-    
+
     // Singleton
     // -------------------------
-    
+
     // Atom configuration: numerics
     ATOM_NUMERIC_POINT: ".",
     ATOM_NUMERIC_NEGATIVE: "-",
-    
+
     /**
      * SpahQL.Token.Numeric.parseAt(i, query) -> Array\[resumeIndex, foundToken\] or null
      *
@@ -2428,21 +2428,21 @@ SpahQL_classExtend("SpahQL.Token.Numeric", SpahQL.Token.Simple, {
          return null;
        }
     }
-    
+
 });
 
-/**
+/**
  * class SpahQL.Token.Boolean < SpahQL.Token.Simple
  *
  * A simple token wrapping a boolean true or false.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.Boolean", SpahQL.Token.Simple, {
- 
+
   // Atom configuration: bools
   ATOM_BOOLEAN_TRUE: "true",
   ATOM_BOOLEAN_FALSE: "false",
-  
+
   /**
    * SpahQL.Token.Boolean.parseAt(i, query) -> Array\[resumeIndex, foundToken\] or null
    *
@@ -2454,33 +2454,33 @@ SpahQL_classExtend("SpahQL.Token.Boolean", SpahQL.Token.Simple, {
     else if(query.substr(i,this.ATOM_BOOLEAN_FALSE.length) == this.ATOM_BOOLEAN_FALSE) return [i+this.ATOM_BOOLEAN_FALSE.length, new this(false)];
     else return null;
   }
-  
+
 })
 
 
-/**
+/**
  * class SpahQL.Token.Set < SpahQL.Token.Base
  *
  * A wrappping class for any set literal, containing one or more values.
  * May qualify as a range if the range operator is used during parsing.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
 
   // Singleton
   // -------------------
-  
+
   // Atom configuration: sets
   ATOM_SET_START: "{",
   ATOM_SET_END: "}",
   ATOM_SET_ARRAY_DELIMITER: ",",
   ATOM_SET_RANGE_DELIMITER: "..",
-  
+
   /**
    * SpahQL.Token.Set.parseAt(index, queryString) -> Array result or null
    *
    * Reads the given queryString starting at the given index and attempts to identify and parse
-   * a set literal token. If found, the token will be returned in a tuple \[resumeIndex, foundToken\]. 
+   * a set literal token. If found, the token will be returned in a tuple \[resumeIndex, foundToken\].
    * Returns null if nothing is found.
    **/
   "parseAt": function(i, query) {
@@ -2506,7 +2506,7 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
             break;
           }
         }
-        
+
         if(tokenIsAllowed) {
           // wind ahead
           j = readResult[0];
@@ -2540,24 +2540,24 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
     }
     return null;
   }
-  
+
 }, {
-  
-  // Instance 
+
+  // Instance
   // -------------------
-  
+
   /**
    * SpahQL.Token.Set#tokens -> Array Token
    *
    * Contains all tokens included in this set, in the order in which they were encountered.
    **/
-  
+
   /**
    * SpahQL.Token.Set#isRange -> Boolean
    *
    * A flag indicating whether or not this token is to be evaluated as a range.
    **/
-  
+
   /**
    * new SpahQL.Token.Set(value)
    *
@@ -2567,7 +2567,7 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
     this.tokens = tokens || [];
     this.isRange = isRange || false;
   },
-  
+
   /**
    * SpahQL.Token.Set#evaluate(rootData[, scopeData][, scopePath]) -> Array
    * - rootData (Object): A root data context for any selection queries that appear in the literal
@@ -2580,18 +2580,18 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
   evaluate: function(rootData, scopeData, scopePath) {
     var results = [];
     if(this.isRange) {
-      
+
       // Break if tokens look suspicious
       if(this.tokens.length != 2) {
         this.throwRuntimeError(this, "Tried to evaluate range with "+this.tokens.length+" tokens, expected 2 tokens. Tokens: "+this.tokens.join(", "));
       }
-      
+
       var startResults = this.tokens[0].evaluate(rootData, scopeData, scopePath);
       var endResults = this.tokens[1].evaluate(rootData, scopeData, scopePath);
-    
+
       // Break if evaluation of either token returns no results
       if(startResults.length == 0 || endResults.length == 0) return results;
-      
+
       var start = startResults[0].value;
       var end = endResults[0].value;
       var sType = SpahQL.DataHelper.objectType(start);
@@ -2620,7 +2620,7 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
    * - start (Number): The number at the start of the range (10 is the start value for {10..8})
    * - end (Number): The number at the start of the range (8 is the end value for {10..8})
    *
-   * Works with a ruby-style evaluation. Reverse ranges evaluate as empty. Symmetrical ranges e.g. 10..10 evaluate with 
+   * Works with a ruby-style evaluation. Reverse ranges evaluate as empty. Symmetrical ranges e.g. 10..10 evaluate with
    * one result.
    *
    * Evaluates a numeric range literal, generating an array containing all values in the range.
@@ -2629,13 +2629,13 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
     var results = [];
     // Return empty set for reverse ranges
     if(end < start) {
-      
+
       for(var r=start; r>=end; r--) results.push(SpahQL.result(null, r));
     }
     else {
       for(var i=start; i<=end; i++) results.push(SpahQL.result(null, i));
     }
-    
+
     return results;
   },
 
@@ -2645,7 +2645,7 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
    * - end (String): The character at the end of the range ("c" is the end value for {'a'..'c'})
    *
    * Evaluates a string range literal, generating an array of QueryResults containing all values in the range.
-   * String range literals are evaluated as numeric ranges using a radix of 35, and transposing the generated numeric values 
+   * String range literals are evaluated as numeric ranges using a radix of 35, and transposing the generated numeric values
    * back into strings before returning them.
    *
    * Evaluates with a ruby-style behaviour, for instance:
@@ -2677,19 +2677,19 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
    **/
   evalStringRange: function(start, end) {
     var results = [];
-    
-    // Figure out if this is a reversed or symmetrical range. 
+
+    // Figure out if this is a reversed or symmetrical range.
     // Another easy comparison: Symmetrical ranges have one entry
     if(start == end) return [SpahQL.result(null, start)];
     // Easy comparison: One string is shorter than the other or the range is reversed
-    if((start > end)||(start.length!=end.length)) return results; 
-    
+    if((start > end)||(start.length!=end.length)) return results;
+
     // Columnar charcode indexes:
     // integer: 48..57 == "0".."9"
     // ucase: 65..90 == "A".."Z"
     // lcase: 97..122 == "a".."z"
-    
-    // We're going to treat this like a slot machine. 
+
+    // We're going to treat this like a slot machine.
     // Create an array of "locks" which are locked columns in the range.
     var locks = [];
     var allLocked = true;
@@ -2701,13 +2701,13 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
       // If all others are locked and this is last column, unlock
       if(allLocked && c == start.length-1) locks[c] = false;
     }
-          
+
     var nextWorkingCol = function(wC) {
       for(var w=wC-1; w>-2; w--) {
         if(locks[w] == false) return w;
       }
     }
-    
+
     var gen = start+""; // clone start
     iterating: while(true) {
       // ^^^^
@@ -2716,12 +2716,12 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
       // Push the last-iterated result
       results.push(SpahQL.result(null, gen));
       if(gen == end) break iterating;
-      
+
       // Iterate until carrying stops, giving us our new stop value for the next increment
       var workingCol = nextWorkingCol(start.length),
           carry = true,
-          next = "";        
-      
+          next = "";
+
       carrying: while(true) {
         // Iterate start string and push new results. Break on maxing all unlocked columns or on reaching end token.
         // Iteration works on the lowest-order unlocked column and may generate a carry operation, which resets the current working
@@ -2748,13 +2748,13 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
             else if(cCode == 127) {
               carry = true;
               nCode = cCode;
-            } 
+            }
             else {
               nCode = cCode+1;
             }
             return [String.fromCharCode(nCode), carry];
         })(gen.charAt(workingCol));
-        
+
         gen = gen.split(""); gen.splice(workingCol,1,next[0]); gen = gen.join("");
         if(next[1]==true) {
           // Next next highest-order unlocked col
@@ -2766,20 +2766,20 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
         }
       }
     }
-    
+
     return results;
   }
-  
+
 });
 
-/**
+/**
  * class SpahQL.Token.ComparisonOperator < SpahQL.Token.Simple
  *
  * A simple token wrapping a string literal value.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.ComparisonOperator", SpahQL.Token.Simple, {
-    
+
     COMPARISON_OPERATORS: ["==", "=~", ">", "<", ">=", "<=", "!=", "}~{", "}>{", "}<{", "}!{"],
     COMPARISON_STRICT_EQUALITY: "==",
     COMPARISON_ROUGH_EQUALITY: "=~",
@@ -2804,16 +2804,16 @@ SpahQL_classExtend("SpahQL.Token.ComparisonOperator", SpahQL.Token.Simple, {
       else if(this.COMPARISON_OPERATORS.indexOf(query.substr(i,1)) >= 0) return [i+1, new this(query.substr(i,1))];
       else return null;
     }
-    
+
 });
 
-/**
+/**
  * class SpahQL.Token.FilterQuery < SpahQL.Token.Simple
  *
  * A token describing any path component within a selection query, comprised of one or two path delimiters
  * followed by a key or property name and an optional set of filter query tokens.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.FilterQuery", SpahQL.Token.Simple, {
 
     // Singleton
@@ -2822,12 +2822,12 @@ SpahQL_classExtend("SpahQL.Token.FilterQuery", SpahQL.Token.Simple, {
     // Atom configuration: paths
     ATOM_FILTER_QUERY_START: "[",
     ATOM_FILTER_QUERY_END: "]",
-    
+
     /**
      * SpahQL.Token.FilterQuery.parseAt(index, queryString) -> Array result or null
      *
      * Reads the given queryString starting at the given index and attempts to identify and parse
-     * a filter query token. If found, the token will be returned in a tuple \[resumeIndex, foundToken\]. 
+     * a filter query token. If found, the token will be returned in a tuple \[resumeIndex, foundToken\].
      * Returns null if nothing is found.
      **/
     "parseAt": function(i, query) {
@@ -2851,7 +2851,7 @@ SpahQL_classExtend("SpahQL.Token.FilterQuery", SpahQL.Token.Simple, {
           }
           else {
             queryToken += ch; j++;
-          }         
+          }
         }
         if(queryToken.length > 0) { // query token does not include final closing bracket
           return [j, new this(SpahQL.QueryParser.parseQuery(queryToken))];
@@ -2862,11 +2862,11 @@ SpahQL_classExtend("SpahQL.Token.FilterQuery", SpahQL.Token.Simple, {
       }
       return null;
     }
-    
+
 }, {
-    
+
     // Instance
-    
+
     /**
      * SpahQL.Token.FilterQuery#evaluate(rootData, scopeData, path) -> Boolean
      * - rootData (Object): The entire root-level data structure being queried
@@ -2877,18 +2877,18 @@ SpahQL_classExtend("SpahQL.Token.FilterQuery", SpahQL.Token.Simple, {
     "evaluate": function(rootData, scopeData) {
       return SpahQL.QueryRunner.assert(this.value, rootData, scopeData);
     }
-    
+
 });
 
-/**
+/**
  * class SpahQL.Token.PathComponent < SpahQL.Token.Base
  *
  * A token describing any path component within a selection query, comprised of one or two path delimiters
  * followed by a key or property name and an optional set of filter query tokens.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
-  
+
     // Singleton
     // ---------------------------
 
@@ -2896,12 +2896,12 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
     ATOM_PATH_DELIMITER: "/",
     ATOM_PROPERTY_IDENTIFIER: ".",
     ATOM_PATH_WILDCARD: "*",
-    
+
     /**
      * SpahQL.Token.PathComponent.parseAt(index, queryString) -> Array result or null
      *
      * Reads the given queryString starting at the given index and attempts to identify and parse
-     * a path component token. If found, the token will be returned in a tuple \[resumeIndex, foundToken\]. 
+     * a path component token. If found, the token will be returned in a tuple \[resumeIndex, foundToken\].
      * Returns null if nothing is found.
      **/
     "parseAt": function(i, query) {
@@ -2915,7 +2915,7 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
           pc.recursive = true;
           j++;
         }
-        
+
         // Check for wildcard, which halts the key reader and moves on to filters
         if(query.charAt(j) == this.ATOM_PATH_WILDCARD) {
            // Expect filter or end
@@ -2942,7 +2942,7 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
            else pc.key = kReadResult[1];
            j = kReadResult[0];
          }
-        }       
+        }
         // End keyname/propertyname segment
         // Start filters
         var fReadResult;
@@ -2951,49 +2951,49 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
           j = fReadResult[0];
         }
 
-        // When out of filters, exit       
+        // When out of filters, exit
         return [j, pc]
       }
 
       return null;
     }
-    
+
 },{
-  
+
     // Instance
     // ----------------------------------------
-    
+
     // Constants for known symbols
     PROPERTY_TYPE: "type",
     PROPERTY_SIZE: "size",
     PROPERTY_EXPLODE: "explode",
-    
+
     /**
      * SpahQL.Token.PathComponent#key -> String
      *
      * The key specified in this path component, if a keyname was used.
      **/
-    
+
     /**
      * SpahQL.Token.PathComponent#property -> String
      *
      * The property specified in this path component, if a property name was used.
      **/
-    
+
     /**
      * SpahQL.Token.PathComponent#recursive -> Boolean
      *
      * A flag indicating whether or not this path component should recurse through its
      * scope data during evaluation.
      **/
-    
+
     /**
      * SpahQL.Token.PathComponent#filterQueries -> Array Token.FilterQuery
      *
-     * Lists all filter queries associated with this path component, in the order in which they were 
+     * Lists all filter queries associated with this path component, in the order in which they were
      * encountered during parsing.
      **/
-    
+
     /**
      * new SpahQL.Token.PathComponent(key, property, recursive, filterQueries)
      *
@@ -3002,10 +3002,10 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
     "init": function(key, property, recursive, filterQueries) {
       this.key = key || null;
       this.property = property || null;
-      this.recursive = recursive || false;      
+      this.recursive = recursive || false;
       this.filterQueries = filterQueries || [];
     },
-    
+
     /**
      * SpahQL.Token.PathComponent#evaluate(rootData, scopeData, path) -> Array
      * - pathComponent (Object): A path component object as generated by the query parser
@@ -3014,15 +3014,15 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
      * - path (String): The string path for the root of the scopeData argument.
      *
      * Evaluates this path pomponent and returns a set of query results.
-     * Used primarily in Token.SelectionQuery#evaluate to map each path component to a set of results, allowing the query process to be 
+     * Used primarily in Token.SelectionQuery#evaluate to map each path component to a set of results, allowing the query process to be
      * effectively forked or halted.
      **/
     "evaluate": function(rootData, scopeData, path) {
       var results;
-      var scopePath = (!path || path == "/")? "" : path; // Root path is blanked for easy appending 
+      var scopePath = (!path || path == "/")? "" : path; // Root path is blanked for easy appending
 
       if(this.key == null && this.property == null) {
-        // Root query, 
+        // Root query,
         results = [SpahQL.result(path, scopeData, rootData)]; // Uses original path arg
       }
       else if(this.key != null) {
@@ -3062,7 +3062,7 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
       // Return remainder
       return results;
     },
-    
+
     /**
      * SpahQL.Token.PathComponent#fetchResultsFromObjectByKey(key, object, path, recursive) -> Array
      * - key (String): The key to be retrieved from the object. Numeric keys in string formare acceptable when accessing arrays.]
@@ -3149,16 +3149,16 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
 
       return results;
     }
-    
+
 });
 
-/**
+/**
  * class SpahQL.Token.SelectionQuery < SpahQL.Token.Base
  *
  * A token describing any selection query, comprised of an optional root flag followed by one or more
  * path components.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
 
     // Singleton
@@ -3166,12 +3166,12 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
 
     // Atom configuration: paths
     ATOM_PATH_ROOT: "$",
-    
+
     /**
      * SpahQL.Token.SelectionQuery.parseAt(index, queryString) -> Array result or null
      *
      * Reads the given queryString starting at the given index and attempts to identify and parse
-     * a selection query token. If found, the token will be returned in a tuple \[resumeIndex, foundToken\]. 
+     * a selection query token. If found, the token will be returned in a tuple \[resumeIndex, foundToken\].
      * Returns null if nothing is found.
      **/
     "parseAt": function(i, query) {
@@ -3192,7 +3192,7 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
          }
          j = firstComponent[0];
          pq.pathComponents.push(firstComponent[1]);
-         
+
          // Start chunking into path segments
          var pathComponent;
          while(pathComponent = SpahQL.Token.PathComponent.parseAt(j, query)) {
@@ -3200,28 +3200,28 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
            j = pathComponent[0];
          }
         return [j, pq];
-      }     
+      }
       return null;
     }
-    
+
 }, {
 
-    // Instance 
+    // Instance
     // --------------------
-   
+
     /**
      * SpahQL.Token.SelectionQuery#pathComponents -> Array Token.PathComponent
      *
      * Contains all path components that comprise this selection query, in the order in which they
      * were encountered during parsing.
      **/
-    
+
     /**
      * SpahQL.Token.SelectionQuery#useRoot -> Boolean
      *
      * A flag indicating whether or not this query is locked to the root data context.
      **/
-    
+
     /**
      * new SpahQL.Token.SelectionQuery(pathComponents, useRoot)
      *
@@ -3231,7 +3231,7 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
       this.pathComponents = pathComponents || [];
       this.useRoot = useRoot || false;
     },
-    
+
     /**
      * SpahQL.Token.SelectionQuery#evaluate(rootData, scopeData, scopePath) -> Array
      * - rootData (Object): The entire root-level data structure being queried
@@ -3244,7 +3244,7 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
       // Start off with a simulated result using the data required by the query
       var results = [
         SpahQL.result(
-          ((this.useRoot)? null : scopePath) || "/", 
+          ((this.useRoot)? null : scopePath) || "/",
           ((this.useRoot)? rootData : scopeData)
         )
       ];
@@ -3252,7 +3252,7 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
       // Loop path components and pass reduced data
       for(var i=0; i< this.pathComponents.length; i++) {
         var pc = this.pathComponents[i];
-        var pcResults = []; // The results, flattened, for this path component   
+        var pcResults = []; // The results, flattened, for this path component
 
         for(var j=0; j < results.length; j++) {
           // Run each result from the previous iteration through the path component evaluator.
@@ -3260,23 +3260,23 @@ SpahQL_classExtend("SpahQL.Token.SelectionQuery", SpahQL.Token.Base, {
           pcResults = pcResults.concat(pc.evaluate(rootData, results[j].value, results[j].path));
         }
         results = pcResults;
-        
+
         // only continue if there are results to work with
         if(results.length == 0) break;
       }
       return results;
     }
-    
+
 });
 
-/**
+/**
  * class SpahQL.Token.KeyName < SpahQL.Token.Simple
  *
  * A simple token wrapping a valid variable or identifier value.
  **/
- 
+
 SpahQL_classExtend("SpahQL.Token.KeyName", SpahQL.Token.Simple, {
-    
+
     /**
      * SpahQL.Token.KeyName.parseAt(i, query) -> Array\[resumeIndex, foundToken\] or null
      *
@@ -3292,5 +3292,5 @@ SpahQL_classExtend("SpahQL.Token.KeyName", SpahQL.Token.Simple, {
       }
       return (token.length > 0)? [j, new this(token)] : null;
     }
-    
+
 });
