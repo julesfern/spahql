@@ -882,7 +882,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    * Just like #delete, but called against every item in this set. Returns self.
    **/
   "destroyAll": function(key) {
-    for(var i=0; i<this.length; i++) this.destroy(this[i], key);
+      for(var i=this.length-1; i>-1; i--) this.destroy(this[i], key);
     return this;
   },
 
