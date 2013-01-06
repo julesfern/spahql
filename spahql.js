@@ -251,6 +251,12 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   },
 
   /**
+   * SpahQL#length -> Number
+   *
+   * Returns the number of results in this set.
+   **/
+
+  /**
    * SpahQL#item(index) -> SpahQL
    * - index (Number): The index of the item you're after
    *
@@ -876,7 +882,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
    * Just like #delete, but called against every item in this set. Returns self.
    **/
   "destroyAll": function(key) {
-    for(var i=0; i<this.length; i++) this.destroy(this[i], key);
+      for(var i=this.length-1; i>-1; i--) this.destroy(this[i], key);
     return this;
   },
 
@@ -1265,7 +1271,6 @@ SpahQL_classCreate("SpahQL.QueryParser", {
               }
             }
             else {
-              console.log("!!!", parsedQuery);
               this.throwParseErrorAt(i, query, "Unexpected token, expected EOL or TOKEN_COMPARISON_OPERATOR");
             }
           }
@@ -1278,10 +1283,21 @@ SpahQL_classCreate("SpahQL.QueryParser", {
         i = windAhead;
       }
       
-     // Stash and return
-     this.queryCache[query] = parsedQuery;
-     SpahQL.log("Generated and cached query '"+str+"' ->", parsedQuery);
-     return parsedQuery;
+      // Vet parsed query
+      if(!parsedQuery.primaryToken) {
+        this.throwParseErrorAt(0, query, "Failed to parse query, expected TOKEN_SET_LITERAL or TOKEN_SELECTION_QUERY");
+      }
+      else if(parsedQuery.comparisonOperator && !parsedQuery.secondaryToken) {
+        this.throwParseErrorAt(query.length-1, query, "Query contains comparison operator but has no secondary term - expected TOKEN_SET_LITERAL or TOKEN_SELECTION_QUERY");
+      }
+      else {
+      // Stash and return
+        this.queryCache[query] = parsedQuery;
+        SpahQL.log("Generated and cached query '"+str+"' ->", parsedQuery);
+        return parsedQuery;
+      }
+
+     
    },
 
    /**
@@ -2967,6 +2983,8 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
     PROPERTY_TYPE: "type",
     PROPERTY_SIZE: "size",
     PROPERTY_EXPLODE: "explode",
+    PROPERTY_KEY: "key",
+    PROPERTY_PATH: "path",
     
     /**
      * SpahQL.Token.PathComponent#key -> String
@@ -3132,6 +3150,13 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
               results.push(SpahQL.result(path+"/"+c, scopeData.charAt(c), rootData));
             }
           }
+          break;
+        case this.PROPERTY_PATH:
+          results.push(SpahQL.result(pPath, (path||"/"), rootData));
+          break;
+        case this.PROPERTY_KEY:
+          var pKey = (!path||path==""||path=="/")? path : path.substring(path.lastIndexOf("/")+1);
+          results.push(SpahQL.result(pPath, pKey, rootData));
           break;
         default:
           throw new SpahQL.Errors.SpahQLRunTimeError("Unrecognised property token '"+property+"'.");
