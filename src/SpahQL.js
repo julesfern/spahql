@@ -245,7 +245,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
     }
     else {
       results = (arguments.length > 1)? Array.prototype.slice.call(arguments) : results;
-      results = (results.value && typeof(results.value)!="function")? [results] : results;
+      results = (results.hasOwnProperty('value') && typeof(results.value)!="function")? [results] : results;
       for(var i in results) this.push(results[i]);
     }
   },
@@ -374,7 +374,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
     var results = [];
     this.each(function() {
       SpahQL.select(query, this.sourceData(), this.value(), this.path()).each(function() {
-        results.push(this[0]);
+        results.push(this[0])
       });
     });
     return new SpahQL(results);
@@ -838,8 +838,8 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
   "destroy": function(target, key) {
     if(!target || typeof(target)!="object") {
       key = target;
-      target = this[0];
-    }
+      target = this[0]
+;    }
 
     if(target && key) {
       // Key deletion

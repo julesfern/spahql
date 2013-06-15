@@ -256,6 +256,18 @@ exports["SpahQL"] = {
 		test.done();
 	},
 
+	"select() retrieves zero-value results": function(test) {
+		var data = {a: {zero: 0, one: 1}, b: {zero: 0, two: 2}};
+		var db = SpahQL.db(data);
+
+		var res = db.select("//zero");
+
+		test.equal(res.length, 2);
+		test.deepEqual(res.values(), [0,0]);
+
+		test.done();
+	},
+
 	"assert() passes if all results match the assertion": function(test) {
 		var data = {a: {aa: "aaval", ab: "abval", c: {inner: "accval"}}, b: {bb: "bbval", bc: "bcval", c: {inner: "bccval"}}}
 		var db = SpahQL.db(data);

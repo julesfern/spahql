@@ -18,6 +18,16 @@ exports["SpahQL.Token.SelectionQuery"] = {
       
     test.equal(null, SpahQL.Token.SelectionQuery.parseAt(0, "0000"));
     test.done();
+  },
+
+  "Correctly returns a zero value": function(test) {
+    var token = SpahQL.Token.SelectionQuery.parseAt(0, "/hsh/zero")[1];
+    var data = {hsh: {zero: 0, one: 1}};
+
+    test.deepEqual(token.evaluate(data, data, "/"),
+      [{path: "/hsh/zero", value: 0, sourceData: data}]
+    );
+    test.done();
   }
   
 };

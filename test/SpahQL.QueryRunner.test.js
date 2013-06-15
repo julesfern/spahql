@@ -47,6 +47,16 @@ exports["SpahQL.QueryRunner"] = {
     }
     test.done();
   },
+
+  "Selection Queries: retrieves zero values": function(test) {
+    var q = qp.parseQuery("/hsh/zero");
+    var data = {hsh: {zero: 0, one: 1}};
+
+    test.deepEqual(qr.select(q, data),
+      [{path: "/hsh/zero", value: 0, sourceData: data}]
+    );
+    test.done();
+  },
   
   // Run all assertion queries
   "Assertion query fixtures: Runs the fixture set with the correct results": function(test) {

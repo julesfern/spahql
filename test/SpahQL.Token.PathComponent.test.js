@@ -86,6 +86,16 @@ exports["SpahQL.Token.PathComponent"] = {
     test.done();
   },
 
+  "Evaluates with an zero value": function(test) {
+    var token = SpahQL.Token.PathComponent.parseAt(0, "/zero")[1];
+    var data = {hsh: {zero: 0, one: 1}};
+
+    test.deepEqual(token.evaluate(data, data.hsh, "/hsh"),
+      [{path: "/hsh/zero", value: 0, sourceData: data}]
+    );
+    test.done();
+  },
+
   "Evaluates with a named key and the recursive flag": function(test) {
     var token = SpahQL.Token.PathComponent.parseAt(0, "//a")[1];
     var data = {a: {a: "aa"}};
