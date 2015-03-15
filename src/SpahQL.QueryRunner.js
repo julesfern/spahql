@@ -61,6 +61,7 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
     var primarySet = primaryToken.evaluate(rootData, scopeData, scopePath);
     var primaryValues = [];
     for(var p in primarySet) {
+      if (!primarySet.hasOwnProperty(p)) continue;
       primaryValues.push(primarySet[p].value);
     }
     
@@ -69,6 +70,7 @@ SpahQL_classCreate("SpahQL.QueryRunner", {
       secondarySet = secondaryToken.evaluate(rootData, scopeData, scopePath);
       secondaryValues = [];
       for(var s in secondarySet) {
+        if (!secondarySet.hasOwnProperty(s)) continue;
         secondaryValues.push(secondarySet[s].value);
       }
     }
