@@ -268,6 +268,20 @@ exports["SpahQL"] = {
 		test.done();
 	},
 
+	"select() retrieves Array results with extra Array.prototype properties": function(test) {
+
+        Array.prototype.foo = 'bar';
+
+		var data = {"test":["a", "g", "o", "r", "a"]};
+		var db = SpahQL.db(data);
+
+		var res = db.select("//test/*");
+
+		test.equal(res.length, 5);
+
+		test.done();
+	},
+
 	"assert() passes if all results match the assertion": function(test) {
 		var data = {a: {aa: "aaval", ab: "abval", c: {inner: "accval"}}, b: {bb: "bbval", bc: "bcval", c: {inner: "bccval"}}}
 		var db = SpahQL.db(data);

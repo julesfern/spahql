@@ -246,7 +246,10 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
     else {
       results = (arguments.length > 1)? Array.prototype.slice.call(arguments) : results;
       results = (results.hasOwnProperty('value') && typeof(results.value)!="function")? [results] : results;
-      for(var i in results) this.push(results[i]);
+      for(var i in results) {
+        if (!results.hasOwnProperty(i)) continue;
+        this.push(results[i]);
+      }
     }
   },
 
@@ -712,6 +715,7 @@ SpahQL = SpahQL_classExtend("SpahQL", Array, {
     var originalValue = this.dh.deepClone(target.value);
 
     for(var hKey in values) {
+      if (!values.hasOwnProperty(hKey)) continue;
       var v = values[hKey];
       var k = this.dh.coerceKeyForObject(hKey, target.value);
 

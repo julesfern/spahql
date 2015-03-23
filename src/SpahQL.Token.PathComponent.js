@@ -200,6 +200,7 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
       if(oType == "array" || oType == "object") {
         // Loop and append
         for(var oKey in scopeData) {
+          if (!scopeData.hasOwnProperty(oKey)) continue;
           var oVal = scopeData[oKey];
           var oValType = SpahQL.DataHelper.objectType(oVal);
           var oPath = path+"/"+oKey;
@@ -268,6 +269,7 @@ SpahQL_classExtend("SpahQL.Token.PathComponent", SpahQL.Token.Base, {
       // recurse if needed
       if(recursive && (oType == "array" || oType == "object")) {
         for(var k in scopeData) {
+          if (!scopeData.hasOwnProperty(k)) continue;
           var kPath = path+"/"+k;
           var kVal = scopeData[k];
           results = results.concat(this.fetchResultsFromObjectByProperty(property, rootData, kVal, kPath, recursive));

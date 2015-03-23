@@ -40,6 +40,7 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
         var allowedTokens = [SpahQL.Token.Numeric, SpahQL.Token.String, SpahQL.Token.Boolean, SpahQL.Token.SelectionQuery];
         var tokenIsAllowed = false;
         for(var i in allowedTokens) {
+          if (!allowedTokens.hasOwnProperty(i)) continue;
           var klass = allowedTokens[i];
           if(token instanceof klass) {
             tokenIsAllowed = true;
@@ -148,6 +149,7 @@ SpahQL_classExtend("SpahQL.Token.Set", SpahQL.Token.Base, {
     else {
       // Loop - evaluate queries
       for(var i in this.tokens) {
+        if (!this.tokens.hasOwnProperty(i)) continue;
         var token = this.tokens[i];
         results = results.concat(token.evaluate(rootData, scopeData, scopePath));
       }

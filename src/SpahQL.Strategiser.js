@@ -138,6 +138,7 @@
  			var strats = [];
 
  			for(var i in this.strategies) {
+                if (!this.strategies.hasOwnProperty(i)) continue;
  				var strategy = this.strategies[i];
  				var category = strategy.category;
  				if(category == "*" || categories.indexOf(category) >= 0) strats.push(strategy);

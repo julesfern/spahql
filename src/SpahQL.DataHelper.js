@@ -39,9 +39,11 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     if(!dIsSimple) {
       // New value is complex - we'll run all subkeys against the keys on the original, if they exist
       for(var dK in delta) {
+        if (!delta.hasOwnProperty(dK)) continue;
         // For each key, get modifications for this tree level and merge.
         var dMods = this.compare(((oIsSimple)? undefined : original[dK]), delta[dK], pathStack+"/"+dK);
         for(mK in dMods) {
+          if (!dMods.hasOwnProperty(mK)) continue;
           modifications[mK] = dMods[mK];
         }
       }
@@ -51,8 +53,10 @@ SpahQL_classCreate("SpahQL.DataHelper", {
       // Original value is complex - we'll run all subkeys against keys on the delta, if they exist
       // All keys in complex are nullified recursively
       for(var oK in original) {
+        if (!original.hasOwnProperty(oK)) continue;
         var oMods = this.compare(original[oK], ((dIsSimple)? undefined : delta[oK]), pathStack+"/"+oK);
         for(var mK in oMods) {
+          if (!oMods.hasOwnProperty(mK)) continue;
           modifications[mK] = oMods[mK];
         }
       }
@@ -119,6 +123,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
       else if(t == "object") {
         if(Object.keys(a).length != Object.keys(aP).length) return false;
         for(var k in a) {
+          if (!a.hasOwnProperty(k)) continue;
           if(!this.eq(a[k], aP[k])) return false;
         }
       }
@@ -152,7 +157,10 @@ SpahQL_classCreate("SpahQL.DataHelper", {
    **/
   "hashValues": function(hash) {
     var a = [];
-    for(var k in hash) a.push(hash[k]);
+    for(var k in hash) {
+      if (!hash.hasOwnProperty(k)) continue;
+      a.push(hash[k]);
+    }
     return a;
   },
   
@@ -305,6 +313,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
    **/
   "eqHashRough": function(left, right) {
     for(var k in left) {
+      if (!left.hasOwnProperty(k)) continue;
       if(right[k] && this.eq(left[k], right[k])) return true;
     }
     return false;
@@ -514,6 +523,7 @@ SpahQL_classCreate("SpahQL.DataHelper", {
     if(objType == "array" || objType == "object") {
       var clone = (objType == "array")? [] : {};
       for(var key in obj) {
+        if (!obj.hasOwnProperty(key)) continue;
         var val = obj[key];
         clone[key] = this.deepClone(val);
       }
