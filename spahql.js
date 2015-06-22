@@ -245,7 +245,7 @@ var SpahQL = SpahQL_classExtend("SpahQL", Array, {
     }
     else {
       results = (arguments.length > 1)? Array.prototype.slice.call(arguments) : results;
-      results = (results.value && typeof(results.value)!="function")? [results] : results;
+      results = ((results.value || results.value === '') && typeof(results.value)!="function")? [results] : results;
       for(var i in results) this.push(results[i]);
     }
   },
