@@ -2836,7 +2836,7 @@ SpahQL_classExtend("SpahQL.Token.FilterQuery", SpahQL.Token.Simple, {
         var scopeDepth=1;
         var queryToken="";
         var strReadAheadResult;
-        while(scopeDepth>0) {
+        while(scopeDepth>0 && j < query.length) {
           var ch=query.charAt(j); var strReadResult;
           if(ch == this.ATOM_FILTER_QUERY_START) {
             scopeDepth++; queryToken += ch; j++;
