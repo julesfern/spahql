@@ -2,7 +2,7 @@
   "name": "spahql",
   "preferGlobal": false,
   "version": "0.7.6",
-  "author": "Dan Glegg <dan@angryamoeba.co.uk>",
+  "author": "Jules Glegg <jules@julesfern.net>",
   "description": "A query language and data model for deep Javascript object structures.",
   "contributors": [
     "David Ellis <d.f.ellis@ieee.org>",
