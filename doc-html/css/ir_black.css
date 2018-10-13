@@ -35,7 +35,7 @@ pre .filter .argument,
 pre .attr_selector,
 pre .apache .cbracket,
 pre .date {
-  color: #A8FF60;
+  color: #FDC830;
 }
 
 pre .subst {
@@ -52,7 +52,7 @@ pre .pi,
 pre .decorator,
 pre .ini .title,
 pre .tex .special {
-  color: #FFFFB6;
+  color: #F2C94C;
 }
 
 pre .class .title,
@@ -83,7 +83,7 @@ pre .css .tag {
 
 pre .css .rules .property,
 pre .css .id {
-  color: #FFFFB6;
+  color: #78ffd6;
 }
 
 pre .css .class {
