@@ -13,7 +13,7 @@
 [object_equality]: #object_equality
 [strategies]: #spahql_strategies
 
-#Core concepts
+#<b>Core concepts</b>
 
 Think of SpahQL like jQuery, but instead of handling DOM elements, it handles JSON data. Instead of CSS selectors, you use SpahQL queries. It's a querying system for JSON data, aware of hashes, arrays, strings and booleans.
 
