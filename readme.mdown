@@ -19,17 +19,17 @@ Think of SpahQL like jQuery, but instead of handling DOM elements, it handles JS
 
 You can use SpahQL to fetch deeply-nested data, traverse large trees, and to query for data based on conditions, and to make assertions about data.
 
-#Install
+#<b>Install</b>
 
 SpahQL has no dependencies - all you need is SpahQL itself.
 
-##Browser-based apps
+##<b>Browser-based apps</b>
 
 Download the [latest minified JS][js_minified] and include it in your project.
 
 	<script type="text/javascript" src="path/to/spahql-min.js"></script>
 
-##Node.js / CommonJS apps
+##<b>Node.js / CommonJS apps</b>
 
 SpahQL is available through NPM, so installation is painless.
 
@@ -39,7 +39,7 @@ Once installed, require it like any other CommonJS dependency.
 
 	var spahql = require('spahql');
 
-#Getting started
+#<b>Getting started</b>
 
 Using SpahQL starts out with you putting your data into a *SpahQL Database*. A *database* isn't a special object - it's just a regular SpahQL object holding the root data.
 
@@ -83,7 +83,7 @@ To start using this data with SpahQL, we need to put it in a _SpahQL database_:
 
 	var db = SpahQL.db(data);
 
-#Selecting data
+#<b>Selecting data</b>
 
 Now that we've got a _SpahQL Database_ assigned to the <code>db</code> variable, we can start to pull data from it using SpahQL _selection queries_. We call the <code>db</code> object the _root_.
 
@@ -148,11 +148,11 @@ Filters may be chained together to produce logical <code>AND</code> gates. Here 
 
 	var users_with_both_avatars = db.select("//user[/avatar/small][/avatar/large]");
 
-#Working with results
+#<b>Working with results</b>
 
 
 
-#Modifying data
+#<b>Modifying data</b>
 
 SpahQL objects provide a set of methods for modifying their data values. SpahQL always maintains _strict pointer equality_ to the original database data, so be aware that calling these methods will result in alterations being made directly to the object you originally passed to <code>SpahQL.db(your_data)</code>.
 
@@ -163,7 +163,7 @@ For instance, here are the <code>replace</code> and <code>replaceAll</code> meth
 	db.select("//user").replace("This string will replace the first user in the set");
 	db.select("//user").replaceAll("NO USERS FOR YOU");
 
-#Listening for changes
+#<b>Listening for changes</b>
 
 SpahQL objects are able to dispatch events when certain paths are changed, using an event-bubbling model similar to the HTML DOM.
 
@@ -189,7 +189,7 @@ The callback function always receives three arguments; <code>result</code>, a Sp
 	// -> prints the following to console:
 	// Subpaths modified on user (/user): /handle,/newobject,/newobject/foo
 
-#Properties
+#<b>Properties</b>
 
 Properties are like imaginary paths on objects in your database. They allow you to make more interesting assertions about your data. Each property uses the <code>.propertyName</code> syntax and may be used in any path query:
 
@@ -212,7 +212,7 @@ Use <code>.explode</code> when you need to break an object down into components.
 	// Does the user's handle contain a, b and c?
 	results = db.assert("/user/handle/.explode }>{ {'a','b','c'}")
 
-#Making assertions
+#<b>Making assertions</b>
 
 We've already seen how assertion queries can be used as filters in [selection queries][selection_queries]. Assertions can also be used on their own using SpahQL's <code>assert</code> method.
 
@@ -231,49 +231,48 @@ Much like selections, assertions can be scoped to a set of results you already h
 
 	db.select("/user").assert("/handle"); //-> true, since /user/handle exists
 
-#Comparisons
+#<b>Comparisons</b>
 
 
 SpahQL's set arithmetic uses the following operators for comparing values. To learn how values are compared, see [Object equality][object_equality].
 
-##Set equality <code>==</code>
+##<b>Set equality <code>==</code></b>
 
 Asserts that both the left-hand and right-hand sets have a 1:1 relationship between their values. The values do not have to be in the same order. 
 
-##Set inequality <code>!=</code>
+##<b>Set inequality <code>!=</code></b>
 
 Asserts that the sets are not identical under the rules of the <code>==</code> operator.
   
-##Subset of <code>}&lt;{</code>
+##<b>Subset of <code>}&lt;{</code></b>
   
 Asserts that the left-hand set is a subset of the right-hand set. All values present in the left-hand set must have a matching counterpart in the right-hand set.
   
-##Superset of <code>}&gt;{</code>
+##<b>Superset of <code>}&gt;{</code></b>
 
 Asserts that the left-hand set is a superset of the right-hand set. All values present in the right-hand set must have a matching counterpart in the left-hand set.
 
-##Joint set <code>}~{</code>
+##<b>Joint set <code>}~{</code></b>
 
 Asserts that the left-hand set contains one or more values that are also present in the right-hand set.
 
-##Disjoint set <code>}!{</code>
+##<b>Disjoint set <code>}!{</code></b>
 
   Asserts that the left-hand set contains no values that are also present in the right-hand set.
 
-##Rough equality <code>=~</code>
+##<b>Rough equality <code>=~</code></b>
 
   Asserts that one or more values from the left-hand set are *roughly equal* to one or more values from the right-hand set. See [Object equality][object_equality].
 
-##Greater than (or equal to) <code>&gt;=</code> and <code>&gt;</code>
-
+##<b>Greater than (or equal to) <code>&gt;=</code> and <code>&gt;</code></b>
   Asserts that one or more values from the left-hand set is greater than (or equal to) one or more values from the right-hand set.
 
-##Less than (or equal to) <code>&lt;=</code> and <code>&lt;</code> 
+##<b>Less than (or equal to) <code>&lt;=</code> and <code>&lt;</code> </b>
 
   Asserts that one or more values from the left-hand set is less than (or equal to) one or more values from the right-hand set.
 
 
-#Literals
+#<b>Literals</b>
 
 SpahQL does support literals - strings, integers, floats, <code>true</code>, <code>false</code> and <code>null</code> may all be used directly in SpahQL queries. Strings may use single or double quotes as you prefer.
 
@@ -306,47 +305,47 @@ Ranges are also supported in set literals:
     {"a"..9} // COMPILER ERROR - ranges must be composed of objects of the same type.
     {"a"../foo/bar} // COMPILE ERROR - ranges do not support path lookup.
 
-#Object equality
+#<b>Object equality</b>
 
 There are two kinds of equality in SpahQL. *Strict* equality is applied with the <code>==</code> and other major operators, while *rough* equality is applied when using some of the more lenient operators such as <code>=~</code>.
 
-##Strict equality
+##<b>Strict equality</b>
 
 The equality of objects is calculated based on their type. Firstly, for two objects to be equal under strict equality (<code>==</code>) they must have the same base type.
 
-###Object equality
+###<b>Object equality</b>
 
 The objects being compared must contain the same set of keys, and the value of each key must be the same in each object. If the value is an object or an array, it will be evaluated recursively.
 
-###Array equality
+###<b>Array equality</b>
 
 The arrays must each contain the same values in the same order. If any value is an array or object, it will be evaluated recursively.
 
-###Number, String, Bool, null
+###<b>Number, String, Bool, null</b>
 
 The objects must be of equal type and value.
 
-##Rough equality
+##<b>Rough equality</b>
 
 Under rough equality (<code>=~</code>) the rules are altered:
 
-###Rough String equality
+###<b>Rough String equality</b>
 
 Strings are evaluated to determine if the left-hand value matches the right-hand value, evaluating the right-hand value as a regular expression e.g. <code>"bar" =~ "^b"</code> returns <code>true</code> but <code>"bar" =~ "^a"</code> returns <code>false</code>
 
-###Rough Number equality
+###<b>Rough Number equality</b>
 
 Numbers are evaluated with integer accuracy only (using Math.floor, numeric.floor or an equivalent operation)
 
-###Rough Array equality
+###<b>Rough Array equality</b>
 
 Arrays behave as if compared with the joint set operator.
 
-###Rough Object equality
+###<b>Rough Object equality</b>
 
 Objects are roughly equal if both hashes contain one or more keys with the same corresponding values. Values are compared using strict equality.
 
-###Rough Boolean and Null equality
+###<b>Rough Boolean and Null equality</b>
 
 Booleans and Null objects are evaluated based on truthiness rather than exact equality. <code>false =~ null</code> is <code>true</code> but <code>true =~ false</code> is <code>false</code>.
 
@@ -356,7 +355,7 @@ When using inequality operators <code>&lt;</code>, <code>=&lt;</code>, <code>&gt
 * **Numbers** are evaluated, as you'd expect, based on their native values.
 * **Arrays, Objects, Booleans, null** are not compatible with these operators and will automatically result in <code>false</code> being returned.
 
-#SpahQL Strategies
+#<b>SpahQL Strategies</b>
 
 _Strategies_ are a mechanism provided by SpahQL allowing you to define a queue of asynchronous actions to be run in order against a SpahQL object, provided that the value of the query result matches the criteria you specify. Pattern-wise, they're somewhere between a macro and a stored procedure. Strategies are managed using the <code>Strategiser</code> class.
 
