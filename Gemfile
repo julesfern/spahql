@@ -12,7 +12,7 @@ group :development do
   gem "pdoc", "~> 0.2.0"
   gem "nokogiri"
   gem "liquid"
-  gem "json", "~> 1.5.0"
+  gem "json", "~> 2.3.0"
   gem "maruku", ">= 0"
   gem "albino", "~> 1.3.3"
   gem "sinatra", "~> 1.1.0"
